@@ -63,7 +63,7 @@ struct SkinnedVertexIn_t {
 };
 
 struct BoneUniforms_t {
-    float4x4 bones[32];     // kMaxBones: düğüm dünya * inverseBind
+    float4x4 bones[128];    // kMaxBones: düğüm dünya * inverseBind
 };
 
 // Vertex'i modelin uzayında skin matrislerinin ağırlıklı toplamıyla dönüştürür.

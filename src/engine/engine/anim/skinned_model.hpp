@@ -18,7 +18,7 @@
 // (game/server/systems/animation); motor sadece "şu klip, şu saniyede" pozunu üretir.
 namespace game::anim {
 
-// Renderer'ın kMaxBones'u ile aynı kalmalı (render_types.hpp). Yükleyici bunu aşan modeli reddeder.
+// Eklem sayısı renderer'ın kMaxBones'unu (render_types.hpp) aşamaz; yükleyici aşan modeli reddeder.
 // GPU'ya giden vertex: render_types.hpp EVertexLayout::kPosNormalUvSkin (52 bayt) ile BİREBİR aynı düzen.
 struct SkinnedVertex_t {
     glm::vec3 position{0.0f};
@@ -64,8 +64,16 @@ struct Clip_t {
     std::vector<Channel_t> channels;
 };
 
+// Çözülmüş (RGBA8, sRGB renk) base color dokusu. Boşsa (pixels.empty()) modelin dokusu yok.
+struct TextureData_t {
+    uint32_t width = 0;
+    uint32_t height = 0;
+    std::vector<uint8_t> pixels;
+};
+
 struct SkinnedModel_t {
     std::string name;
+    TextureData_t baseColor;
     std::vector<SkinnedVertex_t> vertices;
     std::vector<uint32_t> indices;
     std::vector<Node_t> nodes;

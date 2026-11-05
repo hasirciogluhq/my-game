@@ -3,11 +3,19 @@
 #include "engine/interface/render_types.hpp"
 
 #include <assimp/Importer.hpp>
+#include <assimp/config.h>
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
+
 #include <algorithm>
+#include <filesystem>
+#include <fstream>
 #include <functional>
+#include <iterator>
+#include <memory>
 #include <span>
 #include <unordered_map>
 
@@ -111,7 +119,7 @@ std::expected<void, std::string> appendMesh(const aiMesh* mesh, const NodeIndex_
             vertex.normal = toGlm(mesh->mNormals[i]);
         }
         if (mesh->HasTextureCoords(0)) {
-            vertex.uv = {mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y};
+            vertex.uv = {mesh->mTextureCoords[0][i].x, 1.0f - mesh->mTextureCoords[0][i].y};  // Assimp V yukarı, Metal V aşağı
         }
         writeSkin(vertex, std::move((*influences)[i]));
         model.vertices.push_back(vertex);
@@ -151,14 +159,107 @@ anim::Clip_t convertClip(const aiAnimation* animation, const NodeIndex_t& nodeIn
     return clip;
 }
 
+// RGBA8'e çözer; başarısızsa boş doku.
+anim::TextureData_t decodeImage(const unsigned char* bytes, int size) {
+    int width = 0;
+    int height = 0;
+    int channels = 0;
+    stbi_uc* pixels = stbi_load_from_memory(bytes, size, &width, &height, &channels, 4);
+    if (pixels == nullptr) {
+        return {};
+    }
+    anim::TextureData_t texture{.width = static_cast<uint32_t>(width), .height = static_cast<uint32_t>(height)};
+    texture.pixels.assign(pixels, pixels + static_cast<size_t>(width) * static_cast<size_t>(height) * 4);
+    stbi_image_free(pixels);
+    return texture;
+}
+
+std::vector<unsigned char> readFile(const std::filesystem::path& path) {
+    std::ifstream file(path, std::ios::binary);
+    return {std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>()};
+}
+
+// İlk meshin base color dokusu: glb'ye gömülü ya da modelin yanındaki dosya.
+anim::TextureData_t loadBaseColor(const aiScene* scene, const std::filesystem::path& modelPath) {
+    for (const aiMesh* mesh : std::span{scene->mMeshes, scene->mNumMeshes}) {
+        aiString texturePath;
+        const aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+        if (material->GetTexture(aiTextureType_BASE_COLOR, 0, &texturePath) != AI_SUCCESS &&
+            material->GetTexture(aiTextureType_DIFFUSE, 0, &texturePath) != AI_SUCCESS) {
+            continue;
+        }
+        if (const aiTexture* embedded = scene->GetEmbeddedTexture(texturePath.C_Str()); embedded != nullptr && embedded->mHeight == 0) {
+            return decodeImage(reinterpret_cast<const unsigned char*>(embedded->pcData), static_cast<int>(embedded->mWidth));
+        }
+        const auto bytes = readFile(modelPath.parent_path() / std::filesystem::path{texturePath.C_Str()}.filename());
+        return decodeImage(bytes.data(), static_cast<int>(bytes.size()));
+    }
+    return {};
+}
+
+std::unique_ptr<Assimp::Importer> makeImporter() {
+    auto importer = std::make_unique<Assimp::Importer>();
+    importer->SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);  // Mixamo: pivot düğümlerini çöz
+    return importer;
+}
+
+constexpr unsigned kImportFlags = aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices | aiProcess_LimitBoneWeights;
+
+bool isModelFile(const std::filesystem::path& path) {
+    const auto ext = path.extension().string();
+    return ext == ".glb";
+}
+
+// Klasör modu: character.* = mesh + iskelet, diğer model dosyaları = ek klipler (klip adı = dosya adı).
+std::expected<anim::SkinnedModel_t, std::string> loadDirectory(const std::filesystem::path& dir) {
+    std::filesystem::path character;
+    std::vector<std::filesystem::path> clipFiles;
+    for (const auto& entry : std::filesystem::directory_iterator(dir)) {
+        if (!entry.is_regular_file() || !isModelFile(entry.path())) {
+            continue;
+        }
+        if (entry.path().stem() == "character") {
+            character = entry.path();
+        } else {
+            clipFiles.push_back(entry.path());
+        }
+    }
+    if (character.empty()) {
+        return std::unexpected("klasörde character.fbx/glb yok: " + dir.string());
+    }
+    std::ranges::sort(clipFiles);
+
+    auto model = loadSkinned(character.string());
+    if (!model) {
+        return model;
+    }
+    NodeIndex_t nodeIndex;
+    for (size_t i = 0; i < model->nodes.size(); ++i) {
+        nodeIndex.emplace(model->nodes[i].name, static_cast<int>(i));
+    }
+    for (const auto& file : clipFiles) {
+        const auto importer = makeImporter();
+        const aiScene* scene = importer->ReadFile(file.string(), kImportFlags);
+        if (scene == nullptr || scene->mNumAnimations == 0) {
+            return std::unexpected("klip dosyası okunamadı: " + file.string());
+        }
+        anim::Clip_t clip = convertClip(scene->mAnimations[0], nodeIndex);
+        clip.name = file.stem().string();
+        model->clips.push_back(std::move(clip));
+    }
+    return model;
+}
+
 }  // namespace
 
 std::expected<anim::SkinnedModel_t, std::string> loadSkinned(const std::string& path) {
-    Assimp::Importer importer;
-    const aiScene* scene = importer.ReadFile(path, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_JoinIdenticalVertices |
-                                                       aiProcess_LimitBoneWeights);
+    if (std::filesystem::is_directory(path)) {
+        return loadDirectory(path);
+    }
+    const auto importer = makeImporter();
+    const aiScene* scene = importer->ReadFile(path, kImportFlags);
     if (scene == nullptr || scene->mRootNode == nullptr || (scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) != 0) {
-        return std::unexpected(importer.GetErrorString());
+        return std::unexpected(importer->GetErrorString());
     }
 
     anim::SkinnedModel_t model;
@@ -177,6 +278,7 @@ std::expected<anim::SkinnedModel_t, std::string> loadSkinned(const std::string& 
     for (const aiAnimation* animation : std::span{scene->mAnimations, scene->mNumAnimations}) {
         model.clips.push_back(convertClip(animation, nodeIndex));
     }
+    model.baseColor = loadBaseColor(scene, path);
     return model;
 }
 

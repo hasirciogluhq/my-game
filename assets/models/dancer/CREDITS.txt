@@ -1,0 +1,1 @@
+Character and "Breakdance Swipes" animation: Mixamo (Adobe), converted FBX -> GLB with assimp.

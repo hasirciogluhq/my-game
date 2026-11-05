@@ -47,6 +47,8 @@ struct SkinnedAsset_t {
   std::shared_ptr<const anim::SkinnedModel_t> model;
   MeshHandle_t mesh;
   MaterialHandle_t material;
+  glm::mat4 local{1.0f};  // ölçek + yere oturtma (modelin kendi uzayında)
+  float yawOffset = 0.0f; // modelin baktığı yön ile oyun yönü (-Z) farkı
   std::array<int, 2> clipOfState{-1, -1};
 };
 
@@ -60,6 +62,7 @@ struct Resources_t {
   Model_t spot;
   Model_t suzanne;
   SkinnedAsset_t robot;        // EModel::kRobot
+  SkinnedAsset_t dancer;       // EModel::kDancer
   MaterialHandle_t player;     // kRimLit
   MaterialHandle_t projectile; // kUnlit
   MaterialHandle_t particle;   // kUnlit

@@ -11,6 +11,8 @@ const SkinnedAsset_t *assetFor(const Resources_t &resources, EModel model) {
   switch (model) {
   case EModel::kRobot:
     return &resources.robot;
+  case EModel::kDancer:
+    return &resources.dancer;
   }
   return nullptr;
 }
@@ -43,8 +45,9 @@ void drawSkinned(World_t &world, IRenderer &renderer,
 
     const glm::mat4 model =
         glm::translate(glm::mat4{1.0f}, transform.position) *
-        glm::rotate(glm::mat4{1.0f}, transform.yaw,
-                    glm::vec3{0.0f, 1.0f, 0.0f});
+        glm::rotate(glm::mat4{1.0f}, transform.yaw + asset->yawOffset,
+                    glm::vec3{0.0f, 1.0f, 0.0f}) *
+        asset->local;
     renderer.submit({.mesh = asset->mesh,
                      .material = asset->material,
                      .transform = model,

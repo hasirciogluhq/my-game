@@ -8,7 +8,7 @@
 
 namespace game {
 
-// "models/spot.obj" gibi assets-göreli yolu çözer: çalışma dizininden yukarı doğru "assets/" arar.
+// "models/spot.glb" gibi assets-göreli yolu çözer: çalışma dizininden yukarı doğru "assets/" arar.
 [[nodiscard]] ENGINE_API std::optional<std::filesystem::path> findAssetPath(const std::string& relative);
 
 }  // namespace game

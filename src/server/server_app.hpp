@@ -23,6 +23,7 @@ private:
     CNetServer m_network;
     int m_botCount = 0;
     int m_robotCount = 1;
+    int m_dancerCount = 1;
 };
 
 }  // namespace game

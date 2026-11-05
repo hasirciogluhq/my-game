@@ -145,7 +145,7 @@ target("assets")
     add_deps("interface", "engine")
     add_files("src/engine/assets/*.cpp")
     add_headerfiles("src/engine/assets/*.hpp")
-    add_packages("assimp", "glm")
+    add_packages("assimp", "glm", "stb")
     engine_rpath()
 
 -- Ses (miniaudio). Arayüz: Audio001.
@@ -270,7 +270,7 @@ target("anim_test")
     set_targetdir(gamedir)
     add_deps("engine", "interface")
     add_files("src/tests/anim_test.cpp", "src/engine/assets/skinned_loader.cpp")
-    add_packages("assimp", "glm")
+    add_packages("assimp", "glm", "stb")
     game_rpath()
     set_rundir("$(projectdir)")
 

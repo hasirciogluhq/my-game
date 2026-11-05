@@ -44,8 +44,8 @@ float turnToward(float from, float to, float maxStep) {
 }
 
 EAnimState chooseState(EAnimState current, float distance) {
-    const float limit = current == EAnimState::kWave ? kGreetExitRadius : kGreetEnterRadius;
-    return distance < limit ? EAnimState::kWave : EAnimState::kIdle;
+    const float limit = current == EAnimState::kGreet ? kGreetExitRadius : kGreetEnterRadius;
+    return distance < limit ? EAnimState::kGreet : EAnimState::kIdle;
 }
 
 void setState(Animator_t& animator, EAnimState state, uint32_t tick) {

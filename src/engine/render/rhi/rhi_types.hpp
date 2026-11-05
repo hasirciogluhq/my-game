@@ -29,7 +29,7 @@ inline constexpr uint32_t kMaxColorTargets = 4;
 inline constexpr uint32_t kMaxVertexAttributes = 8;
 inline constexpr uint32_t kMaxUniformSlots = 4;
 inline constexpr uint32_t kMaxTextureSlots = 8;
-inline constexpr uint32_t kMaxUniformBytes = 2048;  // slot başına
+inline constexpr uint32_t kMaxUniformBytes = 8192;  // slot başına (128 eklemli bone bloğu 8 KB)
 
 // --- bit bayrağı enum'ları ---
 template <typename E>

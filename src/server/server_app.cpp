@@ -38,6 +38,8 @@ bool CServerApp::connect(CreateInterfaceFn factory) {
     GAME_LOG_INFO("server", "bots.count = {}", m_botCount);
     m_robotCount = std::max(0, config::getInt(settings, "robots.count", 1));
     GAME_LOG_INFO("server", "robots.count = {}", m_robotCount);
+    m_dancerCount = std::max(0, config::getInt(settings, "dancers.count", 1));
+    GAME_LOG_INFO("server", "dancers.count = {}", m_dancerCount);
     return true;
 }
 
@@ -52,6 +54,9 @@ int CServerApp::run(const LaunchOptions_t& options) {
     for (int i = 0; i < m_robotCount; ++i) {
         // Haritanın ortasında, spawn'ın önünde; sonraki robotlar yanına dizilir.
         std::ignore = world::spawnAnimated(m_world, EModel::kRobot, {static_cast<float>(i) * 2.0f, 0.0f, -4.0f});
+    }
+    for (int i = 0; i < m_dancerCount; ++i) {
+        std::ignore = world::spawnAnimated(m_world, EModel::kDancer, {4.0f + static_cast<float>(i) * 2.0f, 0.0f, -5.0f});
     }
 
     if (!m_network.listen(options.port)) {

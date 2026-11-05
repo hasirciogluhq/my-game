@@ -426,12 +426,12 @@ int main(int argc, char** argv) {
 
         setVisitorX(-3.0f);
         const uint32_t waveStart = arena.tick - 1;
-        check(stateOf() == game::EAnimState::kWave, "robot: 3 m'de el sallıyor");
+        check(stateOf() == game::EAnimState::kGreet, "robot: 3 m'de selamlıyor");
         const auto& animator = arena.registry.get<game::Animator_t>(robot);
         check(animator.startTick == waveStart && animator.prevState == game::EAnimState::kIdle, "robot: startTick ve prevState yazıldı");
 
         setVisitorX(-5.5f);  // giriş 5 m, çıkış 6.5 m: histerezis, hâlâ el sallar
-        check(stateOf() == game::EAnimState::kWave, "robot: histerezis (5.5 m'de hâlâ wave)");
+        check(stateOf() == game::EAnimState::kGreet, "robot: histerezis (5.5 m'de hâlâ selamlıyor)");
         setVisitorX(-7.0f);
         check(stateOf() == game::EAnimState::kIdle, "robot: 7 m'de idle'a döndü");
 

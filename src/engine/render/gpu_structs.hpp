@@ -72,7 +72,7 @@ static_assert(sizeof(DrawUniforms_t) == 64);
 static_assert(sizeof(Light_t) == 64);
 static_assert(sizeof(FrameUniforms_t) == 64 + 10 * 16 + kMaxLights * 64);
 static_assert(sizeof(MaterialUniforms_t) == 48);
-static_assert(sizeof(BoneUniforms_t) == 2048);  // rhi::kMaxUniformBytes ile aynı
+static_assert(sizeof(BoneUniforms_t) == 8192);  // rhi::kMaxUniformBytes ile aynı
 static_assert(sizeof(DebugVertex_t) == 28);
 
 }  // namespace game::gpu

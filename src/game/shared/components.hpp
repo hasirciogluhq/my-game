@@ -41,13 +41,16 @@ struct Projectile_t {
 };
 
 // Server'ın seçtiği animasyon durumu. Client klip adını/süresini bilmez, state'i kendi modelindeki klibe eşler.
+// kGreet: yakındaki oyuncuyu selamlama animasyonu; hangi klip olduğunu modelin tanımı belirler
+// (robot: el sallama, dancer: breakdance). Server sadece durumu seçer.
 enum class EAnimState : uint32_t {
     kIdle,
-    kWave,
+    kGreet,
 };
 
 enum class EModel : uint32_t {
     kRobot,
+    kDancer,
 };
 
 // Animasyonlu (iskeletli) entity. Pozu server her tick güncellemez: sadece durum değişince yazar.

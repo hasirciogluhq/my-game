@@ -9,7 +9,7 @@
 
 namespace game {
 
-// assets.dll arayüzü. Yol assets/ klasörüne göredir: "models/spot.obj".
+// assets.dll arayüzü. Yol assets/ klasörüne göredir: "models/spot.glb".
 // Aynı yol bir kez yüklenir, sonra paylaşılan pointer döner.
 class IAssets {
 public:

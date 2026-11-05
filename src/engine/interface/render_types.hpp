@@ -45,7 +45,7 @@ using MaterialHandle_t = RenderHandle_t<MaterialTag_t>;
 
 inline constexpr uint32_t kMaxLights = 16;           // frame başına dinamik ışık (güneş hariç)
 inline constexpr uint32_t kMaxDebugLines = 65536;    // frame başına debug çizgi üst sınırı
-inline constexpr uint32_t kMaxBones = 32;            // iskeletli mesh'te çizim başına eklem (uniform bloğu 2 KB)
+inline constexpr uint32_t kMaxBones = 128;           // iskeletli mesh'te çizim başına eklem (uniform bloğu 8 KB)
 
 // ---------------------------------------------------------------------------
 // Backend / yüzey

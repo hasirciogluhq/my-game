@@ -54,8 +54,8 @@ bool nearIdentity(const std::vector<glm::mat4>& skin, float epsilon) {
 
 int main() {
     using namespace game;
-    const auto file = findAssetPath("models/robot.gltf");
-    check(file.has_value(), "models/robot.gltf bulundu");
+    const auto file = findAssetPath("models/robot.glb");
+    check(file.has_value(), "models/robot.glb bulundu");
     if (!file) {
         return 1;
     }
