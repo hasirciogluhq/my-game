@@ -52,7 +52,7 @@ float CCamera::pitch() const {
 }
 
 glm::vec3 CCamera::forward() const {
-    // yaw=0 iken -Z, pitch yukarı pozitif. Simülasyondaki yön ile aynı.
+    // yaw=0 is -Z, pitch up is positive. Same direction as used in the simulation.
     return {std::cos(m_pitch) * std::sin(m_yaw), std::sin(m_pitch), -std::cos(m_pitch) * std::cos(m_yaw)};
 }
 

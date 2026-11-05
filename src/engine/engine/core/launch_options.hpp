@@ -10,8 +10,8 @@
 
 namespace game {
 
-// Komut satırı: --tick-rate=64 --host=127.0.0.1 --port=7777
-//               --log-level=debug --log-cat=net:trace,render:warn --log-file=yol.log
+// Command line: --tick-rate=64 --host=127.0.0.1 --port=7777
+//               --log-level=debug --log-cat=net:trace,render:warn --log-file=path.log
 struct LaunchOptions_t {
     uint32_t tickRate = kDefaultTickRate;
     std::string host = "127.0.0.1";
@@ -19,7 +19,7 @@ struct LaunchOptions_t {
     LogConfig_t log;
 };
 
-// argv: char** (argv[0] program adı, atlanır).
+// argv: char** (argv[0] is the program name and is skipped).
 [[nodiscard]] ENGINE_API std::expected<LaunchOptions_t, std::string> parseLaunchOptions(int argc, char** argv);
 
 }  // namespace game

@@ -6,8 +6,8 @@
 
 namespace game {
 
-// UI001 uygulaması: RmlUi (oyun arayüzü, SDL_GPU çizimi rml/render.cpp) + Dear
-// ImGui (geliştirici araçları, resmi SDL3 / SDL_GPU3 backend'leri).
+// UI001 implementation: RmlUi (game UI, SDL_GPU drawing in rml/render.cpp) + Dear
+// ImGui (developer tools, the official SDL3 / SDL_GPU3 backends).
 class UI_API CUiSystem final : public IUI {
 public:
   CUiSystem() = default;
@@ -67,7 +67,7 @@ public:
   }
   void setDebugger(bool visible) override { m_rml.setDebugger(visible); }
 
-  // Renderer'ın overlay geçidi (static drawOverlay çağırır).
+  // Overlay gate for the renderer (called by the static drawOverlay).
   void recordOverlay(void *commandBuffer, void *renderPass);
 
 private:

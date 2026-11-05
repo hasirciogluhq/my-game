@@ -5,8 +5,8 @@
 
 namespace game {
 
-// client.dll arayüzü. connect: host'un factory'si (Renderer001, Particles001
-// buradan alınır).
+// client.dll interface. connect: the host's factory (Renderer001 and Particles001
+// are taken from there).
 class IClientApp {
 public:
   virtual ~IClientApp() = default;

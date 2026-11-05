@@ -18,7 +18,7 @@ ERenderBackend defaultBackend() {
 
 }  // namespace
 
-// Yeni backend eklemek: ilgili IRhiDevice sınıfını yaz, burada bir case ekle, shader kaynağını shaders/ altına ekle.
+// To add a new backend: write the matching IRhiDevice class, add a case here, and add its shader source under shaders/.
 std::unique_ptr<IRhiDevice> createRhiDevice(ERenderBackend backend, std::string& error) {
     if (backend == ERenderBackend::kAuto) {
         backend = defaultBackend();
@@ -32,20 +32,20 @@ std::unique_ptr<IRhiDevice> createRhiDevice(ERenderBackend backend, std::string&
                                                                   .backend = ERenderBackend::kMetal,
                                                                   .backendName = "SDL_GPU/Metal"});
 #else
-            error = "Metal backend yalnızca macOS'ta mevcut";
+            error = "the Metal backend is only available on macOS";
             return nullptr;
 #endif
         case ERenderBackend::kD3D11:
-            error = "D3D11 backend henüz yazılmadı (rhi/d3d11/ altında IRhiDevice implementasyonu gerekir)";
+            error = "the D3D11 backend is not written yet (an IRhiDevice implementation under rhi/d3d11/ is required)";
             return nullptr;
         case ERenderBackend::kD3D12:
         case ERenderBackend::kVulkan:
-            error = "bu backend için shader kaynağı yok (shaders/ altına HLSL/SPIR-V eklenmeli)";
+            error = "there is no shader source for this backend (HLSL/SPIR-V must be added under shaders/)";
             return nullptr;
         case ERenderBackend::kAuto:
             break;
     }
-    error = "bilinmeyen backend";
+    error = "unknown backend";
     return nullptr;
 }
 

@@ -24,8 +24,8 @@ struct GpuTexture_t {
     uint32_t height = 0;
 };
 
-// Mesh / texture / material havuzları, varsayılan texture + material ve ortak sampler'lar.
-// find() pointer'ları create*()'e kadar geçerlidir (havuz büyüyebilir).
+// Pools for mesh / texture / material, default texture + material, and shared samplers.
+// find() pointers are valid until the next create*() call (the pool may grow).
 class CRenderResources {
 public:
     [[nodiscard]] bool initialize(rhi::IRhiDevice& device);
@@ -44,10 +44,10 @@ public:
     [[nodiscard]] const MaterialDesc_t* find(MaterialHandle_t handle) const { return m_materials.get(handle); }
 
     [[nodiscard]] MaterialHandle_t defaultMaterial() const { return m_defaultMaterial; }
-    // Materyalin base color texture'ı; yoksa veya silinmişse beyaz texture.
+    // The material's base color texture; if it is missing or deleted, the white texture.
     [[nodiscard]] rhi::TextureHandle_t baseTextureFor(const MaterialDesc_t& material) const;
 
-    // Public texture handle'ının GPU texture'ı; geçersiz/silinmişse geçersiz handle.
+    // The GPU texture of a public texture handle; an invalid or deleted handle gives an invalid handle.
     [[nodiscard]] rhi::TextureHandle_t gpuTexture(TextureHandle_t handle) const {
         const GpuTexture_t* texture = m_textures.get(handle);
         return texture != nullptr ? texture->texture : rhi::TextureHandle_t{};

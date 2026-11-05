@@ -9,7 +9,7 @@
 
 namespace game::level {
 
-// Statik dünya kutuları. Server fizik için, client çizim için aynı listeyi kullanır.
+// Static world boxes. The server uses them for physics; the client uses the same list for drawing.
 struct Box_t {
     glm::vec3 center;
     glm::vec3 halfExtents;
@@ -20,7 +20,7 @@ struct Box_t {
 
 inline constexpr float kGroundHalfExtent = 50.0f;
 
-// Zemin + kutuları fizik dünyasına ekler.
+// Adds the ground and the boxes to the physics world.
 void buildPhysics(IPhysics& physics);
 
 }  // namespace game::level

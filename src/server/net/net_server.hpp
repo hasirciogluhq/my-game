@@ -7,9 +7,9 @@
 
 namespace game {
 
-// Server'ın network yöneticisi (client'taki CNetClient'ın karşılığı): network.dll'in (INetwork) üstünde
-// oyuncuların bağlantılarını tutar (peer id = player id), paketleri ilgili world çağrısına yönlendirir
-// ve welcome / view target / snapshot gönderir. Oyun kuralı içermez (kurallar game/server/).
+// The server's network manager (the counterpart of CNetClient on the client): on top of network.dll's INetwork it holds
+// the players' connections (peer id = player id), routes packets to the matching world call, and sends welcome / view target /
+// snapshot. Contains no game rules (the rules live in game/server/).
 class SERVER_API CNetServer {
 public:
     void bind(INetwork* network, World_t* world) {
@@ -17,11 +17,11 @@ public:
         m_world = world;
     }
     [[nodiscard]] bool listen(uint16_t port);
-    void pump();               // network.dll olaylarını getirir; coroutine uyanıp işler
-    void broadcastSnapshot();  // dünyanın tam durumu, her tick
+    void pump();               // delivers network.dll events; the coroutine wakes up and processes them
+    void broadcastSnapshot();  // the full state of the world, every tick
 
 private:
-    // Ağ olaylarını sırayla işleyen coroutine: pump() olay getirince uyanır.
+    // Coroutine that processes network events in order: wakes up when pump() brings an event.
     net::Task serveNetwork();
     void onPacket(const NetEvent_t& event);
     void sendWelcome(PeerId_t peer);

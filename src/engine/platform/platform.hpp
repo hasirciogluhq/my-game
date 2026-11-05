@@ -9,7 +9,7 @@ struct SDL_Window;
 
 namespace game {
 
-// SDL3 pencere + olay + girdi. Tüm SDL erişimi bu modülde.
+// SDL3 window + events + input. All SDL access lives in this module.
 class CPlatform final : public IPlatform {
 public:
     CPlatform() = default;
@@ -35,7 +35,7 @@ public:
 
 private:
     SDL_Window* m_window = nullptr;
-    // Son pollEvents() sırasında basılan tuşlar (scancode indeksli).
+    // Keys pressed during the last pollEvents() (indexed by scancode).
     std::bitset<512> m_pressed;
     PlatformEventFn m_hook = nullptr;
     void* m_hookUser = nullptr;

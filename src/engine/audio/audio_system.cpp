@@ -16,7 +16,7 @@ struct CAudioSystem::Impl_t {
 
     ma_engine engine;
     bool ready = false;
-    std::list<std::unique_ptr<Tone_t>> tones;  // çalmayı bitirenler her playTone'da temizlenir
+    std::list<std::unique_ptr<Tone_t>> tones;  // finished tones are cleaned up on every playTone
 };
 
 CAudioSystem::CAudioSystem() : m_impl(std::make_unique<Impl_t>()) {}
@@ -30,7 +30,7 @@ bool CAudioSystem::initialize() {
         return true;
     }
     if (ma_engine_init(nullptr, &m_impl->engine) != MA_SUCCESS) {
-        GAME_LOG_WARN("audio", "ses aygıtı açılamadı, sessiz devam");
+        GAME_LOG_WARN("audio", "audio device could not be opened, continuing silently");
         return false;
     }
     m_impl->ready = true;
@@ -82,7 +82,7 @@ void CAudioSystem::playFile(const std::string& path) {
     }
     const auto file = findAssetPath(path);
     if (!file) {
-        GAME_LOG_WARN("audio", "ses dosyası bulunamadı: {}", path);
+        GAME_LOG_WARN("audio", "audio file not found: {}", path);
         return;
     }
     ma_engine_play_sound(&m_impl->engine, file->string().c_str(), nullptr);

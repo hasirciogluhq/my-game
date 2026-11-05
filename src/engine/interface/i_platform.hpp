@@ -7,7 +7,7 @@
 
 namespace game {
 
-// event: const SDL_Event* (void* çünkü arayüz SDL'e bağımlı olmaz).
+// event: const SDL_Event* (void* because the interface does not depend on SDL).
 using PlatformEventFn = void (*)(const void* event, void* user);
 
 struct PlatformEvents_t {
@@ -16,9 +16,9 @@ struct PlatformEvents_t {
     float mouseDeltaY = 0.0f;
 };
 
-// platform.dll arayüzü: pencere, olay pompası, tuş durumu, metin girişi. SDL'e tek erişim noktası.
-// Tuşlar isimle sorgulanır (yeniden atanabilir input sistemi için). Tuş adları SDL adlarıdır:
-// "W", "Space", "Left Shift", "`", "F1"... Fare: "Mouse1", "Mouse2", "Mouse3".
+// platform.dll interface: window, event pump, key state, text input. The single access point to SDL.
+// Keys are queried by name (for the rebindable input system). Key names are SDL names:
+// "W", "Space", "Left Shift", "`", "F1"... Mouse: "Mouse1", "Mouse2", "Mouse3".
 class IPlatform {
 public:
     virtual ~IPlatform() = default;
@@ -30,18 +30,18 @@ public:
 
     [[nodiscard]] virtual PlatformEvents_t pollEvents() = 0;
 
-    // Fare konumu, drawableSize() ile aynı piksel uzayında (sol üst orijin).
+    // Mouse position, in the same pixel space as drawableSize() (top-left origin).
     [[nodiscard]] virtual glm::vec2 mousePosition() const = 0;
-    // Pencere pikseli başına çizim pikseli (retina = 2). UI boyutu ve fare konumu buna göre ölçeklenir.
+    // Draw pixels per window pixel (retina = 2). UI size and mouse position are scaled accordingly.
     [[nodiscard]] virtual float pixelDensity() const = 0;
 
     virtual void setTitle(const char* title) = 0;
     virtual void setRelativeMouse(bool enabled) = 0;
 
     [[nodiscard]] virtual bool keyDownByName(const char* keyName) const = 0;
-    // Son pollEvents() sırasında yeni basıldı mı? (tuş tekrarı sayılmaz)
+    // Was it newly pressed during the last pollEvents()? (key repeat is not counted)
     [[nodiscard]] virtual bool keyPressedByName(const char* keyName) const = 0;
-    // Her SDL_Event için pollEvents() içinde çağrılır (event: const SDL_Event*). Dear ImGui SDL3 backend'i buradan beslenir.
+    // Called for every SDL_Event inside pollEvents() (event: const SDL_Event*). Feeds the Dear ImGui SDL3 backend.
     virtual void setEventHook(PlatformEventFn hook, void* user) = 0;
 };
 

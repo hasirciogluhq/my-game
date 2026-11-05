@@ -16,17 +16,17 @@ namespace game {
 bool CServerApp::connect(CreateInterfaceFn factory) {
     INetwork* network = queryInterface<INetwork>(factory, kNetworkInterface);
     if (network == nullptr) {
-        GAME_LOG_ERROR("server", "{} bulunamadı", kNetworkInterface);
+        GAME_LOG_ERROR("server", "{} not found", kNetworkInterface);
         return false;
     }
     m_network.bind(network, &m_world);
     m_physics = queryInterface<IPhysics>(factory, kPhysicsInterface);
     if (m_physics == nullptr || !m_physics->initialize()) {
-        GAME_LOG_ERROR("server", "{} bulunamadı veya başlatılamadı", kPhysicsInterface);
+        GAME_LOG_ERROR("server", "{} not found or could not be started", kPhysicsInterface);
         return false;
     }
 
-    // Sunucu ayarları: assets/config/server.cfg (dosya yoksa varsayılanlar).
+    // Server settings: assets/config/server.cfg (defaults if the file is missing).
     ConfigValues_t settings;
     if (const auto path = findAssetPath("config/server.cfg")) {
         settings = config::load(*path);
@@ -52,7 +52,7 @@ int CServerApp::run(const LaunchOptions_t& options) {
     }
 
     for (int i = 0; i < m_robotCount; ++i) {
-        // Haritanın ortasında, spawn'ın önünde; sonraki robotlar yanına dizilir.
+        // In the middle of the map, in front of the spawn; the next robots line up beside it.
         std::ignore = world::spawnAnimated(m_world, EModel::kRobot, {static_cast<float>(i) * 2.0f, 0.0f, -4.0f});
     }
     for (int i = 0; i < m_dancerCount; ++i) {
@@ -73,7 +73,7 @@ int CServerApp::run(const LaunchOptions_t& options) {
         world::tick(m_world);
         m_network.broadcastSnapshot();
 
-        // Sabit tick aralığı. Geride kalırsak bir sonraki tick'e atla (spiral birikmesin).
+        // Fixed tick interval. If we fall behind, skip to the next tick (no spiral build-up).
         nextTick += period;
         const auto now = clock::now();
         if (nextTick > now) {

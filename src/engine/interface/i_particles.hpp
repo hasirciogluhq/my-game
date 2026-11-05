@@ -7,7 +7,7 @@
 
 namespace game {
 
-// particles.dll arayüzü.
+// particles.dll interface.
 class IParticles {
 public:
     virtual ~IParticles() = default;
@@ -15,7 +15,7 @@ public:
     virtual void update(float dt) = 0;
     virtual void clear() = 0;
     [[nodiscard]] virtual std::size_t count() const = 0;
-    // Çizim için canlı parçacıkların konumları.
+    // Positions of the live particles, for drawing.
     [[nodiscard]] virtual std::vector<glm::vec3> livePositions() const = 0;
 };
 

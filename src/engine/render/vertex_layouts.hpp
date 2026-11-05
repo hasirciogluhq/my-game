@@ -4,7 +4,7 @@
 
 namespace game {
 
-// Public EVertexLayout -> RHI vertex düzeni. Yeni layout: EVertexLayout'a değer + burada case + shader girişi.
+// Public EVertexLayout -> RHI vertex layout. New layout: a value in EVertexLayout + a case here + a shader input.
 [[nodiscard]] inline rhi::VertexLayout_t rhiVertexLayout(EVertexLayout layout) {
     using rhi::EVertexFormat;
     switch (layout) {
@@ -27,7 +27,7 @@ namespace game {
 }
 
 
-// Debug çizgileri: float3 position + float4 color (gpu::DebugVertex_t).
+// Debug lines: float3 position + float4 color (gpu::DebugVertex_t).
 [[nodiscard]] inline rhi::VertexLayout_t debugVertexLayout() {
     using rhi::EVertexFormat;
     return {.stride = 28,

@@ -4,7 +4,7 @@
 
 namespace game::systems {
 
-// Bot controller'ları kendi komutunu üretir (devriye: ileri yürü, yavaşça dön).
+// Bot controllers produce their own command (patrol: walk forward, turn slowly).
 void ai(World_t& world);
 
 }  // namespace game::systems

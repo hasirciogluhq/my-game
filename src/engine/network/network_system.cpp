@@ -79,7 +79,7 @@ void setNonBlocking(int fd) {
     }
 }
 
-// Kapanmış bağlantıya yazarken SIGPIPE ile ölme: macOS soket seçeneği, Linux send bayrağı.
+// Avoid dying from SIGPIPE when writing to a closed connection: macOS socket option, Linux send flag.
 void setNoSigpipe([[maybe_unused]] int fd) {
     #if defined(SO_NOSIGPIPE)
     const int yes = 1;
@@ -93,7 +93,7 @@ constexpr int kSendFlags = 0;
     #endif
 #endif
 
-// Küçük paketler Nagle yüzünden bekletilmesin.
+// Don't let small packets wait because of Nagle's algorithm.
 void setNoDelay(int fd) {
     const int yes = 1;
     setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<const char*>(&yes), sizeof(yes));
@@ -150,7 +150,7 @@ void CSocketFd::reset() {
     m_fd = -1;
 }
 
-// --- Başlatma / kapatma ---
+// --- Start / shutdown ---
 
 CNetworkSystem::~CNetworkSystem() = default;
 
@@ -160,14 +160,14 @@ bool CNetworkSystem::listen(uint16_t port) {
     CSocketFd udp = openSocket(SOCK_DGRAM, IPPROTO_UDP);
     const bool ok = tcp.valid() && udp.valid() && bindPort(tcp.get(), port) && bindPort(udp.get(), port) && ::listen(tcp.get(), 64) == 0;
     if (!ok) {
-        GAME_LOG_ERROR("net", "port {} açılamadı (TCP+UDP)", port);
+        GAME_LOG_ERROR("net", "could not open port {} (TCP+UDP)", port);
         return false;
     }
     setNonBlocking(tcp.get());
     setNonBlocking(udp.get());
     m_listener = std::move(tcp);
     m_udp = std::move(udp);
-    GAME_LOG_INFO("net", "dinleniyor: port {} (TCP+UDP)", port);
+    GAME_LOG_INFO("net", "listening: port {} (TCP+UDP)", port);
     return true;
 }
 
@@ -181,11 +181,11 @@ bool CNetworkSystem::connect(const std::string& host, uint16_t port) {
     addrinfo* result = nullptr;
     const std::string portText = std::to_string(port);
     if (getaddrinfo(host.c_str(), portText.c_str(), &hints, &result) != 0 || result == nullptr) {
-        GAME_LOG_ERROR("net", "adres çözülemedi: {}", host);
+        GAME_LOG_ERROR("net", "could not resolve address: {}", host);
         return false;
     }
 
-    // UDP de connect edilir: sadece server'dan gelen datagramlar okunur, send() adres istemez.
+    // UDP is connected too: only datagrams from the server are read, and send() does not need an address.
     CSocketFd tcp = openSocket(SOCK_STREAM, IPPROTO_TCP);
     CSocketFd udp = openSocket(SOCK_DGRAM, IPPROTO_UDP);
     const auto length = static_cast<SockLen_t>(result->ai_addrlen);
@@ -193,7 +193,7 @@ bool CNetworkSystem::connect(const std::string& host, uint16_t port) {
                     ::connect(udp.get(), result->ai_addr, length) == 0;
     freeaddrinfo(result);
     if (!ok) {
-        GAME_LOG_ERROR("net", "{}:{} bağlanılamadı", host, port);
+        GAME_LOG_ERROR("net", "could not connect to {}:{}", host, port);
         return false;
     }
 
@@ -204,7 +204,7 @@ bool CNetworkSystem::connect(const std::string& host, uint16_t port) {
     m_connection.emplace();
     m_connection->tcp = std::move(tcp);
     m_udp = std::move(udp);
-    GAME_LOG_INFO("net", "bağlandı: {}:{} (el sıkışma bekleniyor)", host, port);
+    GAME_LOG_INFO("net", "connected: {}:{} (waiting for handshake)", host, port);
     return true;
 }
 
@@ -222,7 +222,7 @@ void CNetworkSystem::shutdown() {
 
 void CNetworkSystem::disconnect(PeerId_t peer) {
     if (Connection_t* connection = findConnection(peer)) {
-        std::ignore = flush(*connection);  // bekleyen veriyi göndermeyi dene
+        std::ignore = flush(*connection);  // try to send pending data
         peer == kServerPeer ? dropConnection() : dropClient(peer);
     }
 }
@@ -235,7 +235,7 @@ Connection_t* CNetworkSystem::findConnection(PeerId_t peer) {
     return it != m_clients.end() ? &it->second.connection : nullptr;
 }
 
-// --- Gönderme ---
+// --- Sending ---
 
 bool CNetworkSystem::send(PeerId_t peer, std::span<const uint8_t> data, EDeliver deliver) {
     Connection_t* connection = findConnection(peer);
@@ -256,7 +256,7 @@ bool CNetworkSystem::sendReliable(Connection_t& connection, std::span<const uint
         return false;
     }
     if (connection.out.size() + kTokenSize + data.size() > kMaxOutBuffer) {
-        connection.broken = true;  // karşı uç okumuyor
+        connection.broken = true;  // the remote end is not reading
         return false;
     }
     putU32(connection.out, static_cast<uint32_t>(data.size()));
@@ -301,7 +301,7 @@ bool CNetworkSystem::flush(Connection_t& connection) {
         if (n > 0) {
             sent += static_cast<std::size_t>(n);
         } else {
-            ok = wouldBlock();  // dolu: sonraki pump'ta devam
+            ok = wouldBlock();  // full: continue on the next pump()
             break;
         }
     }
@@ -309,7 +309,7 @@ bool CNetworkSystem::flush(Connection_t& connection) {
     return ok;
 }
 
-// --- Her tick ---
+// --- Every tick ---
 
 void CNetworkSystem::pump() {
     acceptClients();
@@ -353,7 +353,7 @@ void CNetworkSystem::acceptClients() {
         setNoSigpipe(fd);
         setNonBlocking(fd);
 
-        // İlk TCP çerçevesi: peer id + UDP token'ı.
+        // First TCP frame: peer id + UDP token.
         std::vector<uint8_t> hello;
         putU32(hello, client.id);
         putU32(hello, client.connection.token);
@@ -363,7 +363,7 @@ void CNetworkSystem::acceptClients() {
         m_tokens[client.connection.token] = id;
         m_clients.emplace(id, std::move(client));
         pushEvent({.type = ENetEvent::kConnected, .peer = id});
-        GAME_LOG_INFO("net", "client {} bağlandı", id);
+        GAME_LOG_INFO("net", "client {} connected", id);
     }
 }
 
@@ -376,7 +376,7 @@ bool CNetworkSystem::readTcp(PeerId_t peer, Connection_t& connection) {
             connection.in.insert(connection.in.end(), chunk.begin(), chunk.begin() + n);
             continue;
         }
-        open = n < 0 && wouldBlock();  // 0: karşı uç kapattı
+        open = n < 0 && wouldBlock();  // 0: the remote end closed the connection
         break;
     }
     return extractFrames(peer, connection) && open;
@@ -400,7 +400,7 @@ bool CNetworkSystem::extractFrames(PeerId_t peer, Connection_t& connection) {
 }
 
 void CNetworkSystem::onFrame(PeerId_t peer, Connection_t& connection, std::span<const uint8_t> frame) {
-    if (peer == kServerPeer && m_localPeer == 0) {  // client: server'ın el sıkışma çerçevesi
+    if (peer == kServerPeer && m_localPeer == 0) {  // client: the server's handshake frame
         if (frame.size() != kHandshakeSize) {
             connection.broken = true;
             return;
@@ -448,10 +448,10 @@ void CNetworkSystem::onDatagram(uint32_t token, std::span<const uint8_t> payload
         connection = &*m_connection;
     }
     if (connection == nullptr) {
-        return;  // bilinmeyen token: yok say
+        return;  // unknown token: ignore
     }
 
-    if (payload.empty()) {  // bind isteği (server'a) ya da onayı (client'a)
+    if (payload.empty()) {  // bind request (to the server) or acknowledgement (to the client)
         if (isServer) {
             connection->udpAddress = fromAddress;
             connection->udpPort = fromPort;
@@ -472,13 +472,13 @@ void CNetworkSystem::sendBindRequest() {
     }
     const auto now = std::chrono::steady_clock::now();
     if (now - m_lastBindRequest < kBindInterval) {
-        return;  // UDP kaybolabilir: onay gelene kadar periyodik tekrar
+        return;  // UDP can get lost: repeat periodically until the acknowledgement arrives
     }
     m_lastBindRequest = now;
     std::ignore = writeDatagram(*m_connection, {});
 }
 
-// --- Olaylar ---
+// --- Events ---
 
 void CNetworkSystem::dropClient(PeerId_t id) {
     const auto it = m_clients.find(id);
@@ -488,7 +488,7 @@ void CNetworkSystem::dropClient(PeerId_t id) {
     m_tokens.erase(it->second.connection.token);
     m_clients.erase(it);
     pushEvent({.type = ENetEvent::kDisconnected, .peer = id});
-    GAME_LOG_INFO("net", "client {} ayrıldı", id);
+    GAME_LOG_INFO("net", "client {} left", id);
 }
 
 void CNetworkSystem::dropConnection() {
@@ -496,7 +496,7 @@ void CNetworkSystem::dropConnection() {
     m_udp.reset();
     m_localPeer = 0;
     pushEvent({.type = ENetEvent::kDisconnected, .peer = kServerPeer});
-    GAME_LOG_INFO("net", "server bağlantısı koptu");
+    GAME_LOG_INFO("net", "server connection lost");
 }
 
 void CNetworkSystem::pushEvent(NetEvent_t event) {

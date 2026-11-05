@@ -23,10 +23,10 @@ namespace game::rml {
 namespace {
 
 static_assert(sizeof(Rml::Vertex) == 20,
-              "Rml::Vertex düzeni vertex tanımıyla uyuşmalı");
+              "Rml::Vertex layout must match the vertex definition");
 
-// Vertex konumu piksel uzayındadır; matrix = ortho(piksel -> NDC) * CSS
-// transform * translate, CPU'da hazırlanır.
+// Vertex positions are in pixel space; matrix = ortho(pixel -> NDC) * CSS
+// transform * translate, prepared on the CPU.
 constexpr char kShaderSource[] = R"(
 #include <metal_stdlib>
 using namespace metal;
@@ -54,7 +54,7 @@ vertex VertexOut_t rml_vertex(VertexIn_t in [[stage_in]], constant Uniforms_t& u
 }
 
 fragment float4 rml_fragment(VertexOut_t in [[stage_in]], texture2d<float> tex [[texture(0)]], sampler smp [[sampler(0)]]) {
-    return tex.sample(smp, in.uv) * in.color;  // RmlUi rengi ve dokusu önceden alfa-çarpılmıştır
+    return tex.sample(smp, in.uv) * in.color;  // RmlUi color and texture are already alpha-premultiplied
 }
 )";
 
@@ -75,7 +75,7 @@ SDL_GPUShader *createShader(SDL_GPUDevice *device, SDL_GPUShaderStage stage,
 SDL_GPUGraphicsPipeline *createPipeline(SDL_GPUDevice *device,
                                         SDL_Window *window) {
   if ((SDL_GetGPUShaderFormats(device) & SDL_GPU_SHADERFORMAT_MSL) == 0) {
-    GAME_LOG_ERROR("ui", "RmlUi çizimi için MSL shader desteği gerekli");
+    GAME_LOG_ERROR("ui", "MSL shader support is required for RmlUi drawing");
     return nullptr;
   }
   SDL_GPUShader *vertex =
@@ -83,7 +83,7 @@ SDL_GPUGraphicsPipeline *createPipeline(SDL_GPUDevice *device,
   SDL_GPUShader *fragment =
       createShader(device, SDL_GPU_SHADERSTAGE_FRAGMENT, "rml_fragment", 0, 1);
   if (vertex == nullptr || fragment == nullptr) {
-    GAME_LOG_ERROR("ui", "RmlUi shader derlenemedi: {}", SDL_GetError());
+    GAME_LOG_ERROR("ui", "RmlUi shader could not be compiled: {}", SDL_GetError());
     SDL_ReleaseGPUShader(device, vertex);
     SDL_ReleaseGPUShader(device, fragment);
     return nullptr;
@@ -107,7 +107,7 @@ SDL_GPUGraphicsPipeline *createPipeline(SDL_GPUDevice *device,
        .format = SDL_GPU_VERTEXELEMENTFORMAT_FLOAT2,
        .offset = offsetof(Rml::Vertex, tex_coord)},
   }};
-  // Önceden alfa-çarpılmış karışım: src*1 + dst*(1-srcAlpha)
+  // Premultiplied-alpha blending: src*1 + dst*(1-srcAlpha)
   SDL_GPUColorTargetDescription target{};
   target.format = SDL_GetGPUSwapchainTextureFormat(device, window);
   target.blend_state.enable_blend = true;
@@ -131,7 +131,7 @@ SDL_GPUGraphicsPipeline *createPipeline(SDL_GPUDevice *device,
   info.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST;
   info.rasterizer_state.fill_mode = SDL_GPU_FILLMODE_FILL;
   info.rasterizer_state.cull_mode =
-      SDL_GPU_CULLMODE_NONE; // RmlUi sarım yönünü garanti etmez
+      SDL_GPU_CULLMODE_NONE; // RmlUi does not guarantee the winding order
   info.multisample_state.sample_count = SDL_GPU_SAMPLECOUNT_1;
   info.target_info.color_target_descriptions = &target;
   info.target_info.num_color_targets = 1;
@@ -141,12 +141,12 @@ SDL_GPUGraphicsPipeline *createPipeline(SDL_GPUDevice *device,
   SDL_ReleaseGPUShader(device, vertex);
   SDL_ReleaseGPUShader(device, fragment);
   if (pipeline == nullptr) {
-    GAME_LOG_ERROR("ui", "RmlUi pipeline oluşturulamadı: {}", SDL_GetError());
+    GAME_LOG_ERROR("ui", "could not create RmlUi pipeline: {}", SDL_GetError());
   }
   return pipeline;
 }
 
-// Transfer tamponunu oluşturur, iki parçayı arka arkaya yazar. Hata: nullptr.
+// Creates the transfer buffer and writes the two parts one after the other. On error: nullptr.
 SDL_GPUTransferBuffer *makeTransfer(SDL_GPUDevice *device, const void *first,
                                     size_t firstBytes, const void *second,
                                     size_t secondBytes) {
@@ -204,9 +204,9 @@ bool CRmlRenderer::initialize(SDL_GPUDevice *device, SDL_Window *window) {
       .address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE};
   m_sampler = SDL_CreateGPUSampler(device, &samplerInfo);
   constexpr std::array<uint8_t, 4> kWhite{255, 255, 255, 255};
-  m_whiteTexture = createTexture(kWhite.data(), 1, 1); // dokusuz geometri için
+  m_whiteTexture = createTexture(kWhite.data(), 1, 1); // for untextured geometry
   if (m_sampler == nullptr || m_whiteTexture == 0) {
-    GAME_LOG_ERROR("ui", "RmlUi sampler/beyaz doku oluşturulamadı: {}",
+    GAME_LOG_ERROR("ui", "could not create RmlUi sampler/white texture: {}",
                    SDL_GetError());
     shutdown();
     return false;
@@ -264,7 +264,7 @@ void CRmlRenderer::beginFrame(glm::ivec2 viewport) {
   m_scissorEnabled = false;
 }
 
-// --- GPU'ya yükleme (render pass dışı)
+// --- Upload to the GPU (outside a render pass)
 // -----------------------------------------------------------------------------
 
 void CRmlRenderer::prepare(SDL_GPUCommandBuffer *commands) {
@@ -275,7 +275,7 @@ void CRmlRenderer::prepare(SDL_GPUCommandBuffer *commands) {
   for (const PendingGeometry_t &pending : m_pendingGeometry) {
     const auto it = m_geometries.find(pending.handle);
     if (it == m_geometries.end()) {
-      continue; // yüklenmeden serbest bırakıldı
+      continue; // released before it was uploaded
     }
     const SDL_GPUTransferBufferLocation vertexSource{
         .transfer_buffer = pending.transfer, .offset = 0};
@@ -306,7 +306,7 @@ void CRmlRenderer::prepare(SDL_GPUCommandBuffer *commands) {
   releaseTransfers();
 }
 
-// --- çizim (render pass içi)
+// --- Drawing (inside a render pass)
 // ---------------------------------------------------------------------------------------
 
 void CRmlRenderer::draw(SDL_GPUCommandBuffer *commands,
@@ -342,7 +342,7 @@ void CRmlRenderer::draw(SDL_GPUCommandBuffer *commands,
   }
 }
 
-// --- geometri
+// --- geometry
 // ------------------------------------------------------------------------------------------------------
 
 Rml::CompiledGeometryHandle
@@ -361,7 +361,7 @@ CRmlRenderer::CompileGeometry(Rml::Span<const Rml::Vertex> vertices,
       m_device, vertices.data(), vertexBytes, indices.data(), indexBytes);
   if (geometry.vertices == nullptr || geometry.indices == nullptr ||
       transfer == nullptr) {
-    GAME_LOG_ERROR("ui", "RmlUi geometri GPU'ya hazırlanamadı: {}",
+    GAME_LOG_ERROR("ui", "could not prepare RmlUi geometry for the GPU: {}",
                    SDL_GetError());
     SDL_ReleaseGPUBuffer(m_device, geometry.vertices);
     SDL_ReleaseGPUBuffer(m_device, geometry.indices);
@@ -396,13 +396,13 @@ void CRmlRenderer::ReleaseGeometry(Rml::CompiledGeometryHandle geometry) {
     return;
   }
   SDL_ReleaseGPUBuffer(m_device,
-                       it->second.vertices); // SDL, GPU kullanımı bitene kadar
-                                             // gerçek serbest bırakmayı erteler
+                       it->second.vertices); // SDL defers the actual release until
+                                             // the GPU is done using the buffer
   SDL_ReleaseGPUBuffer(m_device, it->second.indices);
   m_geometries.erase(it);
 }
 
-// --- doku
+// --- texture
 // ----------------------------------------------------------------------------------------------------------
 
 Rml::TextureHandle CRmlRenderer::createTexture(const uint8_t *rgbaPremultiplied,
@@ -420,7 +420,7 @@ Rml::TextureHandle CRmlRenderer::createTexture(const uint8_t *rgbaPremultiplied,
       makeTransfer(m_device, rgbaPremultiplied,
                    static_cast<size_t>(width) * height * 4, nullptr, 0);
   if (texture == nullptr || transfer == nullptr) {
-    GAME_LOG_ERROR("ui", "RmlUi dokusu oluşturulamadı: {}", SDL_GetError());
+    GAME_LOG_ERROR("ui", "could not create RmlUi texture: {}", SDL_GetError());
     SDL_ReleaseGPUTexture(m_device, texture);
     SDL_ReleaseGPUTransferBuffer(m_device, transfer);
     return 0;
@@ -438,7 +438,7 @@ Rml::TextureHandle CRmlRenderer::LoadTexture(Rml::Vector2i &dimensions,
                                              const Rml::String &source) {
   const auto path = findAssetPath(source);
   if (!path) {
-    GAME_LOG_WARN("ui", "RmlUi görseli bulunamadı: {}", source);
+    GAME_LOG_WARN("ui", "RmlUi image not found: {}", source);
     return 0;
   }
   int width = 0;
@@ -447,7 +447,7 @@ Rml::TextureHandle CRmlRenderer::LoadTexture(Rml::Vector2i &dimensions,
   stbi_uc *pixels =
       stbi_load(path->string().c_str(), &width, &height, &channels, 4);
   if (pixels == nullptr) {
-    GAME_LOG_WARN("ui", "RmlUi görseli okunamadı ({}): {}", source,
+    GAME_LOG_WARN("ui", "could not read RmlUi image ({}): {}", source,
                   stbi_failure_reason());
     return 0;
   }
@@ -462,7 +462,7 @@ Rml::TextureHandle
 CRmlRenderer::GenerateTexture(Rml::Span<const Rml::byte> source,
                               Rml::Vector2i dimensions) {
   return createTexture(source.data(), dimensions.x,
-                       dimensions.y); // RmlUi zaten alfa-çarpılmış RGBA verir
+                       dimensions.y); // RmlUi already provides alpha-premultiplied RGBA
 }
 
 void CRmlRenderer::ReleaseTexture(Rml::TextureHandle texture) {
@@ -474,7 +474,7 @@ void CRmlRenderer::ReleaseTexture(Rml::TextureHandle texture) {
   m_textures.erase(it);
 }
 
-// --- durum
+// --- state
 // ---------------------------------------------------------------------------------------------------------
 
 void CRmlRenderer::EnableScissorRegion(bool enable) {
@@ -494,7 +494,7 @@ void CRmlRenderer::SetScissorRegion(Rml::Rectanglei region) {
 void CRmlRenderer::SetTransform(const Rml::Matrix4f *transform) {
   m_transform = transform != nullptr
                     ? glm::make_mat4(transform->data())
-                    : glm::mat4{1.0f}; // RmlUi varsayılanı sütun-majör
+                    : glm::mat4{1.0f}; // RmlUi default is column-major
 }
 
 } // namespace game::rml

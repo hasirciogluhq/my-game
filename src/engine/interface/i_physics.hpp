@@ -6,11 +6,11 @@
 
 namespace game {
 
-// physics.dll arayüzü (Jolt). Statik dünya + karakter kapsülleri + ışın testi.
-// CharacterHandle_t 0 geçersizdir.
+// physics.dll interface (Jolt). Static world + character capsules + ray test.
+// CharacterHandle_t 0 is invalid.
 using CharacterHandle_t = uint32_t;
 
-// Karakter kapsülü: ayak noktası orijin, toplam boy ayaktan tepeye. Fizik ve ışın testi aynı değerleri kullanır.
+// Character capsule: origin at the feet, total height from the feet to the top. Physics and the ray test use the same values.
 inline constexpr float kCharacterRadius = 0.3f;
 inline constexpr float kCharacterHeight = 1.8f;
 
@@ -21,7 +21,7 @@ struct RayHit_t {
 };
 
 struct CharacterResult_t {
-    glm::vec3 position{0.0f};  // ayak konumu
+    glm::vec3 position{0.0f};  // feet position
     bool onGround = false;
 };
 
@@ -35,14 +35,14 @@ public:
 
     [[nodiscard]] virtual CharacterHandle_t createCharacter(const glm::vec3& feetPosition) = 0;
     virtual void destroyCharacter(CharacterHandle_t handle) = 0;
-    // Karakteri velocity * dt kadar hareket ettirir; duvar/zemin/kutulara çarpar ve kayar.
+    // Moves the character by velocity * dt; it collides with walls/ground/boxes and slides along them.
     [[nodiscard]] virtual CharacterResult_t moveCharacter(CharacterHandle_t handle, const glm::vec3& velocity, float dt) = 0;
 
     [[nodiscard]] virtual RayHit_t raycast(const glm::vec3& origin, const glm::vec3& direction, float maxDistance) const = 0;
 
-    // Açıkken karakterler birbirinin içinden geçemez (server ayarı player.collisions.enabled). Varsayılan: kapalı.
+    // When enabled, characters cannot pass through each other (server setting player.collisions.enabled). Default: off.
     virtual void setCharacterCollisions(bool enabled) = 0;
-    // Karakteri ayak konumuna ışınlar (hız sıfırlanır). Client prediction'ın reconcile adımı kullanır.
+    // Teleports the character to the feet position (velocity is reset). Used by client prediction's reconcile step.
     virtual void setCharacterPosition(CharacterHandle_t handle, const glm::vec3& feetPosition) = 0;
 };
 

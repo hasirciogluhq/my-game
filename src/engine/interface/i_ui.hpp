@@ -7,81 +7,72 @@
 
 namespace game {
 
-// RmlUi'de bir elemanın onclick="..." / onchange="..." gibi olay özniteliğinden
-// gelen eylem. "ad" ya da "ad:arg" yazılır; arg varsa value'dur. change
-// olaylarında value, elemanın değeridir.
+// An action coming from an element's event attribute in RmlUi, such as onclick="..." / onchange="...".
+// Written as "name" or "name:arg"; if arg is present it is the value. For change events the value is the element's value.
 struct UiAction_t {
   std::string name;
   std::string value;
 };
 
-// ui.dll arayüzü: motorun iki UI sistemi tek yerde.
-//   1) RmlUi: oyuncunun gördüğü arayüz (menü, HUD, skor tablosu). HTML/CSS
-//   benzeri .rml/.rcss dosyaları (assets/ui/).
-//      RmlUi tipleri bu arayüzden dışarı sızmaz: belgeler isimle (assets-göreli
-//      yol, "ui/hud.rml") anılır.
-//   2) Dear ImGui: geliştirici araçları (konsol, debug). Oyun ImGui kodunu
-//   doğrudan yazar: client.dll da imgui'yi bağlar,
-//      context() ve allocator ile ui.dll'in bağlamını paylaşır.
+// ui.dll interface: the engine's two UI systems in one place.
+//   1) RmlUi: the interface the player sees (menus, HUD, scoreboard). HTML/CSS-like .rml/.rcss files (assets/ui/).
+//      RmlUi types do not leak out of this interface: documents are referred to by name (assets-relative path, "ui/hud.rml").
+//   2) Dear ImGui: developer tools (console, debug). Game code writes ImGui directly: client.dll also links imgui,
+//      and shares ui.dll's context through context() and the allocator.
 //
-// Frame akışı: platform olayları -> processEvent (setEventHook ile) ->
-// beginFrame -> ImGui::* ve RmlUi çağrıları -> endFrame. Çizimi renderer yapar:
-// renderer->setOverlay(ui->overlay(), ui->overlayUser()) bir kez çağrılır.
-// Overlay sırası: RmlUi (alt), ImGui (üst).
+// Frame flow: platform events -> processEvent (set with setEventHook) -> beginFrame -> ImGui::* and RmlUi calls -> endFrame.
+// The renderer does the drawing: renderer->setOverlay(ui->overlay(), ui->overlayUser()) is called once.
+// Overlay order: RmlUi (bottom), ImGui (top).
 class IUI {
 public:
   virtual ~IUI() = default;
 
-  // sdlWindow: SDL_Window*, sdlGpuDevice: SDL_GPUDevice*
-  // (IRenderer::nativeDevice). Renderer başlatıldıktan sonra çağrılır. RmlUi
-  // başlatılamazsa ImGui yine çalışır (rmlAvailable() false olur).
+  // sdlWindow: SDL_Window*, sdlGpuDevice: SDL_GPUDevice* (IRenderer::nativeDevice). Called after the renderer is initialized.
+  // If RmlUi fails to initialize, ImGui still works (rmlAvailable() returns false).
   [[nodiscard]] virtual bool initialize(void *sdlWindow,
                                         void *sdlGpuDevice) = 0;
   virtual void shutdown() = 0;
 
-  // event: const SDL_Event* (IPlatform::setEventHook bu imzayı verir).
+  // event: const SDL_Event* (IPlatform::setEventHook gives this signature).
   virtual void processEvent(const void *event) = 0;
   virtual void beginFrame() = 0;
   virtual void endFrame() = 0;
 
-  // ImGui klavye/fareyi istiyor mu? (oyun girdisini durdurmak için)
+  // Does ImGui want the keyboard/mouse? (to stop game input)
   [[nodiscard]] virtual bool wantsKeyboard() const = 0;
   [[nodiscard]] virtual bool wantsMouse() const = 0;
 
   [[nodiscard]] virtual RenderOverlayFn overlay() const = 0;
   [[nodiscard]] virtual void *overlayUser() = 0;
 
-  // ImGui::SetCurrentContext(context) + ImGui::SetAllocatorFunctions(alloc,
-  // free, allocUser) için ham değerler (imgui türleri sızmaz).
+  // Raw values for ImGui::SetCurrentContext(context) + ImGui::SetAllocatorFunctions(alloc,
+  // free, allocUser) (ImGui types do not leak out).
   [[nodiscard]] virtual void *context() const = 0;
   virtual void allocatorFunctions(void **alloc, void **free,
                                   void **user) const = 0;
 
   // --- RmlUi
   // ---------------------------------------------------------------------------------------------------
-  // Tasarım çözünürlüğü 1920x1080'dir: 1dp = pencere yüksekliği / 1080 piksel.
-  // .rcss'te dp kullanın.
+  // Design resolution is 1920x1080: 1dp = window height / 1080 pixels.
+  // Use dp in .rcss.
   [[nodiscard]] virtual bool rmlAvailable() const = 0;
 
-  // TTF/OTF yükler (assets-göreli: "fonts/DejaVuSans.ttf"). fallback true ise
-  // eksik harfler için yedek yüz olur.
+  // Loads TTF/OTF (assets-relative: "fonts/DejaVuSans.ttf"). If fallback is true, a backup face is used for missing glyphs.
   [[nodiscard]] virtual bool loadFont(const char *assetPath, bool fallback) = 0;
 
-  // "ui/hud.rml" gibi assets-göreli yolla belge yükler; gizli başlar. Aynı isim
-  // zaten yüklüyse true döner.
+  // Loads a document by assets-relative path such as "ui/hud.rml"; it starts hidden. Returns true if the same name is already loaded.
   [[nodiscard]] virtual bool loadDocument(const char *name) = 0;
   virtual void unloadDocument(const char *name) = 0;
-  // capturesInput true: belge görünürken fare/klavye ona gider ve diğer
-  // belgeler girdi almaz (menü). false: salt görüntü (HUD).
+  // capturesInput true: while the document is visible, mouse/keyboard go to it and other documents get no input (menu).
+  // false: display only (HUD).
   virtual void showDocument(const char *name, bool capturesInput) = 0;
   virtual void hideDocument(const char *name) = 0;
   [[nodiscard]] virtual bool isDocumentVisible(const char *name) const = 0;
-  // Girdi alan (capturesInput) görünür bir belge var mı? Oyun girdisini
-  // durdurmak ve fareyi serbest bırakmak için.
+  // Is there a visible document that captures input? Used to stop game input and free the mouse.
   [[nodiscard]] virtual bool rmlCapturesInput() const = 0;
 
-  // Eleman içeriğini ve görünümünü değiştirir (id: RML'deki id özniteliği).
-  // Değer aynıysa iş yapmaz, her frame çağrılabilir.
+  // Changes an element's content and appearance (id: the id attribute in the RML).
+  // If the value is unchanged it does nothing; it can be called every frame.
   virtual void setElementRml(const char *document, const char *elementId,
                              const char *rml) = 0;
   virtual void setElementClass(const char *document, const char *elementId,
@@ -89,12 +80,10 @@ public:
   virtual void setElementStyle(const char *document, const char *elementId,
                                const char *property, const char *value) = 0;
 
-  // Son frame'lerde tıklanan/değişen elemanların eylemleri, sırayla. Boşalana
-  // kadar çağırın.
+  // Actions of elements clicked/changed in recent frames, in order. Call until it is empty.
   [[nodiscard]] virtual std::optional<UiAction_t> nextAction() = 0;
 
-  // RmlUi geliştirici denetçisi (eleman ağacı, stiller). Sadece debug derlemede
-  // etkindir.
+  // RmlUi developer inspector (element tree, styles). Only active in debug builds.
   virtual void setDebugger(bool visible) = 0;
 };
 

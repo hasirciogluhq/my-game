@@ -8,7 +8,7 @@
 
 namespace game {
 
-// miniaudio sarmalayıcısı. Arayüz: IAudio (Audio001).
+// miniaudio wrapper. Interface: IAudio (Audio001).
 class AUDIO_API CAudioSystem final : public IAudio {
 public:
     CAudioSystem();
@@ -20,7 +20,7 @@ public:
     void playFile(const std::string& path) override;
 
 private:
-    struct Impl_t;  // miniaudio tipleri header'a sızmasın
+    struct Impl_t;  // keep miniaudio types out of the header
     std::unique_ptr<Impl_t> m_impl;
 };
 

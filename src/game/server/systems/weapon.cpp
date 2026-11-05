@@ -24,7 +24,7 @@ void weapon(World_t& world) {
                           .velocity = lookDirection(transform) * kProjectileSpeed});
     }
 
-    // Registry iterasyonu bittikten sonra yarat.
+    // Create after the registry iteration has finished.
     for (const Projectile_t& projectile : spawns) {
         const entt::entity entity = world::createReplicated(world);
         world.registry.emplace<Transform_t>(entity, projectile.origin);

@@ -7,8 +7,8 @@
 
 namespace game {
 
-// Backend'den bağımsız shader kimlikleri. Stage / giriş adı / kaynak sayıları dilden bağımsızdır;
-// kaynak kodu dile göre shaders/ altındaki dosyadan gelir (şimdilik sadece MSL).
+// Backend-independent shader identities. Stage / entry name / resource counts are language-independent;
+// the source code comes from the file under shaders/ for the language (currently only MSL).
 enum class EShaderId : uint8_t {
     kSceneVertex,
     kShadowVertex,
@@ -35,10 +35,10 @@ struct ShaderInfo_t {
 
 [[nodiscard]] const ShaderInfo_t& shaderInfo(EShaderId id);
 
-// Dil için tüm shader'ları içeren kaynak. Dil desteklenmiyorsa boş.
+// Source containing all shaders for a language. Empty if the language is not supported.
 [[nodiscard]] std::string_view shaderSource(rhi::EShaderLanguage language);
 
-// Shader nesnelerini ilk istekte oluşturup saklar.
+// Shader objects are created on first request and stored.
 class CShaderLibrary {
 public:
     void bind(rhi::IRhiDevice* device) { m_device = device; }

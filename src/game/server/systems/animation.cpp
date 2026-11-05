@@ -11,11 +11,11 @@ namespace game::systems {
 namespace {
 
 struct Nearest_t {
-    glm::vec3 offset{0.0f};  // animasyonlu entity'den oyuncuya (yatay)
+    glm::vec3 offset{0.0f};  // from the animated entity to the player (horizontal)
     float distance = std::numeric_limits<float>::max();
 };
 
-// Entity'ye en yakın canlı oyuncu pawn'ı (bot'lar da Player_t taşır).
+// The live player pawn closest to the entity (bots also carry Player_t).
 Nearest_t nearestPlayer(const World_t& world, const glm::vec3& from) {
     Nearest_t nearest;
     for (const auto [entity, player, transform] : world.registry.view<const Player_t, const Transform_t>().each()) {
@@ -27,12 +27,12 @@ Nearest_t nearestPlayer(const World_t& world, const glm::vec3& from) {
     return nearest;
 }
 
-// yaw=0 -Z'ye bakar: ileri = (-sin yaw, -cos yaw).
+// yaw=0 looks toward -Z: forward = (-sin yaw, -cos yaw).
 float yawToward(const glm::vec3& offset) {
     return std::atan2(-offset.x, -offset.z);
 }
 
-// from'dan to'ya en kısa yoldan, en çok maxStep kadar döner.
+// Turns from `from` toward `to` by the shortest way, by at most maxStep.
 float turnToward(float from, float to, float maxStep) {
     float delta = std::fmod(to - from, 2.0f * std::numbers::pi_v<float>);
     if (delta > std::numbers::pi_v<float>) {

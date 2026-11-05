@@ -51,10 +51,10 @@ bool possess(entt::registry& registry, entt::entity controller, entt::entity paw
         return false;
     }
 
-    unpossess(registry, controller);  // eski pawn'ı bırak (kendi displaced'ine döner)
+    unpossess(registry, controller);  // drop the old pawn (it returns to its own displaced controller)
     clearViewTarget(registry, controller);
 
-    // Eski controller (bot) pawn'ı kaybeder ama geri dönmek üzere hatırlanır.
+    // The old controller (bot) loses the pawn but is remembered so it can get it back.
     if (previous != entt::null) {
         registry.get<Controller_t>(previous).pawn = entt::null;
     }
@@ -73,7 +73,7 @@ void unpossess(entt::registry& registry, entt::entity controller) {
     const entt::entity heir = state.displaced;
     state = Pawn_t{};
 
-    // Pawn eski controller'ına döner (o arada başka pawn almadıysa).
+    // The pawn returns to its old controller (if that controller has not taken another pawn in the meantime).
     if (isController(registry, heir) && pawnOf(registry, heir) == entt::null) {
         registry.get<Pawn_t>(pawn).controller = heir;
         registry.get<Controller_t>(heir).pawn = pawn;

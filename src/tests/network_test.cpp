@@ -1,5 +1,5 @@
-// Başsız ağ testi: aynı portta TCP + UDP, el sıkışma, kReliable / kUnreliable, coroutine.
-// Çalıştır: xmake run network_test
+// Headless network test: TCP + UDP on the same port, handshake, kReliable / kUnreliable, coroutine.
+// Run: xmake run network_test
 #include "engine/interface/network_task.hpp"
 #include "engine/network/network_system.hpp"
 
@@ -31,7 +31,7 @@ std::string textOf(const NetEvent_t& event) {
     return {event.data.begin(), event.data.end()};
 }
 
-// Her iki ucu da pump eder; bitene kadar (ya da süre dolana kadar) bekler.
+// Pumps both ends; waits until done (or until the time runs out).
 template <typename Done>
 bool waitUntil(CNetworkSystem& a, CNetworkSystem& b, Done done) {
     const auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds(3);
@@ -46,7 +46,7 @@ bool waitUntil(CNetworkSystem& a, CNetworkSystem& b, Done done) {
     return false;
 }
 
-// Server tarafı coroutine: her olayı sırayla sayar.
+// Server-side coroutine: counts each event in order.
 struct ServerLog_t {
     int connects = 0;
     int disconnects = 0;
@@ -80,30 +80,30 @@ int main() {
     CNetworkSystem client;
     ServerLog_t log;
 
-    check(server.listen(kTestPort), "server: TCP+UDP aynı portta dinliyor");
-    serve(server, log);  // coroutine başlar, ilk olayı bekler
-    check(client.connect("127.0.0.1", kTestPort), "client: bağlandı");
+    check(server.listen(kTestPort), "server: TCP+UDP listening on the same port");
+    serve(server, log);  // the coroutine starts and waits for the first event
+    check(client.connect("127.0.0.1", kTestPort), "client: connected");
     check(client.connected(), "client: connected()");
 
-    check(waitUntil(server, client, [&] { return log.connects == 1 && client.localPeer() != 0; }), "el sıkışma: peer id + token");
+    check(waitUntil(server, client, [&] { return log.connects == 1 && client.localPeer() != 0; }), "handshake: peer id + token");
     const PeerId_t peer = client.localPeer();
 
-    // Client -> server, güvenilir (TCP). Coroutine server tarafında devam eder.
-    check(client.send(kServerPeer, bytesOf("merhaba"), EDeliver::kReliable), "client: reliable gönderdi");
-    check(waitUntil(server, client, [&] { return log.reliable == 1; }), "server coroutine: reliable geldi");
-    check(log.lastReliable == "merhaba", "reliable içerik doğru");
+    // Client -> server, reliable (TCP). The coroutine continues on the server side.
+    check(client.send(kServerPeer, bytesOf("hello"), EDeliver::kReliable), "client: sent reliable");
+    check(waitUntil(server, client, [&] { return log.reliable == 1; }), "server coroutine: reliable arrived");
+    check(log.lastReliable == "hello", "reliable content correct");
 
-    // UDP yolu kurulana kadar bekle (bind isteği/onayı).
+    // Wait until the UDP path is set up (bind request/ack).
     check(waitUntil(server, client, [&] { return client.send(kServerPeer, bytesOf("udp-1"), EDeliver::kUnreliable); }),
-          "UDP bind: client unreliable gönderebiliyor");
-    check(waitUntil(server, client, [&] { return log.unreliable >= 1; }), "server: unreliable (UDP) geldi");
-    check(log.lastUnreliable == "udp-1", "unreliable içerik doğru");
+          "UDP bind: client can send unreliable");
+    check(waitUntil(server, client, [&] { return log.unreliable >= 1; }), "server: unreliable (UDP) arrived");
+    check(log.lastUnreliable == "udp-1", "unreliable content correct");
 
-    // Server -> client: önce UDP, sonra TCP.
+    // Server -> client: UDP first, then TCP.
     bool gotUdp = false;
     bool gotTcp = false;
-    check(server.send(peer, bytesOf("snap"), EDeliver::kUnreliable), "server: unreliable gönderdi");
-    check(server.send(peer, bytesOf("welcome"), EDeliver::kReliable), "server: reliable gönderdi");
+    check(server.send(peer, bytesOf("snap"), EDeliver::kUnreliable), "server: sent unreliable");
+    check(server.send(peer, bytesOf("welcome"), EDeliver::kReliable), "server: sent reliable");
     check(waitUntil(server, client,
                     [&] {
                         while (auto event = client.nextEvent()) {
@@ -114,19 +114,19 @@ int main() {
                         }
                         return gotUdp && gotTcp;
                     }),
-          "client: UDP snapshot + TCP welcome geldi");
+          "client: UDP snapshot + TCP welcome arrived");
 
-    // Büyük paket: kReliable gider, kUnreliable reddedilir.
+    // Big packet: kReliable goes through, kUnreliable is rejected.
     const std::string big(kMaxUnreliableSize + 1, 'x');
-    check(!client.send(kServerPeer, bytesOf(big), EDeliver::kUnreliable), "büyük paket UDP'den reddedildi");
-    check(client.send(kServerPeer, bytesOf(big), EDeliver::kReliable), "büyük paket TCP'den gitti");
-    check(waitUntil(server, client, [&] { return log.reliable == 2; }), "server: büyük reliable paket geldi");
-    check(log.lastReliable.size() == big.size(), "büyük paket boyutu doğru");
+    check(!client.send(kServerPeer, bytesOf(big), EDeliver::kUnreliable), "big packet rejected over UDP");
+    check(client.send(kServerPeer, bytesOf(big), EDeliver::kReliable), "big packet sent over TCP");
+    check(waitUntil(server, client, [&] { return log.reliable == 2; }), "server: big reliable packet arrived");
+    check(log.lastReliable.size() == big.size(), "big packet size correct");
 
-    // Kopma: client kapanınca server kDisconnected görür.
+    // Disconnect: when the client closes, the server sees kDisconnected.
     client.shutdown();
-    check(waitUntil(server, client, [&] { return log.disconnects == 1; }), "server: client ayrılınca kDisconnected");
+    check(waitUntil(server, client, [&] { return log.disconnects == 1; }), "server: kDisconnected when the client leaves");
 
-    std::cout << (g_failures == 0 ? "TUM TESTLER GECTI\n" : "BAZI TESTLER BASARISIZ\n");
+    std::cout << (g_failures == 0 ? "ALL TESTS PASSED\n" : "SOME TESTS FAILED\n");
     return g_failures == 0 ? 0 : 1;
 }

@@ -4,9 +4,9 @@
 
 namespace game::systems {
 
-// Canı 0 olan karakterler silinir (despawn). Bot ölünce AI controller'ı da gider. Oyuncu ölünce controller'ı
-// (bağlantısı) kalır ama pawn'ı olmaz; client bunu "pawn yok" diye görür ve ölüm kamerasına geçer.
-// Ölen pawn'ı izleyen controller'ların izleme hedefi temizlenir.
+// Characters at 0 health are deleted (despawned). When a bot dies, its AI controller goes too. When a player dies, its controller
+// (connection) stays but has no pawn; the client sees "no pawn" and switches to the death camera.
+// The view target of controllers watching the dead pawn is cleared.
 void death(World_t& world);
 
 }  // namespace game::systems

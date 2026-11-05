@@ -45,16 +45,16 @@ void advance(Interpolation_t& state, uint32_t tickRate) {
     }
     const auto latest = static_cast<double>(state.snapshots.back().tick);
     if (!state.enabled) {
-        state.renderTick = latest;  // gecikmesiz: en yeni snapshot aynen
+        state.renderTick = latest;  // no delay: the newest snapshot as-is
     } else {
         const auto delayTicks = std::max(kMinDelayTicks, static_cast<uint32_t>(std::ceil(state.delaySeconds * static_cast<float>(tickRate))));
         const double target = latest - static_cast<double>(delayTicks);
         const double diff = target - state.renderTick;
         state.renderTick = std::abs(diff) > kJumpThreshold ? target : state.renderTick + 1.0 + kCatchUp * diff;
-        state.renderTick = std::min(state.renderTick, latest);  // extrapolation yok
+        state.renderTick = std::min(state.renderTick, latest);  // no extrapolation
     }
 
-    // Gösterim zamanının solunda kalan, artık kullanılmayacak snapshot'ları at (bir tanesi "a" olarak kalır).
+    // Discard the snapshots left behind the display time that will no longer be used (one stays as "a").
     while (state.snapshots.size() > 2 && static_cast<double>(state.snapshots[1].tick) <= state.renderTick) {
         state.snapshots.pop_front();
     }
@@ -64,7 +64,7 @@ void apply(World_t& world, const Interpolation_t& state, uint32_t localPlayerId)
     if (state.snapshots.empty()) {
         return;
     }
-    // a.tick <= renderTick <= b.tick olan çift. Aralık dışındaysa uçtaki snapshot'ın değeri kullanılır.
+    // The pair with a.tick <= renderTick <= b.tick. If outside the range, the value of the edge snapshot is used.
     const auto after = std::ranges::find_if(state.snapshots, [&](const WorldSnapshot_t& s) {
         return static_cast<double>(s.tick) >= state.renderTick;
     });
@@ -83,7 +83,7 @@ void apply(World_t& world, const Interpolation_t& state, uint32_t localPlayerId)
         }
         const EntitySnapshot_t* previous = findEntity(a, item.netId);
         if (previous == nullptr || !previous->transform) {
-            world.registry.replace<Transform_t>(entity->second, *item.transform);  // yeni doğdu: sadece b
+            world.registry.replace<Transform_t>(entity->second, *item.transform);  // newly spawned: only b
             continue;
         }
         const Transform_t& from = *previous->transform;

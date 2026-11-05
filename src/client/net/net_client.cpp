@@ -29,7 +29,7 @@ void CNetClient::poll() {
         if (event->type == ENetEvent::kPacket) {
             onPacket(*event);
         } else if (event->type == ENetEvent::kDisconnected) {
-            GAME_LOG_WARN("client", "server bağlantısı koptu");
+            GAME_LOG_WARN("client", "server connection lost");
         }
     }
 }
@@ -37,7 +37,7 @@ void CNetClient::poll() {
 void CNetClient::onPacket(const NetEvent_t& event) {
     auto envelope = protocol::decode(event.data);
     if (!envelope) {
-        GAME_LOG_WARN("client", "paket çözülemedi: {}", envelope.error());
+        GAME_LOG_WARN("client", "could not decode packet: {}", envelope.error());
         return;
     }
     switch (envelope->type) {
@@ -67,7 +67,7 @@ void CNetClient::sendCommand(const UserCmd_t& cmd) {
     envelope.type = netproto::Envelope::TYPE_USER_CMD;
     envelope.cmd = cmd;
     if (const auto bytes = protocol::encode(envelope)) {
-        // Komutlar güvenilir gider: kenar bayrakları (zıplama/ateş) kaybolmasın.
+        // Commands are sent reliably: edge flags (jump/fire) must not be lost.
         std::ignore = m_network->send(kServerPeer, *bytes, EDeliver::kReliable);
     }
 }

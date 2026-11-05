@@ -31,7 +31,7 @@ std::vector<Row_t> collectRows(const World_t &world, entt::entity self) {
                     .health = player.health,
                     .self = entity == self});
   }
-  // Canı yüksek olan üstte; eşitlikte netId küçük olan.
+  // Higher health on top; on a tie, the smaller netId.
   std::ranges::sort(rows, [](const Row_t &a, const Row_t &b) {
     return a.health != b.health ? a.health > b.health : a.netId < b.netId;
   });
@@ -42,7 +42,7 @@ std::string rowRml(const Row_t &row, size_t index) {
   const bool bot = row.playerId == 0;
   const uint32_t health = std::min(row.health, kMaxHealth);
   const std::string name = bot ? std::format("Bot {}", row.netId)
-                               : std::format("Oyuncu {}", row.playerId);
+                               : std::format("Player {}", row.playerId);
   const std::string initial = bot ? "B" : std::to_string(row.playerId % 10);
   const char *classes = row.self         ? "row self"
                         : index % 2 == 1 ? "row alt"
@@ -53,7 +53,7 @@ std::string rowRml(const Row_t &row, size_t index) {
       R"(<div class="col health"><div class="hp-num">{}</div><div class="hp-track"><div class="hp-fill" style="width: {}%;"></div></div></div>)"
       R"(<div class="col id">{}</div></div>)",
       classes, health <= kLowHealth ? " low" : "", index + 1, initial, name,
-      row.self ? R"(<div class="tag">SİZ</div>)" : "", health,
+      row.self ? R"(<div class="tag">YOU</div>)" : "", health,
       health * 100 / kMaxHealth, row.netId);
 }
 
@@ -85,7 +85,7 @@ void updateScoreboard(IUI &ui, const World_t &world, entt::entity self,
   const size_t playerCount = rows.size() - botCount;
 
   ui.setElementRml(kScoreboardDocument, "summary",
-                   std::format("{} karakter", rows.size()).c_str());
+                   std::format("{} characters", rows.size()).c_str());
   ui.setElementRml(kScoreboardDocument, "players-count",
                    std::format("{}", playerCount).c_str());
   ui.setElementRml(kScoreboardDocument, "bots-count",

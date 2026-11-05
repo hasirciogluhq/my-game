@@ -9,9 +9,9 @@
 
 namespace game::rml {
 
-// RML'deki onclick="ad" / onclick="ad:arg" / onchange="ad" öznitelikleri oyuna
-// eylem olarak ulaşır. Oyun kodu RmlUi olay işleyicisinin içinde çalışmaz:
-// eylemler kuyruğa yazılır, oyun nextAction() ile okur.
+// The onclick="name" / onclick="name:arg" / onchange="name" attributes in RML reach the game
+// as actions. Game code does not run inside the RmlUi event handler: actions are queued,
+// and the game reads them with nextAction().
 class CRmlActions final : public Rml::EventListenerInstancer {
 public:
   Rml::EventListener *InstanceEventListener(const Rml::String &value,

@@ -15,11 +15,11 @@ int main(int argc, char** argv) {
         return 2;
     }
 
-    // Motor modülleri out/.../engine, oyun modülleri exe ile aynı klasörde (out/.../game).
+    // Engine modules are in out/.../engine; game modules are in the same folder as the exe (out/.../game).
     const std::filesystem::path gameDir = std::filesystem::absolute(argv[0]).parent_path();
     const std::filesystem::path engineDir = gameDir.parent_path() / "engine";
 
-    // Önce log: sonraki tüm modüller yüklenirken sink'e bağlanır. Varsayılan dosya: out/.../logs/dedicated_server.log
+    // Log first: every later module connects to the sink as it is loaded. Default file: out/.../logs/dedicated_server.log
     if (options->log.file.empty()) {
         options->log.file = (gameDir.parent_path() / "logs" / "dedicated_server.log").string();
     }
@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
     game::ILog* log = game::startLogging(logModule, engineDir, options->log);
     game::bindEngineLog(log);
 
-    // "server" son: physics ve network'ü connect'te kullanır.
+    // "server" last: it uses physics and network in connect().
     struct ModuleSpec_t {
         const char* name;
         bool isEngine;
@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
 
     auto* app = modules.back().getInterface<game::IServerApp>(game::kServerAppInterface);
     if (app == nullptr) {
-        GAME_LOG_ERROR("server", "{} arayüzü bulunamadı", game::kServerAppInterface);
+        GAME_LOG_ERROR("server", "{} interface not found", game::kServerAppInterface);
         return 1;
     }
     if (!app->connect(&game::resolveInterface)) {

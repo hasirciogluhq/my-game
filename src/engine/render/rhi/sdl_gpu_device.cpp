@@ -118,7 +118,7 @@ SDL_GPUColorTargetBlendState makeBlendState(EBlendPreset preset) {
     return state;
 }
 
-// Veriyi CPU-görünür bir upload transfer buffer'ına kopyalar. Çağıran SDL_ReleaseGPUTransferBuffer eder.
+// Copies the data into a CPU-visible upload transfer buffer. The caller releases it with SDL_ReleaseGPUTransferBuffer.
 SDL_GPUTransferBuffer* makeUploadTransfer(SDL_GPUDevice* device, std::span<const std::byte> data) {
     const SDL_GPUTransferBufferCreateInfo info{.usage = SDL_GPU_TRANSFERBUFFERUSAGE_UPLOAD, .size = static_cast<Uint32>(data.size())};
     SDL_GPUTransferBuffer* transfer = SDL_CreateGPUTransferBuffer(device, &info);
@@ -192,7 +192,7 @@ void CSdlGpuCommandList::beginPass(const RenderPassDesc_t& pass) {
         const ColorAttachment_t& attachment = pass.colors[i];
         const SdlTexture_t* texture = m_device.find(attachment.texture);
         if (texture == nullptr) {
-            m_device.fail("beginPass: geçersiz color attachment");
+            m_device.fail("beginPass: invalid color attachment");
             return;
         }
         colors[i].texture = texture->texture;
@@ -206,7 +206,7 @@ void CSdlGpuCommandList::beginPass(const RenderPassDesc_t& pass) {
     if (pass.depth.texture.valid()) {
         const SdlTexture_t* texture = m_device.find(pass.depth.texture);
         if (texture == nullptr) {
-            m_device.fail("beginPass: geçersiz depth attachment");
+            m_device.fail("beginPass: invalid depth attachment");
             return;
         }
         depth.texture = texture->texture;
@@ -228,7 +228,7 @@ void CSdlGpuCommandList::recordNative(const RenderPassDesc_t& pass, RenderOverla
         return;
     }
     endPass();
-    fn(user, m_commandBuffer, nullptr);  // pass dışı: veri yükleme
+    fn(user, m_commandBuffer, nullptr);  // outside a pass: data upload
     beginPass(pass);
     if (m_pass != nullptr) {
         fn(user, m_commandBuffer, m_pass);
@@ -252,7 +252,7 @@ void CSdlGpuCommandList::bindPipeline(PipelineHandle_t pipeline) {
     SDL_BindGPUGraphicsPipeline(m_pass, record->pipeline);
     m_uniformCounts = {record->vertexUniformCount, record->fragmentUniformCount};
     m_pipelineBound = true;
-    markAllDirty();  // pipeline değişince backend'ler bağlamaları sıfırlayabilir; kalıcı durumu yeniden gönder
+    markAllDirty();  // when the pipeline changes, backends may reset their bindings; resend the persistent state
 }
 
 void CSdlGpuCommandList::bindVertexBuffer(uint32_t slot, BufferHandle_t buffer, uint32_t offsetBytes) {
@@ -276,7 +276,7 @@ void CSdlGpuCommandList::bindIndexBuffer(BufferHandle_t buffer, EIndexType type,
 
 void CSdlGpuCommandList::setUniformBytes(EShaderStage stage, uint32_t slot, std::span<const std::byte> data) {
     if (slot >= kMaxUniformSlots || data.size() > kMaxUniformBytes) {
-        m_device.fail("setUniformBytes: slot veya boyut sınırı aşıldı");
+        m_device.fail("setUniformBytes: slot or size limit exceeded");
         return;
     }
     UniformSlot_t& target = m_uniforms[static_cast<size_t>(stage)][slot];
@@ -289,7 +289,7 @@ void CSdlGpuCommandList::bindTexture(EShaderStage stage, uint32_t slot, TextureH
     const SdlTexture_t* textureRecord = m_device.find(texture);
     const SdlSampler_t* samplerRecord = m_device.find(sampler);
     if (slot >= kMaxTextureSlots || textureRecord == nullptr || samplerRecord == nullptr) {
-        m_device.fail("bindTexture: geçersiz texture/sampler/slot");
+        m_device.fail("bindTexture: invalid texture/sampler/slot");
         return;
     }
     TextureSlot_t& target = m_textures[static_cast<size_t>(stage)][slot];
@@ -363,11 +363,11 @@ void CSdlGpuCommandList::updateBuffer(BufferHandle_t buffer, uint32_t offsetByte
     const SdlBuffer_t* record = m_device.find(buffer);
     if (m_commandBuffer == nullptr || m_pass != nullptr || record == nullptr || data.empty() ||
         offsetBytes + data.size() > record->size) {
-        m_device.fail("updateBuffer: pass içinde, geçersiz buffer veya aralık dışı");
+        m_device.fail("updateBuffer: inside a pass, invalid buffer or range out of bounds");
         return;
     }
     if (!recordBufferUpload(m_device.sdlDevice(), m_commandBuffer, record->buffer, offsetBytes, data, mode == EUpdateMode::kDiscard)) {
-        m_device.fail(std::string{"updateBuffer: transfer başarısız: "} + SDL_GetError());
+        m_device.fail(std::string{"updateBuffer: transfer failed: "} + SDL_GetError());
     }
 }
 
@@ -394,17 +394,17 @@ void CSdlGpuDevice::fail(const std::string& message) {
 
 bool CSdlGpuDevice::initialize(const RhiDeviceDesc_t& desc) {
     if (desc.surface.kind != ENativeWindowKind::kSdlWindow || desc.surface.handle == nullptr) {
-        fail("SDL_GPU backend yalnızca SDL_Window* yüzeyi kabul eder");
+        fail("the SDL_GPU backend only accepts an SDL_Window* surface");
         return false;
     }
     m_window = static_cast<SDL_Window*>(desc.surface.handle);
     m_device = SDL_CreateGPUDevice(m_config.shaderFormats, desc.debugLayer, m_config.driverName);
     if (m_device == nullptr) {
-        fail(std::string{"SDL_CreateGPUDevice başarısız: "} + SDL_GetError());
+        fail(std::string{"SDL_CreateGPUDevice failed: "} + SDL_GetError());
         return false;
     }
     if (!SDL_ClaimWindowForGPUDevice(m_device, m_window)) {
-        fail(std::string{"pencere GPU'ya bağlanamadı: "} + SDL_GetError());
+        fail(std::string{"could not attach the window to the GPU: "} + SDL_GetError());
         shutdown();
         return false;
     }
@@ -426,7 +426,7 @@ bool CSdlGpuDevice::applyPresentMode(bool vsync) {
         }
     }
     if (!SDL_SetGPUSwapchainParameters(m_device, m_window, SDL_GPU_SWAPCHAINCOMPOSITION_SDR, mode)) {
-        fail(std::string{"swapchain parametreleri ayarlanamadı: "} + SDL_GetError());
+        fail(std::string{"could not set swapchain parameters: "} + SDL_GetError());
         return false;
     }
     return true;
@@ -468,11 +468,11 @@ void CSdlGpuDevice::waitIdle() {
     }
 }
 
-// --- kaynak oluşturma -------------------------------------------------------
+// --- resource creation -------------------------------------------------------
 
 BufferHandle_t CSdlGpuDevice::createBuffer(const BufferDesc_t& desc, std::span<const std::byte> initialData) {
     if (m_device == nullptr || desc.sizeBytes == 0 || initialData.size() > desc.sizeBytes) {
-        fail(std::string{"createBuffer: geçersiz parametre ("} + desc.debugName + ")");
+        fail(std::string{"createBuffer: invalid parameter ("} + desc.debugName + ")");
         return {};
     }
     SDL_GPUBufferCreateInfo info{};
@@ -481,7 +481,7 @@ BufferHandle_t CSdlGpuDevice::createBuffer(const BufferDesc_t& desc, std::span<c
     info.size = desc.sizeBytes;
     SDL_GPUBuffer* buffer = SDL_CreateGPUBuffer(m_device, &info);
     if (buffer == nullptr) {
-        fail(std::string{"createBuffer başarısız: "} + SDL_GetError());
+        fail(std::string{"createBuffer failed: "} + SDL_GetError());
         return {};
     }
     if (!initialData.empty()) {
@@ -492,7 +492,7 @@ BufferHandle_t CSdlGpuDevice::createBuffer(const BufferDesc_t& desc, std::span<c
         }
         if (!ok) {
             SDL_ReleaseGPUBuffer(m_device, buffer);
-            fail(std::string{"createBuffer: yükleme başarısız: "} + SDL_GetError());
+            fail(std::string{"createBuffer: upload failed: "} + SDL_GetError());
             return {};
         }
     }
@@ -504,7 +504,7 @@ TextureHandle_t CSdlGpuDevice::createTexture(const TextureDesc_t& desc, std::spa
     const size_t expectedBytes = static_cast<size_t>(desc.width) * desc.height * pixelBytes;
     if (m_device == nullptr || desc.width == 0 || desc.height == 0 || pixelBytes == 0 ||
         (!initialPixels.empty() && initialPixels.size() < expectedBytes)) {
-        fail(std::string{"createTexture: geçersiz parametre ("} + desc.debugName + ")");
+        fail(std::string{"createTexture: invalid parameter ("} + desc.debugName + ")");
         return {};
     }
 
@@ -522,7 +522,7 @@ TextureHandle_t CSdlGpuDevice::createTexture(const TextureDesc_t& desc, std::spa
     info.sample_count = SDL_GPU_SAMPLECOUNT_1;
     SDL_GPUTexture* texture = SDL_CreateGPUTexture(m_device, &info);
     if (texture == nullptr) {
-        fail(std::string{"createTexture başarısız: "} + SDL_GetError());
+        fail(std::string{"createTexture failed: "} + SDL_GetError());
         return {};
     }
 
@@ -533,7 +533,7 @@ TextureHandle_t CSdlGpuDevice::createTexture(const TextureDesc_t& desc, std::spa
             if (transfer != nullptr) SDL_ReleaseGPUTransferBuffer(m_device, transfer);
             if (commands != nullptr) SDL_SubmitGPUCommandBuffer(commands);
             SDL_ReleaseGPUTexture(m_device, texture);
-            fail(std::string{"createTexture: yükleme başarısız: "} + SDL_GetError());
+            fail(std::string{"createTexture: upload failed: "} + SDL_GetError());
             return {};
         }
         SDL_GPUCopyPass* pass = SDL_BeginGPUCopyPass(commands);
@@ -563,7 +563,7 @@ SamplerHandle_t CSdlGpuDevice::createSampler(const SamplerDesc_t& desc) {
     info.max_lod = 1000.0f;
     SDL_GPUSampler* sampler = SDL_CreateGPUSampler(m_device, &info);
     if (sampler == nullptr) {
-        fail(std::string{"createSampler başarısız: "} + SDL_GetError());
+        fail(std::string{"createSampler failed: "} + SDL_GetError());
         return {};
     }
     return m_samplers.create({.sampler = sampler});
@@ -571,20 +571,20 @@ SamplerHandle_t CSdlGpuDevice::createSampler(const SamplerDesc_t& desc) {
 
 ShaderHandle_t CSdlGpuDevice::createShader(const ShaderDesc_t& desc) {
     if (desc.language != m_config.language) {
-        fail(std::string{"createShader: backend bu shader dilini desteklemiyor ("} + desc.debugName + ")");
+        fail(std::string{"createShader: the backend does not support this shader language ("} + desc.debugName + ")");
         return {};
     }
     SDL_GPUShaderCreateInfo info{};
     info.code_size = desc.source.size();
     info.code = reinterpret_cast<const Uint8*>(desc.source.data());
     info.entrypoint = desc.entryPoint;
-    info.format = m_config.shaderFormats;  // tek dil: yapılandırmadaki format
+    info.format = m_config.shaderFormats;  // single language: the format from the configuration
     info.stage = desc.stage == EShaderStage::kVertex ? SDL_GPU_SHADERSTAGE_VERTEX : SDL_GPU_SHADERSTAGE_FRAGMENT;
     info.num_uniform_buffers = desc.uniformBufferCount;
     info.num_samplers = desc.samplerCount;
     SDL_GPUShader* shader = SDL_CreateGPUShader(m_device, &info);
     if (shader == nullptr) {
-        fail(std::string{"shader derlenemedi ("} + desc.entryPoint + "): " + SDL_GetError());
+        fail(std::string{"shader could not be compiled ("} + desc.entryPoint + "): " + SDL_GetError());
         return {};
     }
     return m_shaders.create({.shader = shader, .uniformBufferCount = desc.uniformBufferCount, .stage = desc.stage});
@@ -594,7 +594,7 @@ PipelineHandle_t CSdlGpuDevice::createGraphicsPipeline(const GraphicsPipelineDes
     const SdlShader_t* vertex = m_shaders.get(desc.vertexShader);
     const SdlShader_t* fragment = m_shaders.get(desc.fragmentShader);
     if (vertex == nullptr || fragment == nullptr) {
-        fail(std::string{"createGraphicsPipeline: geçersiz shader ("} + desc.debugName + ")");
+        fail(std::string{"createGraphicsPipeline: invalid shader ("} + desc.debugName + ")");
         return {};
     }
 
@@ -643,7 +643,7 @@ PipelineHandle_t CSdlGpuDevice::createGraphicsPipeline(const GraphicsPipelineDes
 
     SDL_GPUGraphicsPipeline* pipeline = SDL_CreateGPUGraphicsPipeline(m_device, &info);
     if (pipeline == nullptr) {
-        fail(std::string{"pipeline oluşturulamadı ("} + desc.debugName + "): " + SDL_GetError());
+        fail(std::string{"could not create pipeline ("} + desc.debugName + "): " + SDL_GetError());
         return {};
     }
     return m_pipelines.create({.pipeline = pipeline,
@@ -651,7 +651,7 @@ PipelineHandle_t CSdlGpuDevice::createGraphicsPipeline(const GraphicsPipelineDes
                                .fragmentUniformCount = fragment->uniformBufferCount});
 }
 
-// --- yıkım ------------------------------------------------------------------
+// --- destruction ------------------------------------------------------------
 
 void CSdlGpuDevice::destroy(BufferHandle_t handle) {
     if (auto item = m_buffers.destroy(handle)) SDL_ReleaseGPUBuffer(m_device, item->buffer);
@@ -687,7 +687,7 @@ std::optional<RhiFrameInfo_t> CSdlGpuDevice::beginFrame() {
     Uint32 height = 0;
     SDL_GPUTexture* swapchain = nullptr;
     if (!SDL_WaitAndAcquireGPUSwapchainTexture(commands, m_window, &swapchain, &width, &height) || swapchain == nullptr) {
-        // Pencere küçülmüş olabilir; command buffer yine de gönderilmeli.
+        // The window may have shrunk; the command buffer must still be submitted.
         SDL_SubmitGPUCommandBuffer(commands);
         return std::nullopt;
     }

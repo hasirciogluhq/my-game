@@ -9,9 +9,9 @@
 
 namespace game {
 
-// Headless otoriter server container. Her tick: network.pump (bağlantı olayları + komutlar) -> world::tick
-// -> snapshot yayını. Entity listesi `m_world` (client'taki gibi ECS registry); bağlantılar `m_network`.
-// Fizik physics.dll'den gelir. Oyun kuralları game/server/ altında.
+// Headless authoritative server container. Each tick: network.pump (connection events + commands) -> world::tick
+// -> snapshot broadcast. The entity list is `m_world` (the ECS registry, as on the client); connections are `m_network`.
+// Physics comes from physics.dll. Game rules live under game/server/.
 class SERVER_API CServerApp final : public IServerApp {
 public:
     [[nodiscard]] bool connect(CreateInterfaceFn factory) override;
@@ -19,7 +19,7 @@ public:
 
 private:
     IPhysics* m_physics = nullptr;
-    World_t m_world;  // entity listesi: server'daki her şey
+    World_t m_world;  // the entity list: everything on the server
     CNetServer m_network;
     int m_botCount = 0;
     int m_robotCount = 1;

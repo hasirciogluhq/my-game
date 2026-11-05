@@ -4,7 +4,7 @@
 
 namespace game {
 
-// HDR -> swapchain: bloom, tonemap, vignette, gamma (swapchain sRGB değilse). Pipeline backbuffer formatına bağlıdır.
+// HDR -> swapchain: bloom, tonemap, vignette, gamma (if the swapchain is not sRGB). The pipeline depends on the backbuffer format.
 class CPostPass final : public IRenderPass {
 public:
     [[nodiscard]] bool create(const PassInitContext_t& context) override;

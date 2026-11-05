@@ -10,8 +10,8 @@
 
 namespace game {
 
-// log.dll arayüzü (spdlog, async). Her modül yalnızca bu header'ı ve GAME_LOG_* makrolarını kullanır.
-// Bağlama otomatik: GAME_EXPORT_MODULE() her modüle BindLog export eder, CModule::load sink'i bağlar.
+// log.dll interface (spdlog, async). Each module uses only this header and the GAME_LOG_* macros.
+// Auto-binding: GAME_EXPORT_MODULE() exports BindLog to every module; CModule::load binds the sink.
 enum class ELogLevel : uint8_t { kTrace, kDebug, kInfo, kWarn, kError, kFatal, kOff };
 
 #ifdef NDEBUG
@@ -23,7 +23,7 @@ inline constexpr ELogLevel kDefaultLogLevel = ELogLevel::kDebug;
 struct LogConfig_t {
     ELogLevel level = kDefaultLogLevel;
     std::string categoryLevels;  // "net:trace,render:warn"
-    std::string file;            // boşsa dosyaya yazılmaz
+    std::string file;            // empty = not written to a file
 };
 
 class ILog {
@@ -54,14 +54,14 @@ inline constexpr char kLogInterface[] = "Log001";
 
 namespace logging {
 
-// Modül başına bir sink (static lib / header her DLL'e ayrı gömülür; BindLog her birini bağlar).
+// One sink per module (the static lib / header is embedded separately in each DLL; BindLog binds each one).
 inline ILog* g_sink = nullptr;
 
 inline void bind(ILog* sink) {
     g_sink = sink;
 }
 
-// Sink yokken (log.dll yüklenmedi / henüz bağlanmadı) warn ve üstü stderr'e düşer.
+// Without a sink (log.dll not loaded / not bound yet) warn and above go to stderr.
 [[nodiscard]] inline bool enabled(ELogLevel level, std::string_view category) {
     return g_sink != nullptr ? g_sink->enabled(level, category) : level >= ELogLevel::kWarn;
 }
@@ -77,8 +77,8 @@ inline void write(ELogLevel level, std::string_view category, std::string_view m
 }  // namespace logging
 }  // namespace game
 
-// Kullanım: GAME_LOG_INFO("net", "port {} açıldı", port);
-// Seviye kapalıysa std::format hiç çalışmaz.
+// Usage: GAME_LOG_INFO("net", "port {} opened", port);
+// If the level is disabled, std::format never runs.
 #define GAME_LOG(level, category, ...)                                                                   \
     do {                                                                                                  \
         if (::game::logging::enabled(level, category)) {                                                  \

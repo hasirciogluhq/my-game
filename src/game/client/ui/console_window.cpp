@@ -23,7 +23,7 @@ void setInput(ImGuiInputTextCallbackData* data, std::string_view text) {
     data->InsertChars(0, text.data(), text.data() + text.size());
 }
 
-// Konsol tuşu (` ~) metne girmesin; Up/Down komut geçmişinde gezer.
+// The console key (` ~) must not be typed into the text; Up/Down browse the command history.
 int onInputEvent(ImGuiInputTextCallbackData* data) {
     auto& console = *static_cast<Console_t*>(data->UserData);
     if (data->EventFlag == ImGuiInputTextFlags_CallbackCharFilter) {
@@ -78,7 +78,7 @@ std::optional<std::string> draw(Console_t& console) {
     ImGui::SetNextWindowBgAlpha(0.85f);
     const ImGuiWindowFlags flags = console.focused ? ImGuiWindowFlags_None : ImGuiWindowFlags_NoInputs;
     std::optional<std::string> command;
-    if (ImGui::Begin("Konsol", nullptr, flags)) {
+    if (ImGui::Begin("Console", nullptr, flags)) {
         const float inputHeight = ImGui::GetFrameHeightWithSpacing();
         if (ImGui::BeginChild("log", {0.0f, -inputHeight}, ImGuiChildFlags_None, ImGuiWindowFlags_HorizontalScrollbar)) {
             for (const Line_t& line : console.lines) {

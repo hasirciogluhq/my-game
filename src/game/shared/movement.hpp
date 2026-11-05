@@ -4,17 +4,17 @@
 
 namespace game::systems {
 
-// Tek oyuncu, tek komut: server hareketi ve client prediction aynı kodu kullanır.
+// One player, one command: server movement and client prediction use the same code.
 void movePlayer(World_t& world, entt::entity entity, const UserCmd_t& cmd);
 
-// Client'ta her frame: mermi Transform'unu projection formülünden hesaplar.
-// atTick kesirli olabilir (interpolation'ın gösterim zamanı); server world.tick verir.
+// On the client, every frame: computes the projectile's Transform from the projection formula.
+// atTick may be fractional (the display time of interpolation); the server gives world.tick.
 void projectileTransforms(World_t& world, double atTick);
 
-// pos(t) = origin + velocity * (t - spawnTick) * dt   (t < spawnTick ise çıkış noktası)
+// pos(t) = origin + velocity * (t - spawnTick) * dt   (if t < spawnTick, the muzzle point)
 [[nodiscard]] glm::vec3 projectilePosition(const Projectile_t& projectile, double atTick, float tickDelta);
 
-// Bakış yönü: pitch yukarı/aşağı, yaw yatay düzlemde. yaw=0 iken -Z.
+// Look direction: pitch up/down, yaw in the horizontal plane. At yaw=0 it is -Z.
 [[nodiscard]] glm::vec3 lookDirection(const Transform_t& transform);
 
 }  // namespace game::systems

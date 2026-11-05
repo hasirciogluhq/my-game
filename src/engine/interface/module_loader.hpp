@@ -7,14 +7,14 @@
 
 namespace game {
 
-// Dinamik modül yükleyici (dlopen / LoadLibrary). Yüklenen modüller süreç sonuna kadar açık kalır.
+// Dynamic module loader (dlopen / LoadLibrary). Loaded modules stay open until process exit.
 class CModule {
 public:
     CModule() = default;
     CModule(const CModule&) = delete;
     CModule& operator=(const CModule&) = delete;
 
-    // Yüklenen her modüle bağlanacak log sink'i (host log.dll'i yükleyince ayarlar; modüllerin BindLog'una gider).
+    // Log sink bound to every loaded module (the host sets it when it loads log.dll; it goes to the modules' BindLog).
     static void setLogSink(ILog* sink);
 
     [[nodiscard]] bool load(const std::filesystem::path& file);
@@ -34,12 +34,12 @@ private:
     CreateInterfaceFn m_factory = nullptr;
 };
 
-// Platforma göre modül dosya adı. xmake prefix kuralıyla birebir aynıdır:
+// Module file name per platform. Matches the xmake prefix rule exactly:
 //   Windows: client.dll      macOS: libclient.dylib      Linux: libclient.so
 [[nodiscard]] std::filesystem::path moduleFileName(std::string_view moduleName);
 
-// Host yardımcısı: log.dll'i yükler, yapılandırır, bu process'e ve sonradan yüklenecek modüllere bağlar.
-// Başarısızsa nullptr döner; loglar stderr fallback'ine (warn+) düşer, host devam edebilir.
+// Host helper: loads log.dll, configures it, and binds it to this process and to modules loaded later.
+// Returns nullptr on failure; logs fall back to stderr (warn+) and the host can continue.
 [[nodiscard]] ILog* startLogging(CModule& module, const std::filesystem::path& engineDir, const LogConfig_t& config);
 
 }  // namespace game

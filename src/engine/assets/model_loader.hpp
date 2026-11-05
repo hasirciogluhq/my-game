@@ -7,7 +7,7 @@
 
 namespace game::model_loader {
 
-// Assimp ile model dosyasını (obj, gltf, fbx...) tek mesh'e birleştirir.
+// Merges a model file (obj, gltf, fbx...) into a single mesh using Assimp.
 [[nodiscard]] std::expected<MeshData_t, std::string> load(const std::string& path);
 
 }  // namespace game::model_loader

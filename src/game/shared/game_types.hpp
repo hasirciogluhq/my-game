@@ -6,7 +6,7 @@
 namespace game {
 
 // ---------------------------------------------------------------------------
-// Oyun sabitleri (birimler: metre, saniye)
+// Game constants (units: meters, seconds)
 // ---------------------------------------------------------------------------
 inline constexpr float kRunSpeed = 6.0f;
 inline constexpr float kWalkSpeed = 3.0f;
@@ -15,12 +15,12 @@ inline constexpr float kGravity = 20.0f;
 inline constexpr float kEyeHeight = 1.6f;
 inline constexpr float kProjectileSpeed = 60.0f;
 inline constexpr float kProjectileLifetime = 3.0f;
-inline constexpr float kFireInterval = 0.1f;       // saniye, ateş hızı
-inline constexpr uint32_t kProjectileDamage = 20;  // bir mermi isabetinde düşen can
-inline constexpr size_t kMaxCmdBacklog = 3;        // server'da oyuncu başına bekleyen en çok komut
+inline constexpr float kFireInterval = 0.1f;       // seconds, fire interval
+inline constexpr uint32_t kProjectileDamage = 20;  // health lost on a projectile hit
+inline constexpr size_t kMaxCmdBacklog = 3;        // max pending commands per player on the server
 
 // ---------------------------------------------------------------------------
-// Aksiyon butonları. Tuş değil, aksiyon: "attack" hangi tuştan geldiği fark etmez.
+// Action buttons. Actions, not keys: it does not matter which key "attack" came from.
 // ---------------------------------------------------------------------------
 enum class EButton : uint32_t {
     kAttack = 1u << 0,
@@ -40,18 +40,18 @@ enum class EButton : uint32_t {
 }
 
 // ---------------------------------------------------------------------------
-// Kullanıcı komutu (bir tick'lik input)
+// User command (one tick's input)
 // ---------------------------------------------------------------------------
 struct UserCmd_t {
     uint32_t tick = 0;
     float forwardMove = 0.0f;      // -1..1
     float sideMove = 0.0f;         // -1..1
     float upMove = 0.0f;           // -1..1
-    float yaw = 0.0f;              // radyan
-    float pitch = 0.0f;            // radyan
-    uint32_t buttons = 0;          // basılı tutulanlar
-    uint32_t buttonsPressed = 0;   // bu tick basılanlar (edge)
-    uint32_t buttonsReleased = 0;  // bu tick bırakılanlar (edge)
+    float yaw = 0.0f;              // radians
+    float pitch = 0.0f;            // radians
+    uint32_t buttons = 0;          // held down
+    uint32_t buttonsPressed = 0;   // pressed this tick (edge)
+    uint32_t buttonsReleased = 0;  // released this tick (edge)
 };
 
 }  // namespace game
@@ -59,13 +59,13 @@ struct UserCmd_t {
 namespace game {
 
 // ---------------------------------------------------------------------------
-// Kontrol isteği (client -> server): izle, bot'u devral, bırak.
+// Control request (client -> server): spectate, take over a bot, release.
 // ---------------------------------------------------------------------------
 enum class EControlAction : uint32_t {
     kNone = 0,
-    kSpectate = 1,  // targetNetId'li pawn'ı izle (kendi pawn'ını bırakır)
-    kTakeOver = 2,  // izlenen bot'un pawn'ını devral
-    kRelease = 3,   // izlemeyi / devralmayı bırak, kendi pawn'ına dön
+    kSpectate = 1,  // spectate the pawn with targetNetId (releases your own pawn)
+    kTakeOver = 2,  // take over the pawn of the bot being watched
+    kRelease = 3,   // stop spectating / taking over, return to your own pawn
 };
 
 struct ControlRequest_t {

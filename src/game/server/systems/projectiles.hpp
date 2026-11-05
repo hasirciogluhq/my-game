@@ -4,7 +4,7 @@
 
 namespace game::systems {
 
-// Ömrü bitenleri / bir şeye çarpanları siler, oyuncu isabetinde hasar verir.
+// Deletes the projectiles whose lifetime ended or that hit something; deals damage on a player hit.
 void projectiles(World_t& world);
 
 }  // namespace game::systems

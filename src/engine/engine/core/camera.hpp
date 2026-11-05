@@ -8,19 +8,19 @@
 namespace game {
 
 inline constexpr float kPi = 3.14159265358979323846f;
-inline constexpr float kPitchLimit = 89.0f * kPi / 180.0f;  // ±89 derece
+inline constexpr float kPitchLimit = 89.0f * kPi / 180.0f;  // ±89 degrees
 
-// Bakış açılarını sınırlar: yaw [-pi, pi], pitch [-kPitchLimit, kPitchLimit].
-// Server ve client aynı fonksiyonu kullanır.
+// Clamps view angles: yaw [-pi, pi], pitch [-kPitchLimit, kPitchLimit].
+// The server and the client use the same function.
 ENGINE_API void clampViewAngles(float& yaw, float& pitch);
 
-// Konum + bakış açısından view/projection üretir. Metal için depth 0..1 (RH_ZO).
+// Builds view/projection from position + view angles. Depth 0..1 for Metal (RH_ZO).
 class ENGINE_API CCamera {
 public:
     void setPerspective(float fovDegrees, float aspect, float nearPlane, float farPlane);
 
     void setPosition(const glm::vec3& position);
-    void setAngles(float yaw, float pitch);   // clamp burada uygulanır
+    void setAngles(float yaw, float pitch);   // clamp is applied here
     void addAngles(float deltaYaw, float deltaPitch);
 
     [[nodiscard]] const glm::vec3& position() const;

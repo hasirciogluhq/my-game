@@ -4,7 +4,7 @@
 
 namespace game::systems {
 
-// Her controller'ın kuyruğundan sıradaki komutu CommandQueue_t::current yapar; ack'i pawn'a yazar.
+// Sets CommandQueue_t::current to the next command from each controller's queue; writes the ack to the pawn.
 void input(World_t& world);
 
 }  // namespace game::systems

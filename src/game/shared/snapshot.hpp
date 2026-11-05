@@ -7,7 +7,7 @@
 
 namespace game {
 
-// Bir entity'nin ağa giden hali: sahip olduğu replicated component'ler.
+// What one entity looks like on its way to the network: the replicated components it owns.
 struct EntitySnapshot_t {
     uint32_t netId = 0;
     std::optional<Transform_t> transform;
@@ -26,7 +26,7 @@ struct WorldSnapshot_t {
 namespace replication {
 
 [[nodiscard]] WorldSnapshot_t capture(const World_t& world);
-// Gelen state aynen uygulanır (rewind/interpolation yok). Snapshot'ta olmayan replicated entity'ler silinir.
+// The incoming state is applied as-is (no rewind/interpolation). Replicated entities missing from the snapshot are deleted.
 void apply(World_t& world, const WorldSnapshot_t& snapshot);
 
 }  // namespace replication

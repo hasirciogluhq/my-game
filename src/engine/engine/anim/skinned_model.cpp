@@ -14,7 +14,7 @@ struct Local_t {
     glm::vec3 scale{1.0f};
 };
 
-// Anahtar dizisinde `time` anındaki değer. Tek anahtar sabit değer verir. lerp: (a, b, t) -> değer.
+// Value at time `time` in the key array. A single key gives a constant value. lerp: (a, b, t) -> value.
 template <typename T, typename Lerp>
 T sampleKeys(const std::vector<Key_t<T>>& keys, float time, Lerp lerp) {
     if (keys.size() == 1 || time <= keys.front().time) {
@@ -29,7 +29,7 @@ T sampleKeys(const std::vector<Key_t<T>>& keys, float time, Lerp lerp) {
     return lerp(previous->value, next->value, t);
 }
 
-// Her düğüm için klibin kanalı (yoksa nullptr). clip < 0: hepsi nullptr (bind pozu).
+// The clip's channel for each node (nullptr if none). clip < 0: all nullptr (bind pose).
 std::vector<const Channel_t*> channelsByNode(const SkinnedModel_t& model, int clip) {
     std::vector<const Channel_t*> byNode(model.nodes.size(), nullptr);
     if (clip >= 0 && clip < static_cast<int>(model.clips.size())) {
@@ -83,7 +83,7 @@ void evaluate(const SkinnedModel_t& model, const ClipSample_t& from, const ClipS
     const float toTime = wrappedTime(model, to);
     const float weight = std::clamp(blend, 0.0f, 1.0f);
 
-    // nodes ebeveyn önce sıralı: tek geçişte dünya matrisleri.
+    // nodes are sorted parent-first: world matrices are computed in a single pass.
     std::vector<glm::mat4> world(model.nodes.size());
     for (size_t i = 0; i < model.nodes.size(); ++i) {
         const Node_t& node = model.nodes[i];

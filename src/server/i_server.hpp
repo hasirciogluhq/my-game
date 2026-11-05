@@ -5,7 +5,7 @@
 
 namespace game {
 
-// server.dll arayüzü.
+// server.dll interface.
 class IServerApp {
 public:
     virtual ~IServerApp() = default;

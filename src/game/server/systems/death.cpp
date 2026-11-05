@@ -16,7 +16,7 @@ void clearWatchers(World_t& world, entt::entity pawn) {
     }
 }
 
-// Bot'un AI controller'ı pawn'ıyla birlikte gider (oyuncu controller'ı gitmez).
+// The bot's AI controller goes with its pawn (a player's controller does not).
 void destroyIfAi(World_t& world, entt::entity controller) {
     if (controller != entt::null && world.registry.valid(controller) && world.registry.all_of<AiController_t>(controller)) {
         world::destroy(world, controller);
@@ -27,7 +27,7 @@ void kill(World_t& world, entt::entity pawn) {
     const uint32_t netId = world.registry.get<Replicated_t>(pawn).netId;
     const entt::entity driver = control::controllerOf(world.registry, pawn);
     const entt::entity displaced = world.registry.get<control::Pawn_t>(pawn).displaced;
-    GAME_LOG_INFO("combat", "pawn {} öldü", netId);
+    GAME_LOG_INFO("combat", "pawn {} died", netId);
     clearWatchers(world, pawn);
     world::killPawn(world, pawn);
     destroyIfAi(world, driver);

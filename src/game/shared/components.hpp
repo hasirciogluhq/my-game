@@ -10,7 +10,7 @@
 
 namespace game {
 
-// Component'ler sadece veri tutar (ECS). Mantık game/shared ve game/server içindeki sistem fonksiyonlarında.
+// Components hold only data (ECS). The logic lives in the system functions in game/shared and game/server.
 
 struct Transform_t {
     glm::vec3 position{0.0f};
@@ -22,27 +22,27 @@ struct Velocity_t {
     glm::vec3 linear{0.0f};
 };
 
-// Oyuncunun (ya da bot'un) sürdüğü karakter pawn'ı. Pawn/Controller bağı motorda (engine/ecs/control.hpp).
+// The character pawn currently driven by a player (or a bot). The Pawn/Controller link is in the engine (engine/ecs/control.hpp).
 struct Player_t {
-    // Bu pawn'ı şu an süren oyuncunun id'si; kimse (ya da bot) sürüyorsa 0. Her tick controller'dan eşitlenir.
+    // id of the player currently driving this pawn; 0 if nobody (or a bot) drives it. Synced from the controller every tick.
     uint32_t playerId = 0;
     uint32_t health = 100;
     bool onGround = true;
-    // Server'ın işlediği son komutun sıra numarası (UserCmd_t::tick). Client prediction bununla ack eder.
+    // Sequence number of the last command the server processed (UserCmd_t::tick). Client prediction acks with this.
     uint32_t lastCmdSeq = 0;
 };
 
-// Mermi konumu her tick güncellenmez: pos(t) = origin + velocity * (t - spawnTick) * dt.
+// The projectile position is not updated every tick: pos(t) = origin + velocity * (t - spawnTick) * dt.
 struct Projectile_t {
-    uint32_t ownerId = 0;  // ateş eden pawn'ın netId'si
+    uint32_t ownerId = 0;  // netId of the pawn that fired it
     uint32_t spawnTick = 0;
     glm::vec3 origin{0.0f};
     glm::vec3 velocity{0.0f};
 };
 
-// Server'ın seçtiği animasyon durumu. Client klip adını/süresini bilmez, state'i kendi modelindeki klibe eşler.
-// kGreet: yakındaki oyuncuyu selamlama animasyonu; hangi klip olduğunu modelin tanımı belirler
-// (robot: el sallama, dancer: breakdance). Server sadece durumu seçer.
+// Animation state chosen by the server. The client does not know clip names or durations; it maps the state to a clip in its own model.
+// kGreet: greeting animation for a nearby player; the model's definition decides which clip it is
+// (robot: wave, dancer: breakdance). The server only chooses the state.
 enum class EAnimState : uint32_t {
     kIdle,
     kGreet,
@@ -53,9 +53,9 @@ enum class EModel : uint32_t {
     kDancer,
 };
 
-// Animasyonlu (iskeletli) entity. Pozu server her tick güncellemez: sadece durum değişince yazar.
-// Client pozu hesaplar: klip zamanı = (gösterim tick'i - startTick) * dt. Durum değişince önceki durumdan
-// kAnimBlendSeconds (client/scene/scene.hpp) boyunca geçiş yapılır (prevState hâlâ prevStartTick'ten itibaren oynamaya devam eder).
+// Animated (skinned) entity. The server does not update the pose every tick: it writes only when the state changes.
+// The client computes the pose: clip time = (display tick - startTick) * dt. When the state changes, it blends from the previous state
+// over kAnimBlendSeconds (client/scene/scene.hpp) (prevState keeps playing from prevStartTick).
 struct Animator_t {
     EModel model = EModel::kRobot;
     EAnimState state = EAnimState::kIdle;
@@ -64,35 +64,35 @@ struct Animator_t {
     uint32_t prevStartTick = 0;
 };
 
-// Ağ üzerinden kopyalanan entity'ler bunu taşır. netId server'da atanır, client'ta aynen kullanılır.
+// Entities carrying this are copied over the network. netId is assigned on the server and used as-is on the client.
 struct Replicated_t {
     uint32_t netId = 0;
 };
 
-// Fizik motorundaki karakter kapsülü (sadece fizik açıkken, yani server'da).
+// Character capsule in the physics engine (only while physics is on, i.e. on the server).
 struct Collider_t {
     uint32_t handle = 0;
 };
 
-// Server'da pawn'ın silahı (replicate edilmez). Cooldown pawn'da kalır, controller değişince sıfırlanmaz.
+// The pawn's weapon on the server (not replicated). The cooldown stays on the pawn; it is not reset when the controller changes.
 struct Weapon_t {
     uint32_t nextFireTick = 0;
 };
 
-// Oyuncu controller'ı (controller entity'si, replicate edilmez). homePawn: oyuncunun kendi karakteri;
-// bot'u bırakınca (release) buraya döner.
+// Player controller (the controller entity; not replicated). homePawn: the player's own character;
+// when a bot is released (release) the player goes back here.
 struct PlayerController_t {
     uint32_t playerId = 0;
     entt::entity homePawn = entt::null;
 };
 
-// Bot controller'ı: basit devriye (ileri yürü, yavaşça dön).
+// Bot controller: simple patrol (walk forward, turn slowly).
 struct AiController_t {
-    float turnRate = 0.6f;  // rad/sn
+    float turnRate = 0.6f;  // rad/s
     float yaw = 0.0f;
 };
 
-// Controller'a gelen komutlar (oyuncu: ağdan, bot: AI). current: bu tick pawn'a uygulanan komut.
+// Commands arriving at the controller (player: from the network, bot: from AI). current: the command applied to the pawn this tick.
 struct CommandQueue_t {
     std::deque<UserCmd_t> pending;
     UserCmd_t current;

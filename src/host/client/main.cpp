@@ -15,11 +15,11 @@ int main(int argc, char** argv) {
         return 2;
     }
 
-    // Motor modülleri out/.../engine, oyun modülleri exe ile aynı klasörde (out/.../game).
+    // Engine modules are in out/.../engine; game modules are in the same folder as the exe (out/.../game).
     const std::filesystem::path gameDir = std::filesystem::absolute(argv[0]).parent_path();
     const std::filesystem::path engineDir = gameDir.parent_path() / "engine";
 
-    // Önce log: sonraki tüm modüller yüklenirken sink'e bağlanır. Varsayılan dosya: out/.../logs/game.log
+    // Log first: every later module connects to the sink as it is loaded. Default file: out/.../logs/game.log
     if (options->log.file.empty()) {
         options->log.file = (gameDir.parent_path() / "logs" / "game.log").string();
     }
@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
     game::ILog* log = game::startLogging(logModule, engineDir, options->log);
     game::bindEngineLog(log);
 
-    // "client" son: diğerlerini connect'te kullanır.
+    // "client" last: it uses the others in connect().
     struct ModuleSpec_t {
         const char* name;
         bool isEngine;
@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
     constexpr std::array kModules{ModuleSpec_t{"platform", true}, ModuleSpec_t{"render", true},
                                   ModuleSpec_t{"particles", true}, ModuleSpec_t{"assets", true},
                                   ModuleSpec_t{"audio", true},     ModuleSpec_t{"ui", true},
-                                  ModuleSpec_t{"physics", true},  // client prediction için
+                                  ModuleSpec_t{"physics", true},  // for client prediction
                                   ModuleSpec_t{"network", true},  ModuleSpec_t{"client", false}};
 
     std::array<game::CModule, kModules.size()> modules;
@@ -49,7 +49,7 @@ int main(int argc, char** argv) {
 
     auto* app = modules.back().getInterface<game::IClientApp>(game::kClientAppInterface);
     if (app == nullptr) {
-        GAME_LOG_ERROR("game", "{} arayüzü bulunamadı", game::kClientAppInterface);
+        GAME_LOG_ERROR("game", "{} interface not found", game::kClientAppInterface);
         return 1;
     }
     if (!app->connect(&game::resolveInterface)) {

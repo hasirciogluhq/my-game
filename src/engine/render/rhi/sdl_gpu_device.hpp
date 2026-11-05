@@ -1,8 +1,8 @@
 #pragma once
 
-// SDL_GPU backend. SDL_GPU kendisi Metal/Vulkan/D3D12 üzerinde çalışır; bu sınıf hangisinin kullanılacağını
-// SdlGpuConfig_t ile alır (şimdilik macOS: Metal + MSL). SDL bu dosyanın dışına sızmaz (struct ileri bildirimleri).
-// D3D11 gibi SDL_GPU'nun desteklemediği API'ler için ayrı bir IRhiDevice yazılır (rhi/d3d11/...).
+// SDL_GPU backend. SDL_GPU itself runs on Metal/Vulkan/D3D12; this class receives which one to use through
+// SdlGpuConfig_t (for now macOS: Metal + MSL). SDL does not leak out of this file (struct forward declarations).
+// For APIs that SDL_GPU does not support, such as D3D11, a separate IRhiDevice is written (rhi/d3d11/...).
 
 #include "engine/render/handle_pool.hpp"
 #include "engine/render/rhi/rhi_device.hpp"
@@ -23,8 +23,8 @@ struct SDL_Window;
 namespace game::rhi {
 
 struct SdlGpuConfig_t {
-    uint32_t shaderFormats = 0;        // SDL_GPUShaderFormat bayrakları
-    const char* driverName = nullptr;  // "metal", "vulkan", "direct3d12" veya nullptr (SDL seçer)
+    uint32_t shaderFormats = 0;        // SDL_GPUShaderFormat flags
+    const char* driverName = nullptr;  // "metal", "vulkan", "direct3d12", or nullptr (SDL chooses)
     EShaderLanguage language = EShaderLanguage::kMsl;
     ERenderBackend backend = ERenderBackend::kMetal;
     const char* backendName = "SDL_GPU/Metal";
@@ -40,7 +40,7 @@ struct SdlTexture_t {
     uint32_t width = 0;
     uint32_t height = 0;
     EPixelFormat format = EPixelFormat::kUndefined;
-    bool external = false;  // swapchain: sahibi biz değiliz
+    bool external = false;  // swapchain: we are not its owner
 };
 
 struct SdlSampler_t {
@@ -65,7 +65,7 @@ class CSdlGpuCommandList final : public IRhiCommandList {
 public:
     explicit CSdlGpuCommandList(CSdlGpuDevice& device) : m_device(device) {}
 
-    // Device tarafından çağrılır.
+    // Called by the device.
     void begin(SDL_GPUCommandBuffer* commandBuffer);
     void end();
 
@@ -103,7 +103,7 @@ private:
     SDL_GPUCommandBuffer* m_commandBuffer = nullptr;
     SDL_GPURenderPass* m_pass = nullptr;
     bool m_pipelineBound = false;
-    std::array<uint32_t, kStageCount> m_uniformCounts{};  // bağlı pipeline'ın stage başına uniform sayısı
+    std::array<uint32_t, kStageCount> m_uniformCounts{};  // uniform count per stage of the bound pipeline
     EIndexType m_indexType = EIndexType::kUint32;
     std::array<std::array<UniformSlot_t, kMaxUniformSlots>, kStageCount> m_uniforms;
     std::array<std::array<TextureSlot_t, kMaxTextureSlots>, kStageCount> m_textures;
@@ -141,7 +141,7 @@ public:
     void endFrame() override;
     void waitIdle() override;
 
-    // Command list'in kullandığı iç erişim.
+    // Internal access used by the command list.
     [[nodiscard]] SDL_GPUDevice* sdlDevice() const { return m_device; }
     [[nodiscard]] const SdlBuffer_t* find(BufferHandle_t handle) const { return m_buffers.get(handle); }
     [[nodiscard]] const SdlTexture_t* find(TextureHandle_t handle) const { return m_textures.get(handle); }
@@ -149,7 +149,7 @@ public:
     [[nodiscard]] const SdlShader_t* find(ShaderHandle_t handle) const { return m_shaders.get(handle); }
     [[nodiscard]] const SdlPipeline_t* find(PipelineHandle_t handle) const { return m_pipelines.get(handle); }
 
-    // Hata mesajı kaydeder ve stderr'e yazar.
+    // Records the error message and writes it to stderr.
     void fail(const std::string& message);
 
 private:

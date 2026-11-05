@@ -4,9 +4,9 @@
 
 namespace game::world {
 
-// Client'ın kontrol isteği (izle / bot'u devral / bırak). Kural dışıysa false döner, hiçbir şey değişmez.
+// The client's control request (spectate / take over a bot / release). If it breaks the rules, returns false and nothing changes.
 bool handleControl(World_t& world, uint32_t playerId, const ControlRequest_t& request);
-// Oyuncunun izlediği pawn'ın netId'si; izlemiyorsa 0.
+// netId of the pawn the player is watching; 0 if not watching.
 [[nodiscard]] uint32_t spectatedNetId(const World_t& world, uint32_t playerId);
 
 }  // namespace game::world

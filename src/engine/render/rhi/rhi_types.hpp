@@ -1,7 +1,7 @@
 #pragma once
 
-// RHI (render hardware interface): backend'lerin (SDL_GPU/Metal, ileride D3D11) ortak alt seviye tipleri.
-// Üst katman (passes, render_system) yalnızca bu tiplerle konuşur; hiçbir backend başlığı görmez.
+// RHI (render hardware interface): the low-level types shared by the backends (SDL_GPU/Metal, later D3D11).
+// The upper layers (passes, render_system) only talk through these types; they never see any backend header.
 
 #include "engine/interface/render_types.hpp"
 
@@ -29,9 +29,9 @@ inline constexpr uint32_t kMaxColorTargets = 4;
 inline constexpr uint32_t kMaxVertexAttributes = 8;
 inline constexpr uint32_t kMaxUniformSlots = 4;
 inline constexpr uint32_t kMaxTextureSlots = 8;
-inline constexpr uint32_t kMaxUniformBytes = 8192;  // slot başına (128 eklemli bone bloğu 8 KB)
+inline constexpr uint32_t kMaxUniformBytes = 8192;  // per slot (a bone block with 128 joints is 8 KB)
 
-// --- bit bayrağı enum'ları ---
+// --- bit flag enums ---
 template <typename E>
 inline constexpr bool kIsBitFlags = false;
 
@@ -47,7 +47,7 @@ template <typename E>
     return (static_cast<std::underlying_type_t<E>>(value) & static_cast<std::underlying_type_t<E>>(flag)) != 0;
 }
 
-// --- formatlar ---
+// --- formats ---
 enum class EPixelFormat : uint8_t {
     kUndefined,
     kR8Unorm,
@@ -93,7 +93,7 @@ inline constexpr bool kIsBitFlags<ETextureUsage> = true;
 
 enum class EShaderStage : uint8_t { kVertex, kFragment };
 enum class EShaderLanguage : uint8_t { kMsl, kHlsl, kSpirv };
-enum class EVertexFormat : uint8_t { kFloat2, kFloat3, kFloat4, kUByte4Norm };  // kUByte4Norm: 4 bayt -> float4 (0..1)
+enum class EVertexFormat : uint8_t { kFloat2, kFloat3, kFloat4, kUByte4Norm };  // kUByte4Norm: 4 bytes -> float4 (0..1)
 enum class EFilter : uint8_t { kNearest, kLinear };
 enum class EAddressMode : uint8_t { kRepeat, kClamp, kMirror };
 enum class EPrimitiveTopology : uint8_t { kTriangleList, kLineList };
@@ -103,8 +103,8 @@ enum class EBlendPreset : uint8_t { kNone, kAlpha, kAdditive };
 enum class ELoadOp : uint8_t { kLoad, kClear, kDontCare };
 enum class EStoreOp : uint8_t { kStore, kDontCare };
 
-// kPreserve: eski içerik korunur. kDiscard: eski içerik atılabilir (her frame baştan yazılan dinamik veri;
-// GPU hâlâ eski frame'i okuyorsa backend yeni bir kopya verir).
+// kPreserve: old contents are kept. kDiscard: old contents may be thrown away (dynamic data rewritten from scratch every frame;
+// if the GPU is still reading the old frame, the backend gives a new copy).
 enum class EUpdateMode : uint8_t { kPreserve, kDiscard };
 
 [[nodiscard]] constexpr uint32_t vertexFormatSize(EVertexFormat format) {
@@ -117,7 +117,7 @@ enum class EUpdateMode : uint8_t { kPreserve, kDiscard };
     return 0;
 }
 
-// --- kaynak tanımları ---
+// --- resource descriptions ---
 struct BufferDesc_t {
     uint32_t sizeBytes = 0;
     EBufferUsage usage = EBufferUsage::kVertex;
@@ -129,7 +129,7 @@ struct TextureDesc_t {
     uint32_t height = 0;
     EPixelFormat format = EPixelFormat::kRgba8Unorm;
     ETextureUsage usage = ETextureUsage::kSampled;
-    bool generateMips = false;  // başlangıç verisi yüklendikten sonra mip zinciri üretilir
+    bool generateMips = false;  // a mip chain is generated after the initial data is uploaded
     const char* debugName = "";
 };
 
@@ -140,7 +140,7 @@ struct SamplerDesc_t {
     EAddressMode addressU = EAddressMode::kClamp;
     EAddressMode addressV = EAddressMode::kClamp;
     EAddressMode addressW = EAddressMode::kClamp;
-    float maxAnisotropy = 1.0f;  // >1 ise anisotropik filtre
+    float maxAnisotropy = 1.0f;  // >1 means anisotropic filtering
 };
 
 struct ShaderDesc_t {
@@ -159,7 +159,7 @@ struct VertexAttribute_t {
     uint32_t offset = 0;
 };
 
-// Tek vertex stream (slot 0). stride == 0 ise vertex girdisi yoktur (fullscreen üçgen gibi).
+// A single vertex stream (slot 0). stride == 0 means there is no vertex input (like a fullscreen triangle).
 struct VertexLayout_t {
     uint32_t stride = 0;
     uint32_t attributeCount = 0;
@@ -198,7 +198,7 @@ struct ColorAttachment_t {
 };
 
 struct DepthAttachment_t {
-    TextureHandle_t texture;  // geçersizse derinlik hedefi yok
+    TextureHandle_t texture;  // no depth target if invalid
     ELoadOp load = ELoadOp::kClear;
     EStoreOp store = EStoreOp::kDontCare;
     float clearDepth = 1.0f;

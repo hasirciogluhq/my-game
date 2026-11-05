@@ -9,7 +9,7 @@
 namespace game::death_cam {
 namespace {
 
-constexpr float kTurnSpeed = 0.12f;  // rad/sn: yavaş dönüş
+constexpr float kTurnSpeed = 0.12f;  // rad/s: slow turn
 constexpr float kRadius = 16.0f;
 constexpr float kHeight = 12.0f;
 
@@ -33,7 +33,7 @@ Pose_t pose(const DeathCam_t& cam, const World_t& world) {
     const glm::vec3 focus = focusPoint(world);
     const glm::vec3 position = focus + glm::vec3{std::sin(cam.angle) * kRadius, kHeight, std::cos(cam.angle) * kRadius};
     const glm::vec3 toFocus = glm::normalize(focus - position);
-    // Kamera yönü: (cos p * sin y, sin p, -cos p * cos y).
+    // Camera direction: (cos p * sin y, sin p, -cos p * cos y).
     return {.position = position, .yaw = std::atan2(toFocus.x, -toFocus.z), .pitch = std::asin(toFocus.y)};
 }
 

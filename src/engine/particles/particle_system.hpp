@@ -15,7 +15,7 @@ struct Particle_t {
     float lifeLeft = 0.0f;
 };
 
-// CPU tarafı parçacık simülasyonu. Arayüz: IParticles (Particles001).
+// CPU-side particle simulation. Interface: IParticles (Particles001).
 class PARTICLES_API CParticleSystem final : public IParticles {
 public:
     void emit(const glm::vec3& origin, const glm::vec3& velocity, float lifetime) override;

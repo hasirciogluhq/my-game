@@ -4,8 +4,8 @@
 
 namespace game {
 
-// Son adım: post-process'ten sonra swapchain'in üstüne dışarıdan kayıtlı overlay çizer (Dear ImGui'nin resmi
-// SDL_GPU backend'i). Renderer overlay'in ne çizdiğini bilmez; sadece komut tamponunu ve render pass'i verir.
+// Final step: after post-processing, draws the externally registered overlay onto the swapchain (Dear ImGui's official
+// SDL_GPU backend). The renderer does not know what the overlay draws; it only provides the command buffer and render pass.
 class COverlayPass final : public IRenderPass {
 public:
     [[nodiscard]] bool create(const PassInitContext_t& context) override;

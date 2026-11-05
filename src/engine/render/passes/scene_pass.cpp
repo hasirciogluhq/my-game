@@ -5,7 +5,7 @@
 namespace game {
 namespace {
 
-// pipeline anahtarı: bit 0-1 shading, bit 2 blend, bit 3 doubleSided, bit 4 iskeletli mesh
+// pipeline key: bits 0-1 shading, bit 2 blend, bit 3 doubleSided, bit 4 skinned mesh
 constexpr uint32_t kBlendBit = 1u << 2;
 constexpr uint32_t kDoubleSidedBit = 1u << 3;
 constexpr uint32_t kSkinnedBit = 1u << 4;
@@ -71,7 +71,7 @@ rhi::PipelineHandle_t CScenePass::pipelineFor(uint32_t key) {
          .colorFormats = {kHdrFormat},
          .depthFormat = kDepthFormat,
          .debugName = "scene"});
-    m_pipelines.emplace(key, pipeline);  // başarısız (geçersiz) handle da saklanır: her frame yeniden denenmez
+    m_pipelines.emplace(key, pipeline);  // a failed (invalid) handle is stored too: it is not retried every frame
     return pipeline;
 }
 
@@ -114,7 +114,7 @@ void CScenePass::drawList(const FrameContext_t& context, const std::vector<uint3
 
 void CScenePass::execute(const FrameContext_t& context) {
     rhi::IRhiCommandList& commands = context.commands;
-    const bool keepDepth = !context.scene.debugVertices.empty();  // debug pass derinliği okur
+    const bool keepDepth = !context.scene.debugVertices.empty();  // the debug pass reads the depth
 
     rhi::RenderPassDesc_t pass{.colorCount = 1,
                                .depth = {.texture = context.targets.depth(),

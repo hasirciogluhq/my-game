@@ -24,10 +24,10 @@
 
 namespace game {
 
-// Client ana döngüsü. Platform, renderer, particles, assets, audio arayüzleri
-// host'tan gelir. Her tick: olaylar -> input -> server'a gönder -> snapshot'ı
-// world'e uygula -> kamera -> çiz. Kamera: normalde server'daki oyuncunun göz
-// hizası. F tuşu ile free-cam (sadece yerel, server'a hareket gitmez).
+// Client main loop. The platform, renderer, particles, assets and audio interfaces
+// come from the host. Each tick: events -> input -> send to the server -> apply the snapshot
+// to the world -> camera -> draw. Camera: normally the eye level of the player on the server.
+// The F key toggles free-cam (local only; no movement is sent to the server).
 class CLIENT_API CClientApp final : public IClientApp {
 public:
   [[nodiscard]] bool connect(CreateInterfaceFn factory) override;
@@ -44,31 +44,31 @@ private:
   void updateCamera(const UserCmd_t &cmd);
   void drawWorld();
   [[nodiscard]] entt::entity
-  selfEntity() const; // şu an sürdüğümüz pawn ya da entt::null
+  selfEntity() const; // the pawn we are driving right now, or entt::null
   [[nodiscard]] entt::entity
-  watchedEntity() const; // izlediğimiz pawn ya da entt::null
+  watchedEntity() const; // the pawn we are watching, or entt::null
   [[nodiscard]] entt::entity cameraEntity() const;
 
   IPlatform *m_platform = nullptr;
   IRenderer *m_renderer = nullptr;
   IParticles *m_particles = nullptr;
   IAssets *m_assets = nullptr;
-  IAudio *m_audio = nullptr;     // opsiyonel: yoksa sessiz
-  ui::Console_t m_console; // ImGui konsolu (focused: fare serbest)
-  IUI *m_ui = nullptr; // opsiyonel: yoksa konsol yok
+  IAudio *m_audio = nullptr;     // optional: silent if missing
+  ui::Console_t m_console; // ImGui console (focused: mouse free)
+  IUI *m_ui = nullptr; // optional: no console if missing
   IPhysics *m_physics =
-      nullptr; // opsiyonel: yoksa prediction çarpışmasız (düz zemin)
+      nullptr; // optional: if missing, prediction runs without collision (flat ground)
 
   prediction::Prediction_t m_prediction;
-  entt::entity m_predictedPawn = entt::null; // tahminin ait olduğu pawn
+  entt::entity m_predictedPawn = entt::null; // the pawn the prediction belongs to
   interpolation::Interpolation_t m_interpolation;
   CNetClient m_network;
   CInputSampler m_input;
-  Bindings_t m_bindings; // aksiyon -> tuş (assets/config/input.cfg)
+  Bindings_t m_bindings; // action -> key (assets/config/input.cfg)
   bool m_quitRequested = false;
-  bool m_menuOpen = false; // RmlUi duraklatma menüsü (Esc)
+  bool m_menuOpen = false; // RmlUi pause menu (Esc)
   World_t
-      m_world; // sadece server snapshot'larından + yerel prop'lardan beslenir
+      m_world; // fed only from server snapshots + local props
   CCamera m_camera;
   death_cam::DeathCam_t m_deathCam;
   scene::Resources_t m_resources;

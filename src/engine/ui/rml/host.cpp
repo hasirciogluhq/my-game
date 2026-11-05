@@ -43,7 +43,7 @@ void CRmlSystemInterface::SetClipboardText(const Rml::String &text) {
 
 void CRmlSystemInterface::GetClipboardText(Rml::String &text) {
   char *clipboard =
-      SDL_GetClipboardText(); // SDL'in ayırdığı bellek: SDL_free ile bırakılır
+      SDL_GetClipboardText(); // memory allocated by SDL: released with SDL_free
   if (clipboard != nullptr) {
     text = clipboard;
     SDL_free(clipboard);
@@ -83,7 +83,7 @@ bool CRmlFileInterface::Seek(Rml::FileHandle file, long offset, int origin) {
   const std::ios::seekdir direction = origin == SEEK_CUR   ? std::ios::cur
                                       : origin == SEEK_END ? std::ios::end
                                                            : std::ios::beg;
-  it->second.clear(); // eof bayrağı seek'i engellemesin
+  it->second.clear(); // the eof flag must not block seek
   it->second.seekg(offset, direction);
   return static_cast<bool>(it->second);
 }

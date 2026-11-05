@@ -12,25 +12,25 @@
 
 namespace game {
 
-// Client'ın network yöneticisi: network.dll'in (INetwork) üstünde server ile konuşur (welcome, komut, snapshot).
-// Bağlantının kendisi (soketler, TCP/UDP) network.dll'dedir.
+// The client's network manager: talks to the server on top of network.dll's INetwork (welcome, command, snapshot).
+// The connection itself (sockets, TCP/UDP) lives in network.dll.
 class CLIENT_API CNetClient {
 public:
     void bind(INetwork* network) { m_network = network; }
     [[nodiscard]] bool connectTo(const std::string& host, uint16_t port);
     void poll();
     void sendCommand(const UserCmd_t& cmd);
-    // Izle / bot'u devral / bırak. Server cevabı viewTargetNetId() ile gelir.
+    // Spectate / take over a bot / release. The server's reply arrives through viewTargetNetId().
     void sendControl(const ControlRequest_t& request);
     void disconnect();
 
     [[nodiscard]] bool connected() const;
     [[nodiscard]] std::optional<uint32_t> playerId() const;
-    // Server'ın söylediği izlenen pawn'ın netId'si; 0 = kimseyi izlemiyor (kendi pawn'ımızdayız).
+    // netId of the watched pawn as the server reports it; 0 = not watching anyone (we are in our own pawn).
     [[nodiscard]] uint32_t viewTargetNetId() const { return m_viewTargetNetId; }
-    // Server'ın otoriter tick rate'i (welcome paketinden).
+    // The server's authoritative tick rate (from the welcome packet).
     [[nodiscard]] std::optional<uint32_t> tickRate() const;
-    // Son çağrıdan beri gelen tüm snapshot'lar, tick sırasıyla (interpolation hepsini kullanır).
+    // All snapshots received since the last call, in tick order (interpolation uses all of them).
     [[nodiscard]] std::vector<WorldSnapshot_t> consumeSnapshots();
 
 private:
@@ -41,7 +41,7 @@ private:
     std::optional<uint32_t> m_tickRate;
     uint32_t m_viewTargetNetId = 0;
     std::vector<WorldSnapshot_t> m_snapshots;
-    uint32_t m_lastTick = 0;  // bundan eski/aynı tick'li snapshot atılır (UDP sırasız gelebilir)
+    uint32_t m_lastTick = 0;  // snapshots with this tick or an older one are dropped (UDP can arrive out of order)
 };
 
 }  // namespace game

@@ -21,7 +21,7 @@ constexpr uint32_t kFirstAscii = 32;
 constexpr uint32_t kLastAscii = 126;
 constexpr uint32_t kFirstLatin1 = 0xA0;
 constexpr uint32_t kLastLatin1 = 0xFF;
-constexpr std::array<uint32_t, 6> kTurkish{0x011E, 0x011F, 0x0130, 0x0131, 0x015E, 0x015F};  // Ğ ğ İ ı Ş ş
+constexpr std::array<uint32_t, 6> kTurkish{0x011E, 0x011F, 0x0130, 0x0131, 0x015E, 0x015F};  // Ğ ğ İ ı Ş ş (Turkish letters)
 
 std::vector<int> bakedCodepoints() {
     std::vector<int> codepoints;
@@ -40,12 +40,12 @@ Glyph_t toGlyph(const stbtt_packedchar& packed) {
     };
 }
 
-// UTF-8 dizisinin ilk baytından uzunluğu. Geçersiz bayt: 0.
+// Length of the UTF-8 sequence from its first byte. Invalid byte: 0.
 size_t sequenceLength(uint8_t lead) {
     return lead < 0x80 ? 1 : (lead >> 5) == 0x6 ? 2 : (lead >> 4) == 0xE ? 3 : (lead >> 3) == 0x1E ? 4 : 0;
 }
 
-// UTF-8 -> kod noktaları. Bozuk bayt dizisinde o bayt atlanır.
+// UTF-8 -> code points. In a broken byte sequence that byte is skipped.
 std::vector<uint32_t> decodeUtf8(std::string_view text) {
     std::vector<uint32_t> out;
     for (size_t i = 0; i < text.size();) {
@@ -63,7 +63,7 @@ std::vector<uint32_t> decodeUtf8(std::string_view text) {
     return out;
 }
 
-// Satır genişliği (piksel): sadece atlasta olan harflerin advance toplamı.
+// Line width (pixels): sum of the advances of only the glyphs that exist in the atlas.
 float lineWidth(const FontAtlas_t& atlas, std::span<const uint32_t> codepoints) {
     float width = 0.0f;
     for (uint32_t c : codepoints) {
@@ -73,7 +73,7 @@ float lineWidth(const FontAtlas_t& atlas, std::span<const uint32_t> codepoints) 
 }
 
 void addQuad(MeshData_t& mesh, const FontAtlas_t& atlas, const Glyph_t& glyph, float cursorX, float pixelToWorld) {
-    // Atlas y aşağı, dünya y yukarı. Taban çizgisi y=0.
+    // Atlas y points down, world y points up. The baseline is y=0.
     const float left = (cursorX + glyph.xoff) * pixelToWorld;
     const float right = (cursorX + glyph.xoff2) * pixelToWorld;
     const float top = -glyph.yoff * pixelToWorld;
@@ -93,12 +93,12 @@ void addQuad(MeshData_t& mesh, const FontAtlas_t& atlas, const Glyph_t& glyph, f
 
 std::expected<FontAtlas_t, std::string> bake(std::span<const std::byte> ttf, float pixelHeight) {
     if (ttf.empty() || pixelHeight <= 0.0f) {
-        return std::unexpected("font: bos veri ya da gecersiz yukseklik");
+        return std::unexpected("font: empty data or invalid height");
     }
     const auto* fontData = reinterpret_cast<const unsigned char*>(ttf.data());
     stbtt_fontinfo info;
     if (stbtt_InitFont(&info, fontData, stbtt_GetFontOffsetForIndex(fontData, 0)) == 0) {
-        return std::unexpected("font: gecerli bir TTF degil");
+        return std::unexpected("font: not a valid TTF");
     }
 
     FontAtlas_t atlas;
@@ -117,13 +117,13 @@ std::expected<FontAtlas_t, std::string> bake(std::span<const std::byte> ttf, flo
 
     stbtt_pack_context context;
     if (stbtt_PackBegin(&context, reinterpret_cast<unsigned char*>(atlas.pixels.data()), kAtlasSize, kAtlasSize, 0, 1, nullptr) == 0) {
-        return std::unexpected("font: atlas baslatilamadi");
+        return std::unexpected("font: could not start the atlas");
     }
-    stbtt_PackSetOversampling(&context, 2, 2);  // daha yumusak kenar, buyutunce daha az blok
+    stbtt_PackSetOversampling(&context, 2, 2);  // smoother edges, fewer blocks when scaled up
     const int packedOk = stbtt_PackFontRanges(&context, fontData, 0, &range, 1);
     stbtt_PackEnd(&context);
     if (packedOk == 0) {
-        return std::unexpected("font: harfler atlasa sigmadi (atlas boyutunu ya da pixelHeight'i kucult)");
+        return std::unexpected("font: glyphs did not fit in the atlas (reduce the atlas size or pixelHeight)");
     }
 
     for (size_t i = 0; i < codepoints.size(); ++i) {
@@ -142,7 +142,7 @@ std::expected<FontAtlas_t, std::string> bake(std::span<const std::byte> ttf, flo
 std::expected<FontAtlas_t, std::string> load(const std::string& assetPath, float pixelHeight) {
     const auto path = findAssetPath(assetPath);
     if (!path) {
-        return std::unexpected("font: dosya bulunamadi: " + assetPath);
+        return std::unexpected("font: file not found: " + assetPath);
     }
     std::ifstream file(*path, std::ios::binary);
     std::vector<char> bytes((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
@@ -158,7 +158,7 @@ MeshData_t buildTextMesh(const FontAtlas_t& atlas, std::string_view utf8, float 
     for (uint32_t c : codepoints) {
         const auto it = atlas.glyphs.find(c);
         if (it == atlas.glyphs.end()) continue;
-        const bool isSpace = c == U' ' || c == 0xA0;  // boşluk: quad üretmeden sadece ilerle
+        const bool isSpace = c == U' ' || c == 0xA0;  // space: only advance the cursor, no quad
         if (!isSpace) addQuad(mesh, atlas, it->second, cursorX, pixelToWorld);
         cursorX += it->second.advance;
     }
@@ -194,7 +194,7 @@ glm::mat4 billboardModel(const CCamera& camera, const glm::vec3& position, float
 }
 
 float constantScreenScale(const CCamera& camera, const glm::vec3& position) {
-    // Projeksiyon [1][1] = 1/tan(fov/2): mesafe d'de ekran yuksekligi 2*d/[1][1] dunya birimidir.
+    // Projection [1][1] = 1/tan(fov/2): at distance d the screen height is 2*d/[1][1] world units.
     const float distance = glm::dot(position - camera.position(), camera.forward());
     return std::max(distance, 0.1f) * 2.0f / camera.projection()[1][1];
 }

@@ -8,8 +8,8 @@
 
 namespace game {
 
-// Her client tick'inde bir UserCmd üretir. Tuşlar aksiyon tablosundan (Bindings_t) okunur,
-// oyun aksiyonlarına (EButton) çevrilir. Basılı durum `buttons`, değişim `buttonsPressed/Released`.
+// Produces one UserCmd per client tick. Keys are read from the action table (Bindings_t)
+// and converted to game actions (EButton). Held state is `buttons`; changes are `buttonsPressed/Released`.
 class CInputSampler {
 public:
     void bind(const IPlatform* platform, const Bindings_t* bindings);
@@ -17,7 +17,7 @@ public:
     [[nodiscard]] UserCmd_t sample(uint32_t tick);
 
     void setMouseSensitivity(float radiansPerPixel);
-    // Kapalıyken (konsol açık) tuş ve fare okunmaz; komut sadece mevcut bakış açısını taşır.
+    // While disabled (console open), keys and mouse are not read; the command only carries the current view angles.
     void setEnabled(bool enabled);
 
 private:

@@ -21,9 +21,8 @@ union SDL_Event;
 
 namespace game::rml {
 
-// RmlUi'nin ui.dll içindeki sahibi: başlatma, bağlam, belgeler, eylem kuyruğu,
-// girdi yönlendirme, çizim. Dışarıya RmlUi tipi vermez; IUI üzerinden isimle
-// konuşulur.
+// Owner of RmlUi inside ui.dll: startup, context, documents, action queue,
+// input routing, drawing. It does not expose RmlUi types; it is addressed by name through IUI.
 class CRmlSystem {
 public:
   CRmlSystem() = default;
@@ -36,8 +35,7 @@ public:
 
   void processEvent(const SDL_Event &event, bool mouseAllowed,
                     bool keyboardAllowed);
-  // Frame sonu: boyutu eşitler, belgeleri günceller, çizim komutlarını
-  // kaydeder.
+  // End of frame: syncs the size, updates the documents, records the draw commands.
   void update();
   void prepare(SDL_GPUCommandBuffer *commands) { m_renderer.prepare(commands); }
   void draw(SDL_GPUCommandBuffer *commands, SDL_GPURenderPass *pass) {
@@ -83,7 +81,7 @@ private:
   Rml::Context *m_context = nullptr;
   std::unordered_map<std::string, Document_t> m_documents;
   std::unordered_map<std::string, std::string>
-      m_lastRml; // "belge#id" -> son yazılan içerik (aynıysa yeniden yazma)
+      m_lastRml; // "document#id" -> last written content (not rewritten if unchanged)
   glm::ivec2 m_viewport{0};
   float m_pixelDensity = 1.0f;
   bool m_debuggerReady = false;

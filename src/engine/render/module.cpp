@@ -3,7 +3,7 @@
 
 namespace game {
 
-// Renderer001 tek renderer arayüzüdür.
+// Renderer001 is the single renderer interface.
 GAME_EXPOSE_INTERFACE(CRenderSystem, IRenderer, kRendererInterface)
 
 }  // namespace game

@@ -6,8 +6,8 @@ namespace game::systems {
 
 void input(World_t& world) {
     for (auto [controller, queue] : world.registry.view<CommandQueue_t>().each()) {
-        // Kuyruk büyümesin (gecikme birikir): sınırı aşan en eski komutlar atılır, kenar bayrakları
-        // (basıldı/bırakıldı) bir sonraki komuta eklenir ki zıplama/ateş kaybolmasın.
+        // Don't let the queue grow (delay would accumulate): the oldest commands over the limit are dropped, and their edge flags
+        // (pressed/released) are added to the next command so that a jump or shot is not lost.
         while (queue.pending.size() > kMaxCmdBacklog) {
             const UserCmd_t dropped = queue.pending.front();
             queue.pending.pop_front();
@@ -17,13 +17,13 @@ void input(World_t& world) {
         if (!queue.pending.empty()) {
             queue.current = queue.pending.front();
             queue.pending.pop_front();
-            // client prediction'ın ack'i: komutu şu an uygulanacağı pawn'a yazılır.
+            // client prediction's ack: the command is written to the pawn it is about to be applied to.
             const entt::entity pawn = control::pawnOf(world.registry, controller);
             if (auto* player = pawn != entt::null ? world.registry.try_get<Player_t>(pawn) : nullptr) {
                 player->lastCmdSeq = queue.current.tick;
             }
         } else {
-            // Paket gelmediyse son komutun hareketini sürdür, tek seferlik edge'leri temizle.
+            // If no packet arrived, keep the last command's movement and clear the one-shot edges.
             queue.current.buttonsPressed = 0;
             queue.current.buttonsReleased = 0;
         }

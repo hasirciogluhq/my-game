@@ -11,14 +11,14 @@
 
 namespace game {
 
-// Renderer001 uygulaması. Backend'den habersizdir: her şey rhi::IRhiDevice üzerinden gider.
+// Renderer001 implementation. It is unaware of the backend: everything goes through rhi::IRhiDevice.
 //
-//   uygulama -> CRenderSystem (kaynaklar, sahne durumu, culling, sıralama)
-//            -> pass listesi: shadow -> scene (sky + opak + şeffaf) -> debug -> post -> overlay
-//            -> rhi::IRhiDevice / IRhiCommandList -> backend (CSdlGpuDevice = Metal; ileride D3D11 ...)
+//   application -> CRenderSystem (resources, scene state, culling, sorting)
+//               -> pass list: shadow -> scene (sky + opaque + transparent) -> debug -> post -> overlay
+//               -> rhi::IRhiDevice / IRhiCommandList -> backend (CSdlGpuDevice = Metal; later D3D11 ...)
 //
-// Yeni backend: rhi_factory.cpp'ye IRhiDevice implementasyonu ekle, shaders/ altına o dilin kaynağını yaz.
-// Yeni efekt: IRenderPass'ten bir pass yaz, createPasses()'e ekle.
+// New backend: add an IRhiDevice implementation to rhi_factory.cpp and write that language's source under shaders/.
+// New effect: write a pass from IRenderPass and add it to createPasses().
 class RENDER_API CRenderSystem final : public IRenderer {
 public:
     CRenderSystem();

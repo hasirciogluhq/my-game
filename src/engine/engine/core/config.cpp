@@ -37,7 +37,7 @@ int getInt(const ConfigValues_t& values, const std::string& key, int fallback) {
     }
     int number = fallback;
     const auto& text = it->second;
-    std::from_chars(text.data(), text.data() + text.size(), number);  // hatada number fallback kalır
+    std::from_chars(text.data(), text.data() + text.size(), number);  // on error, number keeps the fallback
     return number;
 }
 

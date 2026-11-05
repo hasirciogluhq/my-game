@@ -8,7 +8,7 @@
 
 namespace game::rml {
 
-// RmlUi'nin sistem hizmetleri: zaman, log (ILog'a), pano (SDL).
+// RmlUi system services: time, log (to ILog), clipboard (SDL).
 class CRmlSystemInterface final : public Rml::SystemInterface {
 public:
   double GetElapsedTime() override;
@@ -17,8 +17,8 @@ public:
   void GetClipboardText(Rml::String &text) override;
 };
 
-// RmlUi dosya erişimi: yollar assets-görelidir ("ui/hud.rml",
-// "fonts/DejaVuSans.ttf"); findAssetPath ile çözülür.
+// RmlUi file access: paths are assets-relativedir ("ui/hud.rml",
+// "fonts/DejaVuSans.ttf"); they are resolved with findAssetPath.
 class CRmlFileInterface final : public Rml::FileInterface {
 public:
   Rml::FileHandle Open(const Rml::String &path) override;

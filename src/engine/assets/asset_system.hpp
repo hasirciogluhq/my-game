@@ -7,7 +7,7 @@
 
 namespace game {
 
-// Önbellek tuttuğu için sınıf. Arayüz: IAssets (Assets001).
+// A class because it holds a cache. Interface: IAssets (Assets001).
 class ASSETS_API CAssetSystem final : public IAssets {
 public:
     [[nodiscard]] std::expected<std::shared_ptr<const MeshData_t>, std::string> loadMesh(const std::string& path) override;

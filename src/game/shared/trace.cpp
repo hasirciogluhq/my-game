@@ -17,7 +17,7 @@ TraceHit_t line(const World_t& world, const TraceParams_t& params) {
         }
     }
 
-    // Oyuncular fizikte ışına görünmez (CharacterVirtual): kapsüllere analitik bakılır.
+    // Players are invisible to the physics ray (CharacterVirtual): the capsules are tested analytically.
     for (const auto [entity, transform, player] : world.registry.view<const Transform_t, const Player_t>().each()) {
         if (entity == params.ignore) {
             continue;

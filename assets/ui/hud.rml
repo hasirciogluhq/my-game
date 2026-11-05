@@ -13,7 +13,7 @@
     </div>
 
     <div id="health-panel">
-        <div id="health-label">CAN</div>
+        <div id="health-label">HEALTH</div>
         <div id="health-value">100</div>
         <div id="health-track"><div id="health-fill"></div></div>
     </div>

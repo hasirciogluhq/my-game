@@ -12,8 +12,8 @@
 namespace game {
 
 // ---------------------------------------------------------------------------
-// Tick ayarları. Varsayılan 64; --tick-rate=N ile değiştirilebilir (server).
-// Server otoriter: client tick rate'i welcome paketinden öğrenir.
+// Tick settings. Default 64; can be changed with --tick-rate=N (server).
+// The server is authoritative: the client learns the tick rate from the welcome packet.
 // ---------------------------------------------------------------------------
 inline constexpr uint32_t kDefaultTickRate = 64;
 inline constexpr uint32_t kMinTickRate = 10;
@@ -29,7 +29,7 @@ inline constexpr uint16_t kDefaultPort = 7777;
 }
 
 // ---------------------------------------------------------------------------
-// Render/asset tarafı için mesh verisi
+// Mesh data for the render/asset side
 // ---------------------------------------------------------------------------
 struct Vertex_t {
     glm::vec3 position{0.0f};

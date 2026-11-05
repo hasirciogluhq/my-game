@@ -13,7 +13,7 @@ std::expected<std::shared_ptr<const MeshData_t>, std::string> CAssetSystem::load
 
     const auto file = findAssetPath(path);
     if (!file) {
-        return std::unexpected("asset bulunamadı: " + path);
+        return std::unexpected("asset not found: " + path);
     }
     auto loaded = model_loader::load(file->string());
     if (!loaded) {
@@ -32,7 +32,7 @@ std::expected<std::shared_ptr<const anim::SkinnedModel_t>, std::string> CAssetSy
 
     const auto file = findAssetPath(path);
     if (!file) {
-        return std::unexpected("asset bulunamadı: " + path);
+        return std::unexpected("asset not found: " + path);
     }
     auto loaded = model_loader::loadSkinned(file->string());
     if (!loaded) {

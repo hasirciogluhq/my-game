@@ -10,7 +10,7 @@
 
 namespace game {
 
-// Oyuncunun yapabildiği aksiyonlar. Fiziksel tuşlar buraya bağlanır (Bindings_t); oyun kodu sadece aksiyonu bilir.
+// The actions a player can perform. Physical keys are bound here (Bindings_t); game code only knows actions.
 enum class EAction : uint8_t {
     kForward,
     kBack,
@@ -23,33 +23,33 @@ enum class EAction : uint8_t {
     kReload,
     kWalk,
     kFreeCam,
-    kConsole,  // geliştirici konsolu
-    kScoreboard,  // basılı tutulunca istatistik tablosu
+    kConsole,  // developer console
+    kScoreboard,  // statistics table, shown while held down
     kCount,
 };
 
 inline constexpr std::size_t kActionCount = static_cast<std::size_t>(EAction::kCount);
 
-// Aksiyon → tuş adı (SDL adı: "W", "Space", "`", "Mouse1"...).
+// Action → key name (SDL name: "W", "Space", "`", "Mouse1"...).
 using Bindings_t = std::array<std::string, kActionCount>;
 
 namespace input {
 
-// Aksiyonun config/komut adı ("forward", "attack", "console"...).
+// The action's config/command name ("forward", "attack", "console"...).
 [[nodiscard]] std::string_view actionName(EAction action);
 [[nodiscard]] std::optional<EAction> actionFromName(std::string_view name);
 
-// Varsayılan tuşlar. Konsol: Esc'in altındaki tuş ("`").
+// Default keys. Console: the key under Esc ("`").
 [[nodiscard]] Bindings_t defaultBindings();
 
-// Aksiyonu tuşa bağlar. Tuş adı yanlışsa o aksiyon tetiklenmez (platform bilinmeyen adı yok sayar).
+// Binds an action to a key. If the key name is wrong, that action never fires (the platform ignores unknown names).
 void bind(Bindings_t& bindings, EAction action, std::string key);
 
-// Dosya biçimi: her satır "bind <aksiyon> <tuş>" (tuş adı boşluk içerebilir: "Left Shift").
-// Dosya yoksa varsayılanlar kalır.
+// File format: each line is "bind <action> <key>" (a key name may contain spaces: "Left Shift").
+// If the file does not exist, the defaults stay.
 void load(Bindings_t& bindings, const std::filesystem::path& path);
 void save(const Bindings_t& bindings, const std::filesystem::path& path);
-// Kayıt/yükleme yeri: assets/config/input.cfg (assets bulunamazsa çalışma dizininde config/input.cfg).
+// Save/load location: assets/config/input.cfg (if assets is not found, config/input.cfg in the working directory).
 [[nodiscard]] std::filesystem::path configPath();
 
 [[nodiscard]] bool isDown(const IPlatform& platform, const Bindings_t& bindings, EAction action);

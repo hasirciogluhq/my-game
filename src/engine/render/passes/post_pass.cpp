@@ -6,7 +6,7 @@ namespace game {
 
 bool CPostPass::create(const PassInitContext_t& context) {
     m_shaders = &context.shaders;
-    return m_shaders->get(EShaderId::kPostFragment).valid();  // pipeline backbuffer formatı bilinince üretilir
+    return m_shaders->get(EShaderId::kPostFragment).valid();  // the pipeline is created once the backbuffer format is known
 }
 
 void CPostPass::destroy(rhi::IRhiDevice& device) {

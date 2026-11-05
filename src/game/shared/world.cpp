@@ -33,7 +33,7 @@ entt::entity createReplicated(World_t& world) {
 }
 
 void destroy(World_t& world, entt::entity entity) {
-    control::onDestroy(world.registry, entity);  // pawn/controller bağlarını temizle
+    control::onDestroy(world.registry, entity);  // clean up pawn/controller links
     if (const auto* replicated = world.registry.try_get<Replicated_t>(entity)) {
         world.byNetId.erase(replicated->netId);
     }
@@ -65,7 +65,7 @@ entt::entity findController(const World_t& world, uint32_t playerId) {
 
 namespace {
 
-// Karakter pawn'ı: replicate edilir, controller'sızdır.
+// Character pawn: replicated, has no controller.
 entt::entity createCharacter(World_t& world, const glm::vec3& position) {
     const entt::entity entity = createReplicated(world);
     world.registry.emplace<Transform_t>(entity, position);
@@ -93,7 +93,7 @@ entt::entity spawnPlayer(World_t& world, uint32_t playerId) {
         return world.registry.get<PlayerController_t>(existing).homePawn;
     }
     const entt::entity pawn = createCharacter(world, {static_cast<float>(playerId) * 1.5f, 0.0f, 0.0f});
-    const entt::entity controller = control::createController(world.registry, true);  // oyuncu pawn'ını devrettirmez
+    const entt::entity controller = control::createController(world.registry, true);  // the pawn cannot be taken over from the player
     world.registry.emplace<PlayerController_t>(controller, PlayerController_t{.playerId = playerId, .homePawn = pawn});
     world.registry.emplace<CommandQueue_t>(controller);
     std::ignore = control::possess(world.registry, controller, pawn);
@@ -107,7 +107,7 @@ void despawnPlayer(World_t& world, uint32_t playerId) {
         return;
     }
     const entt::entity home = world.registry.get<PlayerController_t>(controller).homePawn;
-    destroy(world, controller);  // devraldığı bot varsa AI'a geri döner
+    destroy(world, controller);  // if it has taken over a bot, that bot goes back to AI
     if (world.registry.valid(home)) {
         destroyCharacter(world, home);
     }
@@ -119,7 +119,7 @@ void killPawn(World_t& world, entt::entity pawn) {
 
 entt::entity spawnBot(World_t& world, const glm::vec3& position) {
     const entt::entity pawn = createCharacter(world, position);
-    const entt::entity controller = control::createController(world.registry, false);  // oyuncu devralabilir
+    const entt::entity controller = control::createController(world.registry, false);  // a player can take it over
     world.registry.emplace<AiController_t>(controller);
     world.registry.emplace<CommandQueue_t>(controller);
     std::ignore = control::possess(world.registry, controller, pawn);

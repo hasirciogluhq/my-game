@@ -18,12 +18,12 @@ bool CPlatform::createWindow(const char* title, int width, int height) {
         return true;
     }
     if (!SDL_Init(SDL_INIT_VIDEO)) {
-        GAME_LOG_ERROR("platform", "SDL_Init başarısız: {}", SDL_GetError());
+        GAME_LOG_ERROR("platform", "SDL_Init failed: {}", SDL_GetError());
         return false;
     }
     m_window = SDL_CreateWindow(title, width, height, SDL_WINDOW_HIGH_PIXEL_DENSITY);
     if (m_window == nullptr) {
-        GAME_LOG_ERROR("platform", "SDL_CreateWindow başarısız: {}", SDL_GetError());
+        GAME_LOG_ERROR("platform", "SDL_CreateWindow failed: {}", SDL_GetError());
         SDL_Quit();
         return false;
     }
@@ -84,7 +84,7 @@ PlatformEvents_t CPlatform::pollEvents() {
 
 namespace {
 
-// "Mouse1".."Mouse3" fare tuşları, gerisi SDL tuş adı. Bilinmeyen ad: SDL_SCANCODE_UNKNOWN.
+// "Mouse1".."Mouse3" are mouse buttons, the rest are SDL key names. Unknown name: SDL_SCANCODE_UNKNOWN.
 int mouseButtonFromName(std::string_view name) {
     if (name == "Mouse1") return SDL_BUTTON_LEFT;
     if (name == "Mouse2") return SDL_BUTTON_RIGHT;

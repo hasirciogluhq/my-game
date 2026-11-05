@@ -12,10 +12,10 @@
 namespace game::culling {
 
 struct Frustum_t {
-    std::array<glm::vec4, 6> planes;  // xyz: iç yöne bakan normal (normalize), w: mesafe
+    std::array<glm::vec4, 6> planes;  // xyz: normal pointing inward (normalized), w: distance
 };
 
-// Gribb-Hartmann, derinlik 0..1 (ZO). viewProjection = projection * view.
+// Gribb-Hartmann, depth 0..1 (ZO). viewProjection = projection * view.
 [[nodiscard]] inline Frustum_t makeFrustum(const glm::mat4& vp) {
     const auto row = [&vp](int i) { return glm::vec4{vp[0][i], vp[1][i], vp[2][i], vp[3][i]}; };
     Frustum_t frustum{{row(3) + row(0), row(3) - row(0), row(3) + row(1), row(3) - row(1), row(2), row(3) - row(2)}};
@@ -34,7 +34,7 @@ struct Frustum_t {
     });
 }
 
-// Model matrisinin en büyük eksen ölçeği (bounding sphere yarıçapını dünyaya taşımak için).
+// Largest axis scale of the model matrix (to carry the bounding sphere radius into world space).
 [[nodiscard]] inline float maxAxisScale(const glm::mat4& model) {
     return std::max({glm::length(glm::vec3{model[0]}), glm::length(glm::vec3{model[1]}), glm::length(glm::vec3{model[2]})});
 }

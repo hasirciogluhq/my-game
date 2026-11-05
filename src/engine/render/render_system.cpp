@@ -19,7 +19,7 @@
 namespace game {
 namespace {
 
-constexpr float kShadowDepthRange = 120.0f;  // ışık kamerasının odağa uzaklığı (metre)
+constexpr float kShadowDepthRange = 120.0f;  // distance of the light camera from its focus (meters)
 
 uint32_t shadowMapSize(EShadowQuality quality) {
     switch (quality) {
@@ -37,7 +37,7 @@ RenderSettings_t sanitized(RenderSettings_t settings) {
     return settings;
 }
 
-// Güneş ortho matrisi, kamera çevresini kaplar. Odak texel ızgarasına yuvarlanır: kamera hareket ederken gölge titremez.
+// Sun ortho matrix covers the area around the camera. The focus is snapped to the texel grid so the shadow does not shimmer when the camera moves.
 glm::mat4 computeLightMatrix(const glm::vec3& cameraPosition, const glm::vec3& toSun, float extent, uint32_t shadowSize) {
     const glm::vec3 up = std::abs(toSun.y) > 0.99f ? glm::vec3{0.0f, 0.0f, 1.0f} : glm::vec3{0.0f, 1.0f, 0.0f};
     const glm::vec3 focus{cameraPosition.x, 0.0f, cameraPosition.z};
@@ -99,7 +99,7 @@ bool CRenderSystem::fail(std::string message) {
 }
 
 // ---------------------------------------------------------------------------
-// yaşam döngüsü
+// lifecycle
 // ---------------------------------------------------------------------------
 
 bool CRenderSystem::createPasses() {
@@ -113,7 +113,7 @@ bool CRenderSystem::createPasses() {
     const PassInitContext_t context{.device = *m_device, .shaders = m_shaders, .resources = m_resources};
     for (const auto& pass : m_passes) {
         if (!pass->create(context)) {
-            return fail("pass oluşturulamadı: " + m_device->lastError());
+            return fail("could not create pass: " + m_device->lastError());
         }
     }
     return true;
@@ -121,7 +121,7 @@ bool CRenderSystem::createPasses() {
 
 bool CRenderSystem::initialize(const RendererDesc_t& desc) {
     if (m_initialized) {
-        return fail("renderer zaten başlatılmış");
+        return fail("renderer is already initialized");
     }
     m_settings = sanitized(desc.settings);
 
@@ -180,11 +180,11 @@ void CRenderSystem::applySettings(const RenderSettings_t& settings) {
     if (m_initialized && next.vsync != m_settings.vsync) {
         m_device->setVsync(next.vsync);
     }
-    m_settings = next;  // gölge boyutu ve render ölçeği bir sonraki endFrame'de hedefleri yeniden kurar
+    m_settings = next;  // shadow size and render scale rebuild the targets in the next endFrame
 }
 
 // ---------------------------------------------------------------------------
-// kaynaklar
+// resources
 // ---------------------------------------------------------------------------
 
 MeshHandle_t CRenderSystem::createMesh(const MeshDesc_t& desc) {
@@ -240,7 +240,7 @@ void CRenderSystem::submit(const DrawItem_t& item) {
         return;
     }
     SubmittedDraw_t draw{.item = item};
-    draw.item.bones = {};  // span çağıranındır; matrisler aşağıda kopyalanır
+    draw.item.bones = {};  // the span belongs to the caller; the matrices are copied below
     const size_t boneCount = std::min<size_t>(item.bones.size(), kMaxBones);
     draw.boneOffset = static_cast<uint32_t>(m_scene.boneMatrices.size());
     draw.boneCount = static_cast<uint32_t>(boneCount);
@@ -270,7 +270,7 @@ void* CRenderSystem::nativeDevice() const {
     return m_initialized ? m_device->nativeDevice() : nullptr;
 }
 
-// Handle'ları pointer'a çevirir, frustum culling uygular, opak/şeffaf listelerini sıralar.
+// Converts handles to pointers, applies frustum culling, and sorts the opaque/transparent lists.
 void CRenderSystem::resolveDraws() {
     SceneState_t& scene = m_scene;
     scene.draws.clear();
@@ -295,7 +295,7 @@ void CRenderSystem::resolveDraws() {
 
         const glm::vec3 localCenter = (mesh->boundsMin + mesh->boundsMax) * 0.5f;
         const bool skinned = mesh->layout == EVertexLayout::kPosNormalUvSkin;
-        // Bind pozu sınırları animasyonda aşılabilir (kol kalkar): iskeletli mesh'te yarıçap payı.
+        // Bind-pose bounds can be exceeded during animation (a raised arm): skinned meshes get a radius margin.
         const float localRadius = glm::length(mesh->boundsMax - mesh->boundsMin) * (skinned ? 0.75f : 0.5f);
         const glm::vec3 center{item.transform * glm::vec4{localCenter, 1.0f}};
         const bool visible = culling::intersectsSphere(frustum, center, localRadius * culling::maxAxisScale(item.transform));
@@ -347,7 +347,7 @@ void CRenderSystem::renderFrame(const rhi::RhiFrameInfo_t& backbuffer) {
     const uint32_t height = std::max(1u, static_cast<uint32_t>(static_cast<float>(backbuffer.height) * m_settings.renderScale));
     const uint32_t shadowSize = shadowMapSize(m_settings.shadowQuality);
     if (!m_targets.ensure(*m_device, width, height, shadowSize)) {
-        fail("render hedefleri oluşturulamadı: " + m_device->lastError());
+        fail("could not create render targets: " + m_device->lastError());
         return;
     }
 

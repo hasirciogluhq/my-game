@@ -13,8 +13,8 @@ struct PassInitContext_t {
     CRenderResources& resources;
 };
 
-// Frame'i oluşturan sıralı adımlar. CRenderSystem pass'leri sırayla çalıştırır:
-// shadow -> scene (gökyüzü + opak + şeffaf) -> debug -> post. Yeni efekt = yeni pass sınıfı + listeye ekleme.
+// Sequential steps that build the frame. CRenderSystem runs the passes in order:
+// shadow -> scene (sky + opaque + transparent) -> debug -> post. New effect = new pass class + add it to the list.
 class IRenderPass {
 public:
     virtual ~IRenderPass() = default;
@@ -26,7 +26,7 @@ public:
 
 namespace passes {
 
-// İskeletli çizimin skin matrislerini bone uniform bloğuna yazar (eksik eklemler birim matris = bind pozu).
+// Writes the skin matrices of a skinned draw into the bone uniform block (missing joints are identity = bind pose).
 inline void setBones(rhi::IRhiCommandList& commands, const SceneState_t& scene, const SceneDraw_t& draw) {
     gpu::BoneUniforms_t uniforms;
     std::ranges::fill(uniforms.bones, glm::mat4{1.0f});
@@ -35,7 +35,7 @@ inline void setBones(rhi::IRhiCommandList& commands, const SceneState_t& scene, 
     commands.setUniforms(rhi::EShaderStage::kVertex, gpu::kBoneUniformSlot, uniforms);
 }
 
-// Mesh'i bağlayıp çizer (pipeline ve ortak uniform'lar çağıranda hazır olmalı).
+// Binds the mesh and draws it (the pipeline and shared uniforms must be ready in the caller).
 inline void drawMesh(rhi::IRhiCommandList& commands, const GpuMesh_t& mesh, const glm::mat4& model) {
     commands.bindVertexBuffer(0, mesh.vertexBuffer, 0);
     commands.bindIndexBuffer(mesh.indexBuffer, mesh.indexType, 0);

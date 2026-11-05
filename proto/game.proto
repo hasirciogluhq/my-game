@@ -2,26 +2,26 @@ syntax = "proto3";
 
 package netproto;
 
-// Client her tick'te bir tane gönderir. Server paket gelince sıraya alır ve
-// sonraki server tick'inde işler. Rewind / lag compensation yok.
-// tick: client'ın komut sıra numarası (1'den başlar). Server işlediği son numarayı
-// Player.last_cmd_seq ile geri bildirir; client prediction bununla uzlaşır (reconcile).
+// The client sends one per tick. The server queues it when the packet arrives and
+// processes it in the next server tick. No rewind / lag compensation.
+// tick: the client's command sequence number (starts at 1). The server reports the last number it processed
+// via Player.last_cmd_seq; client prediction reconciles with it.
 message UserCmd {
     uint32 tick = 1;
 
-    // Normalize hareket değerleri, -1..1 aralığında.
+    // Normalized movement values, in the range -1..1.
     float forward_move = 2;   // W = +1, S = -1
     float side_move = 3;      // D = +1, A = -1
-    float up_move = 4;        // şimdilik kullanılmıyor, ileride uçuş/yüzme için
+    float up_move = 4;        // not used for now; for flying/swimming later
 
-    // Bakış yönü (radyan).
+    // View direction (radians).
     float yaw = 5;
     float pitch = 6;
 
-    // Butonlar (EButton bitmask'i).
-    uint32 buttons = 7;            // basılı tutulanlar
-    uint32 buttons_pressed = 8;    // bu tick'te basılmaya başlanan (edge)
-    uint32 buttons_released = 9;   // bu tick'te bırakılan (edge)
+    // Buttons (EButton bitmask).
+    uint32 buttons = 7;            // held down
+    uint32 buttons_pressed = 8;    // started being pressed this tick (edge)
+    uint32 buttons_released = 9;   // released this tick (edge)
 }
 
 message Vec3 {
@@ -30,7 +30,7 @@ message Vec3 {
     float z = 3;
 }
 
-// Component mesajları: engine/ecs/components.hpp ile birebir.
+// Component messages: one-to-one with engine/ecs/components.hpp.
 message Transform {
     Vec3 position = 1;
     float yaw = 2;
@@ -45,10 +45,10 @@ message Player {
     uint32 player_id = 1;
     uint32 health = 2;
     bool on_ground = 3;
-    uint32 last_cmd_seq = 4;   // server'ın işlediği son UserCmd.tick (prediction ack)
+    uint32 last_cmd_seq = 4;   // last UserCmd.tick the server processed (prediction ack)
 }
 
-// Mermi konumu hesaplanmaz, saklanır: pos(t) = origin + velocity * (t - spawn_tick) * dt
+// The projectile position is not computed, it is stored: pos(t) = origin + velocity * (t - spawn_tick) * dt
 message Projectile {
     uint32 owner_id = 1;
     uint32 spawn_tick = 2;
@@ -56,16 +56,16 @@ message Projectile {
     Vec3 velocity = 4;
 }
 
-// Server'ın seçtiği animasyon durumu (EAnimState). Poz gönderilmez: client (tick - start_tick) ile hesaplar.
+// Animation state chosen by the server (EAnimState). No pose is sent: the client computes it from (tick - start_tick).
 message Animator {
     uint32 model = 1;             // EModel
     uint32 state = 2;             // EAnimState
-    uint32 start_tick = 3;        // state'in başladığı server tick'i
-    uint32 prev_state = 4;        // geçişte karıştırılan önceki state
+    uint32 start_tick = 3;        // server tick at which the state started
+    uint32 prev_state = 4;        // previous state, blended during the transition
     uint32 prev_start_tick = 5;
 }
 
-// Bir entity: net_id + sahip olduğu component'ler (olmayanlar boş).
+// An entity: net_id + the components it owns (absent ones are empty).
 message Entity {
     uint32 net_id = 1;
     Transform transform = 2;
@@ -81,10 +81,10 @@ message WorldSnapshot {
     repeated Entity entities = 3;
 }
 
-// Client -> server: izle / bot'u devral / bırak (EControlAction).
+// Client -> server: spectate / take over a bot / release (EControlAction).
 message ControlRequest {
     uint32 action = 1;
-    uint32 target_net_id = 2;   // izlenecek pawn
+    uint32 target_net_id = 2;   // pawn to spectate
 }
 
 message Envelope {
@@ -95,14 +95,14 @@ message Envelope {
         TYPE_USER_CMD = 3;
         TYPE_SNAPSHOT = 4;
         TYPE_CONTROL = 5;       // client -> server: ControlRequest
-        TYPE_VIEW_TARGET = 6;   // server -> client: izlenen pawn değişti
+        TYPE_VIEW_TARGET = 6;   // server -> client: the watched pawn changed
     }
 
     Type type = 1;
     uint32 player_id = 2;
-    uint32 tick_rate = 3;      // WELCOME'da server tick rate'i
+    uint32 tick_rate = 3;      // server tick rate in WELCOME
     UserCmd cmd = 4;
     WorldSnapshot snapshot = 5;
     ControlRequest control = 6;
-    uint32 view_target_net_id = 7;   // VIEW_TARGET'ta izlenen pawn'ın net_id'si, 0 = izlemiyor
+    uint32 view_target_net_id = 7;   // in VIEW_TARGET: net_id of the watched pawn, 0 = not watching
 }

@@ -1,7 +1,7 @@
-// Dummy server: sadece build / çıktı dizini / link zincirini doğrulamak için.
+// Dummy server: only to verify the build / output directory / link chain.
 #include <iostream>
 
 int main() {
-    std::cout << "dummy_server: çalışıyor\n";
+    std::cout << "dummy_server: running\n";
     return 0;
 }

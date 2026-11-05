@@ -37,7 +37,7 @@ constexpr std::array<std::pair<SDL_Scancode, Key>, 23> kSpecialKeys{{
     {SDL_SCANCODE_PERIOD, Key::KI_OEM_PERIOD},
 }};
 
-// Harfler, rakamlar, F tuşları ve özel tuşlar. Tanımsız tuş: KI_UNKNOWN.
+// Letters, digits, F keys and special keys. Undefined key: KI_UNKNOWN.
 Key toKey(SDL_Scancode scancode) {
   if (scancode >= SDL_SCANCODE_A && scancode <= SDL_SCANCODE_Z) {
     return static_cast<Key>(Key::KI_A + (scancode - SDL_SCANCODE_A));
@@ -69,7 +69,7 @@ int modifiers() {
   return result;
 }
 
-// SDL: 1 sol, 2 orta, 3 sağ. RmlUi: 0 sol, 1 sağ, 2 orta. Tanımsız: -1.
+// SDL: 1 left, 2 middle, 3 right. RmlUi: 0 left, 1 right, 2 middle. Undefined: -1.
 int toButton(Uint8 sdlButton) {
   switch (sdlButton) {
   case SDL_BUTTON_LEFT:

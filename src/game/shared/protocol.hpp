@@ -13,7 +13,7 @@
 
 namespace game {
 
-// Tek bir wire mesajı. Alan anlamı type'a göre değişir:
+// A single wire message. The meaning of the fields depends on the type:
 //  WELCOME   -> playerId, tickRate
 //  USER_CMD  -> cmd
 //  SNAPSHOT  -> snapshot
@@ -29,7 +29,7 @@ struct Envelope_t {
     uint32_t viewTargetNetId = 0;
 };
 
-// Wire: protobuf serialize -> gzip. Çerçeveleme network.dll'de.
+// Wire: protobuf serialize -> gzip. Framing is done in network.dll.
 namespace protocol {
 
 [[nodiscard]] netproto::Envelope toProto(const Envelope_t& envelope);

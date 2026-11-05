@@ -1,4 +1,4 @@
-/* CS2 tarzı skor tablosu: geniş (ekran genişliğinin %76'sı), ortada, koyu yarı saydam paneller. */
+/* CS2-style scoreboard: wide (76% of the screen width), centered, dark semi-transparent panels. */
 body { pointer-events: none; }
 
 #board {

@@ -1,25 +1,25 @@
 <rml>
 <head>
-    <title>Skor Tablosu</title>
+    <title>Scoreboard</title>
     <link type="text/rcss" href="common.rcss"/>
     <link type="text/rcss" href="scoreboard.rcss"/>
 </head>
 <body>
     <div id="board">
         <div id="header">
-            <div id="title">SKOR TABLOSU</div>
+            <div id="title">SCOREBOARD</div>
             <div id="summary"></div>
         </div>
 
         <div class="section players">
             <div class="section-head">
-                <div class="section-name">OYUNCULAR</div>
+                <div class="section-name">PLAYERS</div>
                 <div class="section-count" id="players-count"></div>
             </div>
             <div class="columns">
                 <div class="col rank">#</div>
-                <div class="col name">OYUNCU</div>
-                <div class="col health">CAN</div>
+                <div class="col name">PLAYER</div>
+                <div class="col health">HEALTH</div>
                 <div class="col id">ID</div>
             </div>
             <div id="players-rows"></div>
@@ -27,13 +27,13 @@
 
         <div class="section bots">
             <div class="section-head">
-                <div class="section-name">BOTLAR</div>
+                <div class="section-name">BOTS</div>
                 <div class="section-count" id="bots-count"></div>
             </div>
             <div class="columns">
                 <div class="col rank">#</div>
                 <div class="col name">BOT</div>
-                <div class="col health">CAN</div>
+                <div class="col health">HEALTH</div>
                 <div class="col id">ID</div>
             </div>
             <div id="bots-rows"></div>

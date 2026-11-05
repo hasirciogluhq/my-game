@@ -4,7 +4,7 @@
 
 namespace game {
 
-// Dil başına tüm shader'ları içeren kaynak. Yeni dil: shaders/hlsl_source.cpp + shader_library.cpp'deki shaderSource'a case.
+// Source containing all shaders for each language. New language: shaders/hlsl_source.cpp + a case for it in shaderSource in shader_library.cpp.
 [[nodiscard]] std::string_view mslShaderSource();
 
 }  // namespace game

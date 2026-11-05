@@ -7,11 +7,11 @@ namespace game {
 inline constexpr rhi::EPixelFormat kHdrFormat = rhi::EPixelFormat::kRgba16Float;
 inline constexpr rhi::EPixelFormat kDepthFormat = rhi::EPixelFormat::kD32Float;
 
-// Çözünürlüğe bağlı hedefler: HDR renk + derinlik (render ölçeğinde) ve gölge haritası.
-// Boyut değişince yeniden oluşturulur (pencere resize, render scale, gölge kalitesi).
+// Resolution-dependent targets: HDR color + depth (at render scale) and the shadow map.
+// Recreated when the size changes (window resize, render scale, shadow quality).
 class CRenderTargets {
 public:
-    // shadowSize 0 ise gölge kapalıdır; 1x1 bir harita tutulur (shader her zaman bir texture bağlar).
+    // shadowSize 0 means shadows are off; a 1x1 map is kept (the shader always binds a texture).
     [[nodiscard]] bool ensure(rhi::IRhiDevice& device, uint32_t width, uint32_t height, uint32_t shadowSize);
     void release(rhi::IRhiDevice& device);
 

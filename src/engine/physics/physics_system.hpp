@@ -7,8 +7,8 @@
 
 namespace game {
 
-// Jolt Physics sarmalayıcısı. Arayüz: IPhysics (Physics001).
-// Dünya statiktir (kutular); hareket eden şeyler CharacterVirtual kapsülleridir.
+// Jolt Physics wrapper. Interface: IPhysics (Physics001).
+// The world is static (boxes); moving things are CharacterVirtual capsules.
 class PHYSICS_API CPhysicsSystem final : public IPhysics {
 public:
     CPhysicsSystem();
@@ -29,7 +29,7 @@ public:
     [[nodiscard]] RayHit_t raycast(const glm::vec3& origin, const glm::vec3& direction, float maxDistance) const override;
 
 private:
-    struct Impl_t;  // Jolt tipleri header'a sızmasın
+    struct Impl_t;  // keep Jolt types out of the header
     std::unique_ptr<Impl_t> m_impl;
 };
 

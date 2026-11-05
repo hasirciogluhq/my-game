@@ -281,8 +281,8 @@ xmake f -m debug        # or -m release
 xmake build
 xmake run dedicated_server --tick-rate=64
 xmake run game --host=127.0.0.1 --port=7777
-xmake run ecs_test      # headless integration test, must print TUM TESTLER GECTI
-xmake run anim_test     # skinned model load + pose math, must print TUM TESTLER GECTI
+xmake run ecs_test      # headless integration test, must print ALL TESTS PASSED
+xmake run anim_test     # skinned model load + pose math, must print ALL TESTS PASSED
 xmake run network_test  # network.dll: TCP+UDP same port, handshake, reliable/unreliable, coroutine
 xmake run dummy_client
 xmake run dummy_server

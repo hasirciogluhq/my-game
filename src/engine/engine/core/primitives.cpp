@@ -5,7 +5,7 @@
 namespace game {
 namespace {
 
-// Bir yüzü ekler. u x v = normal olacak şekilde seçilmeli (dışarıdan CCW).
+// Adds one face. u and v must be chosen so that u x v = normal (CCW seen from outside).
 void addFace(MeshData_t& mesh, glm::vec3 normal, glm::vec3 u, glm::vec3 v) {
     const uint32_t base = static_cast<uint32_t>(mesh.vertices.size());
     const glm::vec3 center = normal * 0.5f;
@@ -37,7 +37,7 @@ MeshData_t makePlaneMesh(std::string name, float halfExtent) {
     mesh.name = std::move(name);
     const glm::vec3 normal{0.0f, 1.0f, 0.0f};
     const float h = halfExtent;
-    // Indeksler +Y'den bakınca CCW sarılır (ön yüz yukarı).
+    // Indices wind CCW when viewed from +Y (front face up).
     mesh.vertices = {
         Vertex_t{.position = {-h, 0.0f, -h}, .normal = normal, .uv = {0.0f, 0.0f}},
         Vertex_t{.position = {h, 0.0f, -h}, .normal = normal, .uv = {1.0f, 0.0f}},

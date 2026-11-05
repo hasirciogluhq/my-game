@@ -6,8 +6,7 @@
 namespace game {
 namespace {
 
-// Bu static'ler her DLL'de ayrı bir kopya olarak yaşar (static lib her modüle
-// gömülür).
+// These statics live as a separate copy in each DLL (the static lib is embedded in every module).
 CInterfaceRegistration *&registrationHead() {
   static CInterfaceRegistration *head = nullptr;
   return head;

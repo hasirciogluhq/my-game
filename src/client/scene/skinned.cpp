@@ -17,7 +17,7 @@ const SkinnedAsset_t *assetFor(const Resources_t &resources, EModel model) {
   return nullptr;
 }
 
-// state'in klibi, tick'ten (gösterim zamanı) beri geçen süreyle.
+// The state's clip, with the time elapsed since the tick (display time).
 anim::ClipSample_t sampleOf(const SkinnedAsset_t &asset, EAnimState state,
                             uint32_t startTick, double atTick, float dt) {
   return {.clip = asset.clipOfState[static_cast<size_t>(state)],
@@ -29,7 +29,7 @@ anim::ClipSample_t sampleOf(const SkinnedAsset_t &asset, EAnimState state,
 void drawSkinned(World_t &world, IRenderer &renderer,
                  const Resources_t &resources, double atTick) {
   const float dt = world::tickDelta(world);
-  std::vector<glm::mat4> skin; // submit() kopyalar; entity'ler arası yeniden kullanılır
+  std::vector<glm::mat4> skin; // submit() copies it; reused across entities
   for (const auto [entity, transform, animator] :
        world.registry.view<const Transform_t, const Animator_t>().each()) {
     const SkinnedAsset_t *asset = assetFor(resources, animator.model);

@@ -11,7 +11,7 @@
 
 namespace game::console {
 
-// Konsol komutlarının dokunabildiği şeyler.
+// What the console commands can touch.
 struct Context_t {
     ui::Console_t& console;
     Bindings_t& bindings;
@@ -23,8 +23,8 @@ struct Context_t {
     const World_t& world;
 };
 
-// Bir satırı çalıştırır. Çıktı ve hatalar print ile konsola yazılır.
-// Komutlar: help, clear, echo, binds, bind <aksiyon> <tuş>, sensitivity <değer>, cl_predict <0|1>, cl_interpolate <0|1>, cl_interp <saniye>, pawns, spectate <netId>, takeover, release, quit
+// Runs one line. Output and errors are written to the console with print.
+// Commands: help, clear, echo, binds, bind <action> <key>, sensitivity <value>, cl_predict <0|1>, cl_interpolate <0|1>, cl_interp <seconds>, pawns, spectate <netId>, takeover, release, quit
 void execute(Context_t& context, std::string_view line);
 
 }  // namespace game::console

@@ -21,7 +21,7 @@ rhi::EPixelFormat toRhiFormat(ETextureFormat format) {
     return rhi::EPixelFormat::kUndefined;
 }
 
-// Position her layout'ta vertex'in başındaki float3'tür.
+// Position is the float3 at the start of the vertex in every layout.
 void computeBounds(std::span<const std::byte> vertices, uint32_t stride, glm::vec3& boundsMin, glm::vec3& boundsMax) {
     boundsMin = glm::vec3{std::numeric_limits<float>::max()};
     boundsMax = glm::vec3{std::numeric_limits<float>::lowest()};
@@ -35,7 +35,7 @@ void computeBounds(std::span<const std::byte> vertices, uint32_t stride, glm::ve
 
 MaterialDesc_t sanitized(const MaterialDesc_t& desc) {
     MaterialDesc_t copy = desc;
-    copy.debugName = "";  // çağıranın string'i çağrıdan sonra yaşamayabilir
+    copy.debugName = "";  // the caller's string may not outlive the call
     return copy;
 }
 
@@ -50,7 +50,7 @@ bool CRenderResources::fail(std::string message) {
 bool CRenderResources::initialize(rhi::IRhiDevice& device) {
     m_device = &device;
 
-    // Gölge: karşılaştırmayı shader yapar, filtre yok.
+    // Shadow: the comparison is done by the shader, no filtering.
     m_shadowSampler = device.createSampler({.minFilter = rhi::EFilter::kNearest, .magFilter = rhi::EFilter::kNearest, .mipFilter = rhi::EFilter::kNearest});
     m_linearClampSampler = device.createSampler({});
     m_materialSampler = device.createSampler({.addressU = rhi::EAddressMode::kRepeat,
@@ -58,7 +58,7 @@ bool CRenderResources::initialize(rhi::IRhiDevice& device) {
                                               .addressW = rhi::EAddressMode::kRepeat,
                                               .maxAnisotropy = 8.0f});
     if (!m_shadowSampler.valid() || !m_linearClampSampler.valid() || !m_materialSampler.valid()) {
-        return fail("sampler oluşturulamadı: " + device.lastError());
+        return fail("could not create sampler: " + device.lastError());
     }
 
     constexpr std::array<std::byte, 4> kWhitePixel{std::byte{255}, std::byte{255}, std::byte{255}, std::byte{255}};
@@ -66,7 +66,7 @@ bool CRenderResources::initialize(rhi::IRhiDevice& device) {
                                     .generateMips = false, .pixels = kWhitePixel});
     m_defaultMaterial = createMaterial({.debugName = "default"});
     if (!m_whiteTexture.valid() || !m_defaultMaterial.valid()) {
-        return fail("varsayılan kaynaklar oluşturulamadı");
+        return fail("default resources could not be created");
     }
     return true;
 }
@@ -95,7 +95,7 @@ MeshHandle_t CRenderResources::createMesh(const MeshDesc_t& desc) {
     const uint32_t indexBytes = indexSize(desc.indexType);
     if (stride == 0 || desc.vertexData.empty() || desc.vertexData.size() % stride != 0 || desc.indexData.empty() ||
         desc.indexData.size() % indexBytes != 0) {
-        fail(std::string{"createMesh: vertex/index verisi geçersiz ("} + desc.debugName + ")");
+        fail(std::string{"createMesh: invalid vertex/index data ("} + desc.debugName + ")");
         return {};
     }
 
@@ -107,7 +107,7 @@ MeshHandle_t CRenderResources::createMesh(const MeshDesc_t& desc) {
     if (!mesh.vertexBuffer.valid() || !mesh.indexBuffer.valid()) {
         m_device->destroy(mesh.vertexBuffer);
         m_device->destroy(mesh.indexBuffer);
-        fail(std::string{"createMesh: GPU buffer oluşturulamadı: "} + desc.debugName);
+        fail(std::string{"createMesh: could not create GPU buffer: "} + desc.debugName);
         return {};
     }
     mesh.indexCount = static_cast<uint32_t>(desc.indexData.size() / indexBytes);
@@ -141,7 +141,7 @@ TextureHandle_t CRenderResources::createTexture(const TextureDesc_t& desc) {
 
 void CRenderResources::destroyTexture(TextureHandle_t handle) {
     if (handle == m_whiteTexture) {
-        return;  // varsayılan texture silinemez
+        return;  // the default texture cannot be deleted
     }
     if (auto texture = m_textures.destroy(handle)) {
         m_device->destroy(texture->texture);

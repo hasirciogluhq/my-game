@@ -1,4 +1,4 @@
-// log.dll: spdlog (async) arkasında ILog (Log001). Tek dosya: sınıf, kayıt ve modül export'u burada.
+// log.dll: ILog (Log001) on top of spdlog (async). Single file: the class, registration and module export are all here.
 #include "engine/interface/i_log.hpp"
 #include "engine/interface/create_interface.hpp"
 
@@ -34,7 +34,7 @@ spdlog::level::level_enum toSpdlog(ELogLevel level) {
     return spdlog::level::off;
 }
 
-// "net:trace,render:warn" -> [{"net", kTrace}, {"render", kWarn}]. Hatalı girdiler atlanır.
+// "net:trace,render:warn" -> [{"net", kTrace}, {"render", kWarn}]. Invalid entries are skipped.
 std::vector<std::pair<std::string, ELogLevel>> parseCategories(std::string_view text) {
     std::vector<std::pair<std::string, ELogLevel>> result;
     while (!text.empty()) {
@@ -80,9 +80,9 @@ public:
         auto logger = std::make_shared<spdlog::async_logger>("game", sinks.begin(), sinks.end(), spdlog::thread_pool(),
                                                              spdlog::async_overflow_policy::overrun_oldest);
         logger->set_pattern("[%H:%M:%S.%e] [%l] [%t] %v");
-        logger->set_level(spdlog::level::trace);  // filtre enabled() içinde
+        logger->set_level(spdlog::level::trace);  // filtering happens inside enabled()
         logger->flush_on(spdlog::level::err);
-        // Saniyede bir flush: süreç sinyalle öldürülse bile son saniye hariç log dosyada kalır.
+        // Flush once per second: even if the process is killed by a signal, everything except the last second stays in the log file.
         spdlog::drop("game");
         spdlog::register_logger(logger);
         spdlog::flush_every(std::chrono::seconds(1));

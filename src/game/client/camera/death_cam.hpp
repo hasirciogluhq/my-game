@@ -6,10 +6,10 @@
 
 namespace game::death_cam {
 
-// Pawn'ı olmayan oyuncunun kamerası: haritanın üstünden, karakterlere bakarak yavaşça dönen havadan bakış
-// (Battlefield / GTA V yükleme ekranı gibi).
+// Camera of a player who has no pawn: an aerial view from above the map, slowly orbiting while looking at the characters
+// (like the Battlefield / GTA V loading screen).
 struct DeathCam_t {
-    float angle = 0.0f;  // dönüş açısı (rad)
+    float angle = 0.0f;  // rotation angle (rad)
 };
 
 struct Pose_t {
@@ -18,10 +18,10 @@ struct Pose_t {
     float pitch = 0.0f;
 };
 
-// Açıyı ilerletir.
+// Advances the angle.
 void update(DeathCam_t& cam, float dt);
 
-// Odak noktası: hayatta olan karakterlerin ortası (kimse yoksa harita merkezi). Kamera onun etrafında döner.
+// Focus point: the middle of the living characters (the map center if nobody is alive). The camera orbits around it.
 [[nodiscard]] Pose_t pose(const DeathCam_t& cam, const World_t& world);
 
 }  // namespace game::death_cam

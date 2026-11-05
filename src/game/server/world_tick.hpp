@@ -4,7 +4,7 @@
 
 namespace game::world {
 
-// Bir server tick'i: input -> ai -> hareket -> silah -> mermiler -> sahiplik, sonra tick artar.
+// One server tick: input -> ai -> movement -> weapon -> projectiles -> owners, then the tick increments.
 void tick(World_t& world);
 
 }  // namespace game::world

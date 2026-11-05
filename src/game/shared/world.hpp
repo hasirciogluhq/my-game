@@ -11,11 +11,10 @@
 
 namespace game {
 
-// Oyun dünyası: tüm entity'ler registry'de. Server ve client aynı tipi
-// kullanır.
+// Game world: all entities are in the registry. The server and the client use the same type.
 struct World_t {
   entt::registry registry;
-  IPhysics *physics = nullptr; // client'ta sadece yerel tahmin için
+  IPhysics *physics = nullptr; // on the client, only for local prediction
   uint32_t tick = 0;
   uint32_t tickRate = kDefaultTickRate;
   uint32_t nextNetId = 1;
@@ -27,33 +26,32 @@ namespace world {
 void reset(World_t &world, uint32_t tickRate);
 [[nodiscard]] float tickDelta(const World_t &world);
 
-// Replicated entity'ler (netId ile bulunur).
-[[nodiscard]] entt::entity createReplicated(World_t &world); // yeni netId atar
+// Replicated entities (found by netId).
+[[nodiscard]] entt::entity createReplicated(World_t &world); // assigns a new netId
 [[nodiscard]] entt::entity findOrCreateReplicated(World_t &world,
                                                   uint32_t netId);
 void destroy(World_t &world, entt::entity entity);
 
 [[nodiscard]] entt::entity findByNetId(const World_t &world,
-                                       uint32_t netId); // entt::null olabilir
+                                       uint32_t netId); // may be entt::null
 
-// Oyuncular (server). Oyuncu = PlayerController_t entity'si + onun sürdüğü
-// karakter pawn'ı. spawnPlayer pawn'ı döndürür; oyuncu varsa kendi pawn'ını
-// (homePawn) döndürür.
+// Players (server). A player = a PlayerController_t entity + the character pawn it drives. spawnPlayer returns the pawn;
+// if the player already exists, it returns their own pawn (homePawn).
 entt::entity spawnPlayer(World_t &world, uint32_t playerId);
 void despawnPlayer(World_t &world, uint32_t playerId);
-// Karakter pawn'ını (fizik kapsülüyle) siler. Controller'ı kalır (oyuncu ölünce bağlantı ve controller durur).
+// Deletes the character pawn (with its physics capsule). The controller stays (when a player dies, the connection and controller remain).
 void killPawn(World_t &world, entt::entity pawn);
-// Bot: AiController_t + karakter pawn'ı. Pawn'ı döndürür.
+// Bot: AiController_t + character pawn. Returns the pawn.
 entt::entity spawnBot(World_t &world, const glm::vec3 &position);
-// playerId'li oyuncunun şu an SÜRDÜĞÜ pawn (client'ta replicate edilen
-// Player_t'den bulunur). entt::null olabilir.
+// The pawn that the player with playerId is CURRENTLY driving (found from the Player_t replicated to the client).
+// May be entt::null.
 [[nodiscard]] entt::entity findPlayer(const World_t &world, uint32_t playerId);
-// playerId'li oyuncunun controller'ı (sadece server'da var). entt::null
-// olabilir.
+// The controller of the player with playerId (exists only on the server). May be
+// entt::null.
 [[nodiscard]] entt::entity findController(const World_t &world,
                                           uint32_t playerId);
 void enqueueCommand(World_t &world, uint32_t playerId, const UserCmd_t &cmd);
-// Animasyonlu prop (server): replicate edilir, durumunu systems::animation seçer. Controller'sız, çarpışmasız.
+// Animated prop (server): replicated; systems::animation picks its state. No controller, no collision.
 entt::entity spawnAnimated(World_t &world, EModel model,
                            const glm::vec3 &position, float yaw = 0.0f);
 

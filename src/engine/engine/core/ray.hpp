@@ -1,7 +1,7 @@
 #pragma once
 
-// Işın matematiği (header-only, motor genel). Dünya geometrisi için IPhysics::raycast kullanılır;
-// burası fizik motorunun görmediği şekiller içindir (ör. karakter kapsülü).
+// Ray math (header-only, engine-wide). Use IPhysics::raycast for world geometry;
+// this is for shapes the physics engine does not see (e.g. the character capsule).
 
 #include <algorithm>
 #include <cmath>
@@ -12,7 +12,7 @@
 
 namespace game {
 
-// Işın (origin + t * direction, direction normalize) ile küre kesişimi. Başlangıç içerideyse 0.
+// Intersection of a ray (origin + t * direction, direction normalized) with a sphere. 0 if the origin is inside.
 [[nodiscard]] inline std::optional<float> raySphere(const glm::vec3& origin, const glm::vec3& direction, const glm::vec3& center,
                                                     float radius, float maxDistance) {
     const glm::vec3 toOrigin = origin - center;
@@ -22,7 +22,7 @@ namespace game {
         return 0.0f;
     }
     if (b > 0.0f) {
-        return std::nullopt;  // dışarıdayız ve küreden uzaklaşıyoruz
+        return std::nullopt;  // we are outside and moving away from the sphere
     }
     const float discriminant = b * b - c;
     if (discriminant < 0.0f) {
@@ -32,12 +32,12 @@ namespace game {
     return t <= maxDistance ? std::optional<float>{t} : std::nullopt;
 }
 
-// Işın ile dikey kapsül kesişimi. Kapsül ayak noktasından başlar: toplam boy `height`, yarıçap `radius`.
-// Dönen değer: ışın boyunca en yakın isabet mesafesi (başlangıç içerideyse 0).
+// Intersection of a ray with a vertical capsule. The capsule starts at the feet point: total height `height`, radius `radius`.
+// Returns: the distance to the nearest hit along the ray (0 if the origin is inside).
 [[nodiscard]] inline std::optional<float> rayCapsule(const glm::vec3& origin, const glm::vec3& direction, float maxDistance,
                                                      const glm::vec3& feet, float radius, float height) {
-    const glm::vec3 bottom = feet + glm::vec3{0.0f, radius, 0.0f};          // alt küre merkezi
-    const glm::vec3 top = feet + glm::vec3{0.0f, height - radius, 0.0f};  // üst küre merkezi
+    const glm::vec3 bottom = feet + glm::vec3{0.0f, radius, 0.0f};          // bottom sphere center
+    const glm::vec3 top = feet + glm::vec3{0.0f, height - radius, 0.0f};  // top sphere center
 
     std::optional<float> best;
     const auto consider = [&best](std::optional<float> t) {
@@ -49,7 +49,7 @@ namespace game {
     consider(raySphere(origin, direction, bottom, radius, maxDistance));
     consider(raySphere(origin, direction, top, radius, maxDistance));
 
-    // Silindir gövdesi: xz düzleminde daire, y aralığı [bottom.y, top.y].
+    // Cylinder body: circle in the xz plane, y range [bottom.y, top.y].
     const float ox = origin.x - feet.x;
     const float oz = origin.z - feet.z;
     const float a = direction.x * direction.x + direction.z * direction.z;
@@ -65,7 +65,7 @@ namespace game {
             }
         }
     } else if (c <= 0.0f && origin.y >= bottom.y && origin.y <= top.y) {
-        consider(0.0f);  // eksen boyunca bakıyoruz ve zaten içindeyiz
+        consider(0.0f);  // we are looking along the axis and already inside
     }
     return best;
 }

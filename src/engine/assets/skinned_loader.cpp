@@ -34,12 +34,12 @@ glm::quat toGlm(const aiQuaternion& q) {
     return {q.w, q.x, q.y, q.z};
 }
 
-// Assimp matrisi satır-öncelikli, glm sütun-öncelikli.
+// Assimp matrices are row-major, glm matrices are column-major.
 glm::mat4 toGlm(const aiMatrix4x4& m) {
     return glm::transpose(glm::make_mat4(&m.a1));
 }
 
-// Ağacı ebeveyn önce gelecek şekilde düz listeye çevirir.
+// Flattens the tree into a list with parents before their children.
 void flattenNodes(const aiNode* node, int parent, anim::SkinnedModel_t& model, NodeIndex_t& indexOf) {
     aiVector3D scale;
     aiQuaternion rotation;
@@ -63,19 +63,19 @@ struct Influence_t {
     float weight = 0.0f;
 };
 
-// Bir mesh'in eklemlerini modele ekler (ad başına bir kez) ve vertex başına etkileri toplar.
+// Adds a mesh's joints to the model (once per name) and collects the influences per vertex.
 std::expected<std::vector<std::vector<Influence_t>>, std::string> collectInfluences(const aiMesh* mesh, const NodeIndex_t& nodeIndex,
                                                                                     anim::SkinnedModel_t& model) {
     std::vector<std::vector<Influence_t>> influences(mesh->mNumVertices);
     for (const aiBone* bone : std::span{mesh->mBones, mesh->mNumBones}) {
         const auto node = nodeIndex.find(bone->mName.C_Str());
         if (node == nodeIndex.end()) {
-            return std::unexpected(std::string{"eklem düğümü bulunamadı: "} + bone->mName.C_Str());
+            return std::unexpected(std::string{"joint node not found: "} + bone->mName.C_Str());
         }
         auto joint = std::ranges::find(model.joints, node->second, &anim::Joint_t::node);
         if (joint == model.joints.end()) {
             if (model.joints.size() >= kMaxBones) {
-                return std::unexpected("eklem sayısı kMaxBones'u aşıyor (" + std::to_string(kMaxBones) + ")");
+                return std::unexpected("joint count exceeds kMaxBones (" + std::to_string(kMaxBones) + ")");
             }
             model.joints.push_back({.node = node->second, .inverseBind = toGlm(bone->mOffsetMatrix)});
             joint = model.joints.end() - 1;
@@ -88,7 +88,7 @@ std::expected<std::vector<std::vector<Influence_t>>, std::string> collectInfluen
     return influences;
 }
 
-// En güçlü 4 etkiyi alır, toplamı 1 yapar. Etkisiz vertex joint 0'a tam bağlanır.
+// Keeps the 4 strongest influences and normalizes them to sum to 1. An unweighted vertex is fully bound to joint 0.
 void writeSkin(anim::SkinnedVertex_t& vertex, std::vector<Influence_t> influences) {
     std::ranges::sort(influences, std::greater<>{}, &Influence_t::weight);
     influences.resize(std::min<size_t>(influences.size(), 4));
@@ -119,7 +119,7 @@ std::expected<void, std::string> appendMesh(const aiMesh* mesh, const NodeIndex_
             vertex.normal = toGlm(mesh->mNormals[i]);
         }
         if (mesh->HasTextureCoords(0)) {
-            vertex.uv = {mesh->mTextureCoords[0][i].x, 1.0f - mesh->mTextureCoords[0][i].y};  // Assimp V yukarı, Metal V aşağı
+            vertex.uv = {mesh->mTextureCoords[0][i].x, 1.0f - mesh->mTextureCoords[0][i].y};  // Assimp V points up, Metal V points down
         }
         writeSkin(vertex, std::move((*influences)[i]));
         model.vertices.push_back(vertex);
@@ -159,7 +159,7 @@ anim::Clip_t convertClip(const aiAnimation* animation, const NodeIndex_t& nodeIn
     return clip;
 }
 
-// RGBA8'e çözer; başarısızsa boş doku.
+// Decodes to RGBA8; an empty texture on failure.
 anim::TextureData_t decodeImage(const unsigned char* bytes, int size) {
     int width = 0;
     int height = 0;
@@ -179,7 +179,7 @@ std::vector<unsigned char> readFile(const std::filesystem::path& path) {
     return {std::istreambuf_iterator<char>(file), std::istreambuf_iterator<char>()};
 }
 
-// İlk meshin base color dokusu: glb'ye gömülü ya da modelin yanındaki dosya.
+// Base color texture of the first mesh: embedded in the glb, or a file next to the model.
 anim::TextureData_t loadBaseColor(const aiScene* scene, const std::filesystem::path& modelPath) {
     for (const aiMesh* mesh : std::span{scene->mMeshes, scene->mNumMeshes}) {
         aiString texturePath;
@@ -199,7 +199,7 @@ anim::TextureData_t loadBaseColor(const aiScene* scene, const std::filesystem::p
 
 std::unique_ptr<Assimp::Importer> makeImporter() {
     auto importer = std::make_unique<Assimp::Importer>();
-    importer->SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);  // Mixamo: pivot düğümlerini çöz
+    importer->SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);  // Mixamo: resolve pivot nodes
     return importer;
 }
 
@@ -210,7 +210,7 @@ bool isModelFile(const std::filesystem::path& path) {
     return ext == ".glb";
 }
 
-// Klasör modu: character.* = mesh + iskelet, diğer model dosyaları = ek klipler (klip adı = dosya adı).
+// Directory mode: character.* = mesh + skeleton, other model files = extra clips (clip name = file name).
 std::expected<anim::SkinnedModel_t, std::string> loadDirectory(const std::filesystem::path& dir) {
     std::filesystem::path character;
     std::vector<std::filesystem::path> clipFiles;
@@ -225,7 +225,7 @@ std::expected<anim::SkinnedModel_t, std::string> loadDirectory(const std::filesy
         }
     }
     if (character.empty()) {
-        return std::unexpected("klasörde character.fbx/glb yok: " + dir.string());
+        return std::unexpected("no character.fbx/glb in folder: " + dir.string());
     }
     std::ranges::sort(clipFiles);
 
@@ -241,7 +241,7 @@ std::expected<anim::SkinnedModel_t, std::string> loadDirectory(const std::filesy
         const auto importer = makeImporter();
         const aiScene* scene = importer->ReadFile(file.string(), kImportFlags);
         if (scene == nullptr || scene->mNumAnimations == 0) {
-            return std::unexpected("klip dosyası okunamadı: " + file.string());
+            return std::unexpected("could not read clip file: " + file.string());
         }
         anim::Clip_t clip = convertClip(scene->mAnimations[0], nodeIndex);
         clip.name = file.stem().string();
@@ -269,7 +269,7 @@ std::expected<anim::SkinnedModel_t, std::string> loadSkinned(const std::string& 
 
     for (const aiMesh* mesh : std::span{scene->mMeshes, scene->mNumMeshes}) {
         if (!mesh->HasBones()) {
-            return std::unexpected("mesh iskeletli değil (kemik yok): " + path);
+            return std::unexpected("mesh is not skinned (no bones): " + path);
         }
         if (auto added = appendMesh(mesh, nodeIndex, model); !added) {
             return std::unexpected(added.error());

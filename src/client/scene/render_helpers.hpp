@@ -4,7 +4,7 @@
 
 namespace game::scene {
 
-// Renderer'a küçük yardımcılar (scene/ içinde ortak).
+// Small helpers for the renderer (shared within scene/).
 [[nodiscard]] glm::mat4 scaleAt(glm::vec3 center, glm::vec3 size);
 [[nodiscard]] MeshHandle_t uploadMesh(IRenderer &renderer,
                                       const MeshData_t &mesh);

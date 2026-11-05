@@ -10,9 +10,9 @@
 
 namespace game {
 
-// Her modülün dışa açtığı tek giriş noktası:  void* CreateInterface(const char*
-// name, int* returnCode) Dönen pointer çağıran tarafta arayüz tipine
-// static_cast edilir. Bulunamazsa nullptr.
+// The single entry point each module exports:  void* CreateInterface(const char*
+// name, int* returnCode). The returned pointer is static_cast to the interface type
+// on the caller side. nullptr if not found.
 using CreateInterfaceFn = void *(*)(const char *name, int *returnCode);
 
 inline constexpr int kInterfaceOk = 0;
@@ -20,7 +20,7 @@ inline constexpr int kInterfaceNotFound = 1;
 
 using InstanceFactory = void *(*)();
 
-// Statik başlatmada kendini modül-içi registry'ye kaydeden düğüm.
+// Node that registers itself in the module-local registry during static initialization.
 class CInterfaceRegistration {
 public:
   CInterfaceRegistration(InstanceFactory factory, const char *name);
@@ -35,11 +35,11 @@ private:
   const CInterfaceRegistration *m_next;
 };
 
-// Modül tarafı: sadece bu modülde kayıtlı arayüzleri arar.
+// Module side: searches only the interfaces registered in this module.
 [[nodiscard]] void *findLocalInterface(const char *name, int *returnCode);
 
-// Tipli sorgu: factory'den arayüzü alır, bulunamazsa nullptr. static_cast'i tek
-// yerde toplar.
+// Typed query: gets the interface from the factory, nullptr if not found.
+// Collects the static_cast in one place.
 template <typename Interface>
 [[nodiscard]] Interface *queryInterface(CreateInterfaceFn factory,
                                         const char *name) {
@@ -48,16 +48,15 @@ template <typename Interface>
                             : nullptr;
 }
 
-// Host tarafı: yüklenmiş tüm modüllerde (registerModuleFactory ile eklenen)
-// arar.
+// Host side: searches all loaded modules (added with registerModuleFactory).
 [[nodiscard]] void *resolveInterface(const char *name, int *returnCode);
 void registerModuleFactory(CreateInterfaceFn factory);
 
 } // namespace game
 
-// Sınıfı arayüz adıyla kaydeder. ImplClass default constructible olmalı.
-// Instance function-local static'tir: modül yaşadığı sürece bir tane vardır,
-// ownership yok. Kullanım (modülün kendi namespace'i içinde):
+// Registers the class under the interface name. ImplClass must be default constructible.
+// The instance is a function-local static: there is exactly one for as long as the module lives, and no ownership.
+// Usage (inside the module's own namespace):
 // GAME_EXPOSE_INTERFACE(CFoo, IFoo, kFooInterface);
 #define GAME_EXPOSE_INTERFACE(ImplClass, InterfaceType, versionName)           \
   namespace {                                                                  \
@@ -70,9 +69,8 @@ void registerModuleFactory(CreateInterfaceFn factory);
       &createInstance##ImplClass, versionName};                                \
   }
 
-// Modülün tek CreateInterface export'u. Her modülün bir .cpp dosyasında bir kez
-// çağrılır. BindLog: CModule::load host'un log sink'ini bu modüle bağlar (modül
-// kodunda connect() gerekmez).
+// The module's single CreateInterface export. Called once in one .cpp file of each module.
+// BindLog: CModule::load binds the host's log sink to this module (no connect() needed in module code).
 #define GAME_EXPORT_MODULE()                                                   \
   extern "C" GAME_EXPORT void *CreateInterface(const char *name,               \
                                                int *returnCode) {              \

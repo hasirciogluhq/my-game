@@ -9,7 +9,7 @@ bool loadDocuments(IUI &ui) {
     return false;
   }
   if (!ui.loadFont("fonts/DejaVuSans.ttf", true)) {
-    GAME_LOG_WARN("client", "arayüz fontu yüklenemedi (fonts/DejaVuSans.ttf)");
+    GAME_LOG_WARN("client", "UI font could not be loaded (fonts/DejaVuSans.ttf)");
   }
   return ui.loadDocument(kHudDocument) &&
          ui.loadDocument(kScoreboardDocument) &&

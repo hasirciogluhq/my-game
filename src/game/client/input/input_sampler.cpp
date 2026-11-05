@@ -7,7 +7,7 @@
 namespace game {
 namespace {
 
-// Aksiyon -> ağa giden buton. Yeni buton için sadece bu tabloya satır.
+// Action -> network button. For a new button, just add a row to this table.
 struct ButtonAction_t {
     EButton button;
     EAction action;
@@ -47,7 +47,7 @@ void CInputSampler::setEnabled(bool enabled) {
 }
 
 UserCmd_t CInputSampler::sample(uint32_t tick) {
-    // yaw artınca bakış sağa döner (forward.x = sin(yaw)); fare sağa (dx > 0) = sağa bakmak.
+    // Turning the view right increases yaw (forward.x = sin(yaw)); mouse right (dx > 0) = look right.
     m_yaw += m_pendingDx * m_mouseSensitivity;
     m_pitch -= m_pendingDy * m_mouseSensitivity;
     clampViewAngles(m_yaw, m_pitch);

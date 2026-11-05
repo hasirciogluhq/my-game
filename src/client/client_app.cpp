@@ -36,20 +36,20 @@ bool CClientApp::connect(CreateInterfaceFn factory) {
   m_renderer = queryInterface<IRenderer>(factory, kRendererInterface);
   m_particles = queryInterface<IParticles>(factory, kParticlesInterface);
   m_assets = queryInterface<IAssets>(factory, kAssetsInterface);
-  m_audio = queryInterface<IAudio>(factory, kAudioInterface); // opsiyonel
-  m_ui = queryInterface<IUI>(factory, kUIInterface);          // opsiyonel
+  m_audio = queryInterface<IAudio>(factory, kAudioInterface); // optional
+  m_ui = queryInterface<IUI>(factory, kUIInterface);          // optional
   INetwork *network = queryInterface<INetwork>(factory, kNetworkInterface);
   if (m_platform == nullptr || m_renderer == nullptr ||
       m_particles == nullptr || m_assets == nullptr || network == nullptr) {
     GAME_LOG_ERROR("client", "platform/renderer/particles/assets/network "
-                             "arayüzlerinden biri bulunamadı");
+                             "interfaces was not found");
     return false;
   }
   m_network.bind(network);
   if (m_audio != nullptr && !m_audio->initialize()) {
     m_audio = nullptr;
   }
-  m_physics = queryInterface<IPhysics>(factory, kPhysicsInterface); // opsiyonel
+  m_physics = queryInterface<IPhysics>(factory, kPhysicsInterface); // optional
   if (m_physics != nullptr && !m_physics->initialize()) {
     m_physics = nullptr;
   }
@@ -59,7 +59,7 @@ bool CClientApp::connect(CreateInterfaceFn factory) {
 
 int CClientApp::run(const LaunchOptions_t &options) {
   if (m_platform == nullptr || m_renderer == nullptr) {
-    GAME_LOG_ERROR("client", "connect() çağrılmadan run() çalıştırılamaz");
+    GAME_LOG_ERROR("client", "run() cannot be called without connect()");
     return 1;
   }
   if (!m_platform->createWindow("my-game", 1280, 720)) {
@@ -69,7 +69,7 @@ int CClientApp::run(const LaunchOptions_t &options) {
       .surface = {.kind = ENativeWindowKind::kSdlWindow,
                   .handle = m_platform->nativeWindow()}};
   if (!m_renderer->initialize(rendererDesc)) {
-    GAME_LOG_ERROR("client", "renderer başlatılamadı: {}",
+    GAME_LOG_ERROR("client", "renderer could not be started: {}",
                    m_renderer->lastError());
     return 1;
   }
@@ -80,7 +80,7 @@ int CClientApp::run(const LaunchOptions_t &options) {
 
   auto resources = scene::loadResources(*m_assets, *m_renderer);
   if (!resources) {
-    GAME_LOG_ERROR("client", "temel mesh'ler yüklenemedi: {}",
+    GAME_LOG_ERROR("client", "base meshes could not be loaded: {}",
                    m_renderer->lastError());
     return 1;
   }
@@ -89,16 +89,16 @@ int CClientApp::run(const LaunchOptions_t &options) {
   scene::spawnStaticProps(m_world, *m_renderer, m_resources);
   if (m_physics != nullptr) {
     m_world.physics =
-        m_physics; // sadece yerel oyuncunun tahmini için; server ile aynı dünya
+        m_physics; // only for the local player's prediction; the same world as the server
     level::buildPhysics(*m_physics);
   }
 
   if (!m_network.connectTo(options.host, options.port)) {
-    GAME_LOG_ERROR("client", "{}:{} bağlanılamadı", options.host, options.port);
+    GAME_LOG_ERROR("client", "could not connect to {}:{}", options.host, options.port);
     return 1;
   }
-  // Tuş atamaları: varsayılanlar, sonra assets/config/input.cfg. Dosya yoksa
-  // varsayılanlar yazılır.
+  // Key bindings: the defaults first, then assets/config/input.cfg. If the file is missing,
+  // the defaults are written to it.
   m_bindings = input::defaultBindings();
   const std::filesystem::path bindingsPath = input::configPath();
   if (std::filesystem::exists(bindingsPath)) {
@@ -108,7 +108,7 @@ int CClientApp::run(const LaunchOptions_t &options) {
   }
   m_input.bind(m_platform, &m_bindings);
   m_platform->setRelativeMouse(true);
-  ui::print(m_console, "konsol: 'help' yaz");
+  ui::print(m_console, "console: type 'help'");
 
   using clock = std::chrono::steady_clock;
   auto nextTick = clock::now();
@@ -125,7 +125,7 @@ int CClientApp::run(const LaunchOptions_t &options) {
     m_input.addMouseDelta(events.mouseDeltaX, events.mouseDeltaY);
     m_network.poll();
 
-    // Server welcome'da tick rate'i söyler; gelene kadar varsayılan kullanılır.
+    // The server states the tick rate in the welcome packet; the default is used until then.
     const uint32_t rate = m_network.tickRate().value_or(kDefaultTickRate);
     if (rate != appliedRate) {
       appliedRate = rate;
@@ -159,12 +159,12 @@ int CClientApp::run(const LaunchOptions_t &options) {
   return 0;
 }
 
-// ui.dll'in ImGui bağlamını bu DLL'e bağlar (her DLL'in kendi ImGui kopyası
-// var), olay kancasını ve overlay'i kurar.
+// Binds ui.dll's ImGui context to this DLL (each DLL has its own ImGui copy),
+// and sets up the event hook and the overlay.
 bool CClientApp::initUi() {
   if (!m_ui->initialize(m_platform->nativeWindow(),
                         m_renderer->nativeDevice())) {
-    GAME_LOG_WARN("client", "ui başlatılamadı, konsol yok");
+    GAME_LOG_WARN("client", "ui could not be started, no console");
     return false;
   }
   void *alloc = nullptr;
@@ -181,12 +181,12 @@ bool CClientApp::initUi() {
       m_ui);
   m_renderer->setOverlay(m_ui->overlay(), m_ui->overlayUser());
   if (!ui::loadDocuments(*m_ui)) {
-    GAME_LOG_WARN("client", "RmlUi belgeleri yüklenemedi: HUD/menü/skor tablosu yok");
+    GAME_LOG_WARN("client", "RmlUi documents could not be loaded: no HUD/menu/scoreboard");
   }
   return true;
 }
 
-// Duraklatma menüsü: açıkken fare serbest, oyun girdisi durur (konsol odağıyla aynı mantık).
+// Pause menu: while open, the mouse is free and game input stops (same logic as the console focus).
 void CClientApp::setMenuOpen(bool open) {
   m_menuOpen = open;
   ui::showPauseMenu(*m_ui, open);
@@ -207,14 +207,14 @@ void CClientApp::updateMenu() {
   }
 }
 
-// Konsol açılınca odak konsoldadır; kapanınca oyuna döner.
+// When the console opens, focus is on the console; when it closes, focus returns to the game.
 void CClientApp::setConsoleOpen(bool open) {
   m_console.open = open;
   setConsoleFocus(open);
 }
 
-// Odak konsolda: fare serbest, yazı konsola gider, oyun girdisi durur.
-// Odak oyunda: fare kilitli, konsol ekranda kalır ama oyun normal çalışır.
+// Focus on the console: mouse free, typing goes to the console, game input stops.
+// Focus on the game: mouse locked, the console stays on screen but the game runs normally.
 void CClientApp::setConsoleFocus(bool focused) {
   m_console.focused = focused;
   m_console.focusInput = focused;
@@ -222,14 +222,14 @@ void CClientApp::setConsoleFocus(bool focused) {
   m_input.setEnabled(!focused);
 }
 
-// ImGui frame'ini açar, UI katmanlarını sırayla çizer (HUD, skor tablosu,
-// konsol), konsolu aç/kapa, Enter ile gelen komutu çalıştırır.
+// Opens the ImGui frame, draws the UI layers in order (HUD, scoreboard,
+// console), opens/closes the console, and runs the command received on Enter.
 void CClientApp::updateConsole() {
   if (m_ui == nullptr) {
     return;
   }
   m_ui->beginFrame();
-  // Çizim sırası (alttan üste): HUD -> skor tablosu -> konsol.
+  // Draw order (bottom to top): HUD -> scoreboard -> console.
   ui::updateHud(*m_ui, m_world, selfEntity());
   ui::updateScoreboard(
       *m_ui, m_world, selfEntity(),
@@ -250,8 +250,8 @@ void CClientApp::updateConsole() {
     }
   }
 
-  // Pencere dışına tıklamak fareyi oyuna kilitler; Enter odağı konsola geri
-  // verir.
+  // Clicking outside the window locks the mouse to the game; Enter gives focus back
+  // to the console.
   if (wasOpen && m_console.open) {
     if (m_console.focused && m_platform->keyPressedByName("Mouse1") &&
         !m_ui->wantsMouse()) {
@@ -270,8 +270,7 @@ void CClientApp::updateConsole() {
 }
 
 void CClientApp::tickOnce(uint32_t tick) {
-  // Free-cam: aksiyon tuşuna basılınca aç/kapa (kenar algılama). Konsol açıkken
-  // çalışmaz.
+  // Free-cam: toggled by pressing the action key (edge detection). Does not run while the console is open.
   const bool freeCamDown =
       !m_console.focused && !m_menuOpen &&
       input::isDown(*m_platform, m_bindings, EAction::kFreeCam);
@@ -285,7 +284,7 @@ void CClientApp::tickOnce(uint32_t tick) {
 
   const UserCmd_t cmd = m_input.sample(tick);
 
-  // Free-cam'deyken hareket ve buton server'a gitmez; sadece bakış açısı gider.
+  // In free-cam, movement and buttons do not go to the server; only the view angles do.
   UserCmd_t outgoing = cmd;
   if (m_freeCam) {
     outgoing.forwardMove = 0.0f;
@@ -296,12 +295,12 @@ void CClientApp::tickOnce(uint32_t tick) {
   }
   m_network.sendCommand(outgoing);
 
-  // Yerel oyuncuyu hemen hareket ettir (server aynı komutu sonra işler);
-  // reconcile snapshot'ta düzeltir.
+  // Move the local player immediately (the server processes the same command later);
+  // reconcile corrects it when the snapshot arrives.
   entt::entity self = selfEntity();
   if (self != m_predictedPawn) {
-    prediction::clear(m_prediction); // başka pawn'a geçildi (devralma /
-                                     // izleme): eski tahmin geçersiz
+    prediction::clear(m_prediction); // switched to another pawn (takeover /
+                                     // watching): the old prediction is invalid
     m_predictedPawn = self;
   }
   if (self != entt::null) {
@@ -311,29 +310,29 @@ void CClientApp::tickOnce(uint32_t tick) {
   fire_effects::update(cmd, m_freeCam, *m_particles, m_audio,
                        m_camera.position(), m_camera.forward());
 
-  // En yeni snapshot dünyaya yazılır (yaratma/silme/can); hepsi interpolation
-  // tamponuna girer.
+  // The newest snapshot is written to the world (create/destroy/health); all of them go
+  // into the interpolation buffer.
   auto snapshots = m_network.consumeSnapshots();
   if (!snapshots.empty()) {
     replication::apply(m_world, snapshots.back());
     for (WorldSnapshot_t &snapshot : snapshots) {
       interpolation::push(m_interpolation, std::move(snapshot));
     }
-    self = selfEntity(); // ilk snapshot'ta yeni yaratılmış olabilir
+    self = selfEntity(); // it may have just been created by the first snapshot
     if (self != entt::null) {
       prediction::reconcile(m_world, m_prediction, self);
     }
   }
   prediction::decay(m_prediction, m_dt);
 
-  // Uzaktaki oyuncular ve mermiler geçmişteki (renderTick) konumda gösterilir;
-  // yerel oyuncuya dokunulmaz.
+  // Remote players and projectiles are shown at their past (renderTick) position;
+  // the local player is not touched.
   interpolation::advance(m_interpolation, m_world.tickRate);
   interpolation::apply(m_world, m_interpolation,
                        m_network.playerId().value_or(0));
   m_particles->update(m_dt);
 
-  // Client system'leri.
+  // Client systems.
   scene::attachVisuals(m_world, m_resources);
   scene::spin(m_world, m_dt);
   systems::projectileTransforms(
@@ -349,9 +348,9 @@ void CClientApp::tickOnce(uint32_t tick) {
     }
     const std::string title = std::format(
         "my-game | id {} | tick {} | pos {:.1f} {:.1f} {:.1f} | {} | err "
-        "{:.3f} | parcacik {}",
+        "{:.3f} | particles {}",
         *id, m_world.tick, pos.x, pos.y, pos.z,
-        m_freeCam ? "FREECAM" : "oyuncu", glm::length(m_prediction.errorOffset),
+        m_freeCam ? "FREECAM" : "player", glm::length(m_prediction.errorOffset),
         m_particles->count());
     m_platform->setTitle(title.c_str());
   }
@@ -366,7 +365,7 @@ void CClientApp::updateCamera(const UserCmd_t &cmd) {
   m_camera.setAngles(cmd.yaw, cmd.pitch);
 
   if (m_freeCam) {
-    // Yatay hareket: bakış yönünün düzlem izdüşümü. Yukarı/aşağı: space / C.
+    // Horizontal movement: the horizontal projection of the view direction. Up/down: space / C.
     glm::vec3 forward = m_camera.forward();
     forward.y = 0.0f;
     if (glm::length(forward) > 0.0f) {
@@ -406,14 +405,14 @@ void CClientApp::updateCamera(const UserCmd_t &cmd) {
                          glm::vec3{0.0f, kEyeHeight, 0.0f});
   } else if (const entt::entity watched = watchedEntity();
              watched != entt::null) {
-    // İzleme: izlenen pawn'ın gözünden, onun bakış açısıyla (konumu
-    // interpolation ile gelir).
+    // Watching: from the watched pawn's eye, with its view angles (its position
+    // comes from interpolation).
     const auto &transform = m_world.registry.get<Transform_t>(watched);
     m_camera.setAngles(transform.yaw, transform.pitch);
     m_camera.setPosition(transform.position +
                          glm::vec3{0.0f, kEyeHeight, 0.0f});
   } else if (m_network.playerId() && !m_world.byNetId.empty()) {
-    // Pawn'ım yok (öldüm): haritayı havadan yavaşça dönerek izle.
+    // No pawn of mine (I died): watch the map from above, slowly orbiting.
     death_cam::update(m_deathCam, m_dt);
     const death_cam::Pose_t pose = death_cam::pose(m_deathCam, m_world);
     m_camera.setAngles(pose.yaw, pose.pitch);
@@ -432,7 +431,7 @@ entt::entity CClientApp::watchedEntity() const {
                     : entt::entity{entt::null};
 }
 
-// Kameranın içinde olduğu pawn: kendi karakterimiz ya da izlediğimiz.
+// The pawn the camera is inside: our own character or the one we are watching.
 entt::entity CClientApp::cameraEntity() const {
   const entt::entity self = selfEntity();
   return self != entt::null ? self : watchedEntity();
@@ -450,11 +449,11 @@ void CClientApp::drawWorld() {
   scene::drawSkinned(m_world, *m_renderer, m_resources,
                      interpolation::displayTick(m_interpolation, m_world.tick));
 
-  // Parçacıklar şimdilik ECS dışında: particles.dll konumları verir.
+  // For now, particles live outside the ECS: particles.dll provides the positions.
   scene::drawParticles(*m_renderer, m_resources, m_particles->livePositions());
 
   if (m_ui != nullptr) {
-    m_ui->endFrame(); // ImGui::Render; çizimi renderer overlay'i yapar
+    m_ui->endFrame(); // ImGui::Render; the renderer's overlay does the drawing
   }
   m_renderer->endFrame();
 }

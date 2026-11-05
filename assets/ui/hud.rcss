@@ -1,6 +1,6 @@
 body { pointer-events: none; }
 
-/* Nişangah: ekran merkezinde 4 çizgi */
+/* Crosshair: 4 lines at the center of the screen */
 #crosshair { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
 #crosshair .tick { position: absolute; background-color: rgba(255, 255, 255, 215); }
 #crosshair .up    { left: -1dp; top: -16dp; width: 2dp; height: 9dp; }
@@ -8,7 +8,7 @@ body { pointer-events: none; }
 #crosshair .left  { left: -16dp; top: -1dp; width: 9dp; height: 2dp; }
 #crosshair .right { left: 7dp;   top: -1dp; width: 9dp; height: 2dp; }
 
-/* Can paneli: sol alt */
+/* Health panel: bottom left */
 #health-panel {
     position: absolute;
     left: 48dp;

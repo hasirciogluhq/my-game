@@ -39,7 +39,7 @@ void reconcile(World_t& world, Prediction_t& state, entt::entity self) {
         state.unacked.pop_front();
     }
 
-    // apply entity'yi server konumuna yazdı: fizik karakterini de oraya al, sonra bekleyenleri oynat.
+    // apply wrote the entity to the server position: move the physics character there too, then replay the pending commands.
     if (const auto* collider = world.registry.try_get<Collider_t>(self); collider != nullptr && state.physics != nullptr) {
         state.physics->setCharacterPosition(collider->handle, world.registry.get<Transform_t>(self).position);
     }
@@ -51,7 +51,7 @@ void reconcile(World_t& world, Prediction_t& state, entt::entity self) {
     if (state.predicted) {
         const glm::vec3 error = *state.predicted - now;
         if (glm::length(error) < kSnapDistance) {
-            state.errorOffset += error;  // görüntü eski tahminden yeniye yumuşakça kayar
+            state.errorOffset += error;  // the view slides smoothly from the old prediction to the new one
         } else {
             state.errorOffset = glm::vec3{0.0f};
         }

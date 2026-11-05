@@ -21,16 +21,15 @@ struct SDL_Window;
 
 namespace game::rml {
 
-// RmlUi çizim arayüzü, SDL_GPU üzerinde (renderer'ın overlay geçidinde
-// çalışır).
+// RmlUi drawing interface on SDL_GPU (runs in the renderer's overlay gate).
 //
-// Akış: Context::Render() RenderGeometry'yi çağırır; bunlar sadece komut
-// listesine yazılır (beginFrame listeyi sıfırlar). Renderer overlay'i iki kez
-// çağırır: prepare() (render pass dışı: GPU'ya yükleme) ve draw() (pass içi:
-// komutları çiz). Geometri/doku Compile/Generate anında GPU nesnesi olur, veri
-// bir sonraki prepare()'de yüklenir. Desteklenen: geometri, doku, scissor, CSS
-// transform. Desteklenmeyen: clip mask, katman/filtre/shader (RmlUi bunları
-// atlar). Shader MSL'dir (projenin SDL_GPU backend'i Metal).
+// Flow: Context::Render() calls RenderGeometry; these only write into a command
+// list (beginFrame clears the list). The renderer calls the overlay twice:
+// prepare() (outside a render pass: uploads to the GPU) and draw() (inside the pass:
+// draws the commands). Geometry/texture become GPU objects at Compile/Generate time;
+// their data is uploaded in the next prepare(). Supported: geometry, texture, scissor, CSS
+// transform. Unsupported: clip mask, layer/filter/shader (RmlUi skips them).
+// Shaders are MSL (the project's SDL_GPU backend is Metal).
 class CRmlRenderer final : public Rml::RenderInterface {
 public:
   [[nodiscard]] bool initialize(SDL_GPUDevice *device, SDL_Window *window);
@@ -80,7 +79,7 @@ private:
     Rml::CompiledGeometryHandle geometry = 0;
     Rml::TextureHandle texture = 0;
     glm::mat4 matrix{1.0f}; // ortho * transform * translate
-    glm::ivec4 scissor{0};  // x, y, genişlik, yükseklik (piksel)
+    glm::ivec4 scissor{0};  // x, y, width, height (pixels)
   };
 
   [[nodiscard]] Rml::TextureHandle

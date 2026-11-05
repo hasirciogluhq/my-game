@@ -1,4 +1,4 @@
-/* Ortak stil. Tasarım çözünürlüğü 1920x1080: 1dp = pencere yüksekliği / 1080 piksel. */
+/* Common style. Design resolution 1920x1080: 1dp = window height / 1080 pixels. */
 body {
     font-family: "DejaVu Sans";
     font-size: 20dp;

@@ -27,7 +27,7 @@ bool CModule::load(const std::filesystem::path& file) {
 #if defined(_WIN32)
     m_handle = LoadLibraryA(file.string().c_str());
     if (m_handle == nullptr) {
-        GAME_LOG_ERROR("module", "yüklenemedi: {}", file.string());
+        GAME_LOG_ERROR("module", "failed to load: {}", file.string());
         return false;
     }
     m_factory = reinterpret_cast<CreateInterfaceFn>(GetProcAddress(static_cast<HMODULE>(m_handle), "CreateInterface"));
@@ -35,20 +35,20 @@ bool CModule::load(const std::filesystem::path& file) {
 #else
     m_handle = dlopen(file.string().c_str(), RTLD_NOW | RTLD_LOCAL);
     if (m_handle == nullptr) {
-        GAME_LOG_ERROR("module", "yüklenemedi: {} ({})", file.string(), dlerror());
+        GAME_LOG_ERROR("module", "failed to load: {} ({})", file.string(), dlerror());
         return false;
     }
     m_factory = reinterpret_cast<CreateInterfaceFn>(dlsym(m_handle, "CreateInterface"));
     bindLog = reinterpret_cast<BindLogFn>(dlsym(m_handle, "BindLog"));
 #endif
     if (m_factory == nullptr) {
-        GAME_LOG_ERROR("module", "CreateInterface bulunamadı: {}", file.string());
+        GAME_LOG_ERROR("module", "CreateInterface not found: {}", file.string());
         return false;
     }
     if (bindLog != nullptr && g_logSink != nullptr) {
         bindLog(g_logSink);
     }
-    GAME_LOG_DEBUG("module", "yüklendi: {}", file.filename().string());
+    GAME_LOG_DEBUG("module", "loaded: {}", file.filename().string());
     return true;
 }
 

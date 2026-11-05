@@ -7,7 +7,7 @@
 
 namespace game::net {
 
-// Başlayınca hemen çalışan, bitince kendini silen coroutine (fire-and-forget).
+// Coroutine that runs as soon as it starts and destroys itself when it finishes (fire-and-forget).
 //   net::Task serve(INetwork& network) {
 //       while (true) {
 //           NetEvent_t event = co_await net::nextEvent(network);
@@ -24,7 +24,7 @@ struct Task {
     };
 };
 
-// Kuyrukta olay varsa hemen devam eder, yoksa sonraki pump()'ta olay gelince uyanır.
+// If an event is already queued, it continues immediately; otherwise it wakes up when an event arrives in a later pump().
 struct NextEvent {
     INetwork& network;
 

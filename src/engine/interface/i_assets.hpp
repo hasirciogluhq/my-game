@@ -9,13 +9,13 @@
 
 namespace game {
 
-// assets.dll arayüzü. Yol assets/ klasörüne göredir: "models/spot.glb".
-// Aynı yol bir kez yüklenir, sonra paylaşılan pointer döner.
+// assets.dll interface. Paths are relative to the assets/ folder: "models/spot.glb".
+// The same path is loaded once; after that the shared pointer is returned.
 class IAssets {
 public:
     virtual ~IAssets() = default;
     [[nodiscard]] virtual std::expected<std::shared_ptr<const MeshData_t>, std::string> loadMesh(const std::string& path) = 0;
-    // İskeletli model (gltf, fbx...): mesh + iskelet + animasyon klipleri.
+    // Skinned model (gltf, fbx...): mesh + skeleton + animation clips.
     [[nodiscard]] virtual std::expected<std::shared_ptr<const anim::SkinnedModel_t>, std::string> loadSkinned(const std::string& path) = 0;
 };
 

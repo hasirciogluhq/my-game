@@ -11,30 +11,30 @@
 namespace game {
 
 // ---------------------------------------------------------------------------
-// Renderer001: backend'den bağımsız renderer (tek renderer arayüzü). Tipler interface/render_types.hpp'de.
+// Renderer001: backend-independent renderer (the single renderer interface). Types are in interface/render_types.hpp.
 //
-// Kullanım sırası:
-//   initialize -> createMesh/createTexture/createMaterial (yükleme zamanı, istendiğinde de olur)
-//   -> her frame: beginFrame -> setView -> setEnvironment/setPostProcess -> submit* / submitLight* -> endFrame
+// Order of use:
+//   initialize -> createMesh/createTexture/createMaterial (at load time; can also happen later)
+//   -> every frame: beginFrame -> setView -> setEnvironment/setPostProcess -> submit* / submitLight* -> endFrame
 //   -> shutdown
-// Tek thread'den çağrılır. Draw/ışık/debug çizgileri endFrame'e kadar kaydedilir; endFrame hepsini çizer.
-// Geçersiz veya silinmiş handle'lar sessizce yok sayılır (submit'te çizilmez).
+// Called from a single thread. Draws/lights/debug lines are recorded until endFrame; endFrame draws all of them.
+// Invalid or destroyed handles are silently ignored (not drawn in submit).
 // ---------------------------------------------------------------------------
 class IRenderer {
 public:
     virtual ~IRenderer() = default;
 
-    // --- yaşam döngüsü ---
+    // --- lifecycle ---
     [[nodiscard]] virtual bool initialize(const RendererDesc_t& desc) = 0;
     virtual void shutdown() = 0;
     [[nodiscard]] virtual const char* lastError() const = 0;
     [[nodiscard]] virtual const RenderCaps_t& capabilities() const = 0;
 
-    // Çalışma anında değişebilir: vsync, gölge kalitesi/menzili, render ölçeği.
+    // Can change at runtime: vsync, shadow quality/range, render scale.
     virtual void applySettings(const RenderSettings_t& settings) = 0;
     [[nodiscard]] virtual const RenderSettings_t& settings() const = 0;
 
-    // --- kaynaklar (geçersiz handle döner = hata, lastError()'a bakın) ---
+    // --- resources (an invalid handle return = error, see lastError()) ---
     [[nodiscard]] virtual MeshHandle_t createMesh(const MeshDesc_t& desc) = 0;
     virtual void destroyMesh(MeshHandle_t mesh) = 0;
 
@@ -44,7 +44,7 @@ public:
     [[nodiscard]] virtual MaterialHandle_t createMaterial(const MaterialDesc_t& desc) = 0;
     virtual void updateMaterial(MaterialHandle_t material, const MaterialDesc_t& desc) = 0;
     virtual void destroyMaterial(MaterialHandle_t material) = 0;
-    // Beyaz, kLit, opak. Silinemez.
+    // White, kLit, opaque. Cannot be deleted.
     [[nodiscard]] virtual MaterialHandle_t defaultMaterial() const = 0;
 
     // --- frame ---
@@ -55,13 +55,13 @@ public:
 
     virtual void submit(const DrawItem_t& item) = 0;
     virtual void submitLight(const LightDesc_t& light) = 0;
-    // Derinlik testli, dünya uzayında çizgi (HDR sahne üstüne). color sRGB-benzeri ham değer.
+    // Depth-tested world-space line (drawn over the HDR scene). color is a raw sRGB-like value.
     virtual void submitDebugLine(const glm::vec3& from, const glm::vec3& to, const glm::vec4& color) = 0;
 
-    // Overlay (Dear ImGui): her frame post-process'ten sonra swapchain'e çizilen son adım. Kalıcıdır; nullptr kaldırır.
-    // Renderer ne çizildiğini bilmez, backend'in komut tamponunu verir (bkz. RenderOverlayFn).
+    // Overlay (Dear ImGui): the last step drawn onto the swapchain every frame after post-processing. Persistent; nullptr removes it.
+    // The renderer does not know what is drawn; it hands over the backend's command buffer (see RenderOverlayFn).
     virtual void setOverlay(RenderOverlayFn overlay, void* user) = 0;
-    // Backend'in yerel aygıtı (SDL_GPU: SDL_GPUDevice*); initialize'dan önce nullptr. Dış backend'ler (ImGui) için.
+    // The backend's native device (SDL_GPU: SDL_GPUDevice*); nullptr before initialize. For external backends (ImGui).
     [[nodiscard]] virtual void* nativeDevice() const = 0;
 
     virtual void endFrame() = 0;

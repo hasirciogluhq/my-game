@@ -16,7 +16,7 @@
 namespace game::scene {
 namespace {
 
-// Modeli verilen boyda yere oturtur: ayak merkezi orijinde.
+// Places the model at the given height: the foot center at the origin.
 glm::mat4 fitToHeight(const MeshData_t &mesh, float height) {
   glm::vec3 low{std::numeric_limits<float>::max()};
   glm::vec3 high{std::numeric_limits<float>::lowest()};
@@ -35,16 +35,16 @@ Model_t uploadModel(IAssets &assets, IRenderer &renderer,
                     const std::string &path, float height) {
   const auto mesh = assets.loadMesh(path);
   if (!mesh) {
-    GAME_LOG_ERROR("client", "model yüklenemedi: {}: {}", path, mesh.error());
+    GAME_LOG_ERROR("client", "model could not be loaded: {}: {}", path, mesh.error());
     return {};
   }
-  GAME_LOG_INFO("client", "model yüklendi: {} ({} üçgen)", path,
+  GAME_LOG_INFO("client", "model loaded: {} ({} triangles)", path,
                 (*mesh)->indices.size() / 3);
   return {.mesh = uploadMesh(renderer, **mesh),
           .local = fitToHeight(**mesh, height)};
 }
 
-// Bind pozundaki modeli 1.8 m boyuna ölçekler, ayak merkezini orijine koyar.
+// Scales the model in its bind pose to a 1.8 m height and puts the foot center at the origin.
 glm::mat4 fitSkinned(const anim::SkinnedModel_t &model, float height) {
   std::vector<glm::mat4> skin;
   anim::evaluate(model, {}, {}, 0.0f, skin);
@@ -66,22 +66,22 @@ glm::mat4 fitSkinned(const anim::SkinnedModel_t &model, float height) {
          glm::translate(glm::mat4{1.0f}, -baseCenter);
 }
 
-// Klip adı yoksa fallback.
+// Falls back when the clip name is missing.
 int clipOrElse(const anim::SkinnedModel_t &model, std::string_view name,
                int fallback) {
   const int clip = anim::findClip(model, name);
   return clip >= 0 ? clip : fallback;
 }
 
-// İskeletli modeli yükler, GPU'ya yollar; EAnimState -> klip eşlemesini adlardan kurar.
-// Modelin dokusu varsa material onu kullanır. Klip adı bulunamazsa idle = ilk klip, greet = idle.
+// Loads a skinned model and sends it to the GPU; builds the EAnimState -> clip mapping from the names.
+// If the model has a texture, the material uses it. If a clip name is not found, idle = the first clip, greet = idle.
 SkinnedAsset_t uploadSkinned(IAssets &assets, IRenderer &renderer,
                              const std::string &path, MaterialDesc_t material,
                              std::string_view greetClip, float yawOffset,
                              bool fit) {
   auto model = assets.loadSkinned(path);
   if (!model) {
-    GAME_LOG_ERROR("client", "iskeletli model yüklenemedi: {}: {}", path,
+    GAME_LOG_ERROR("client", "skinned model could not be loaded: {}: {}", path,
                    model.error());
     return {};
   }
@@ -105,7 +105,7 @@ SkinnedAsset_t uploadSkinned(IAssets &assets, IRenderer &renderer,
   asset.clipOfState[static_cast<size_t>(EAnimState::kIdle)] = idle;
   asset.clipOfState[static_cast<size_t>(EAnimState::kGreet)] =
       clipOrElse(**model, greetClip, idle);
-  GAME_LOG_INFO("client", "iskeletli model yüklendi: {} ({} üçgen, {} eklem, {} klip)",
+  GAME_LOG_INFO("client", "skinned model loaded: {} ({} triangles, {} joints, {} clips)",
                 path, (*model)->indices.size() / 3, (*model)->joints.size(),
                 (*model)->clips.size());
   return asset;
@@ -131,7 +131,7 @@ std::optional<Resources_t> loadResources(IAssets &assets, IRenderer &renderer) {
        .shading = EShadingModel::kRimLit,
        .baseColor = {0.95f, 0.55f, 0.15f, 1.0f}},
       "wave", 0.0f, false);
-  // Gerçek karakter: klasörde character.* + idle/breakdance klipleri. Mixamo/glTF +Z'ye bakar, oyun -Z.
+  // The real character: character.* + idle/breakdance clips in the folder. Mixamo/glTF faces +Z, the game uses -Z.
   resources.dancer = uploadSkinned(
       assets, renderer, "models/dancer",
       {.debugName = "dancer", .shading = EShadingModel::kLit},

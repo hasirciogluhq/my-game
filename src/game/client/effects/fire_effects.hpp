@@ -6,11 +6,11 @@
 
 #include <glm/vec3.hpp>
 
-// Ateş edince client'ta çalan geri bildirim (namlu parçacığı + ses). Mermi kendisi server'dadır
-// (game/server/systems/weapon.cpp); burası sadece yerel görsel/işitsel efekt.
+// Client-side feedback played when firing (muzzle particle + sound). The bullet itself is on the server
+// (game/server/systems/weapon.cpp); this is only the local visual/audio effect.
 namespace game::fire_effects {
 
-// Bu tick ateş başladıysa (kAttack pressed) ve free-cam kapalıysa efekti çalar. `audio` boş olabilir.
+// Plays the effect if a shot started this tick (kAttack pressed) and free-cam is off. `audio` may be empty.
 void update(const UserCmd_t& cmd, bool freeCam, IParticles& particles, IAudio* audio, const glm::vec3& eye, const glm::vec3& forward);
 
 }  // namespace game::fire_effects

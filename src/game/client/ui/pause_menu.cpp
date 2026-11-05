@@ -8,7 +8,7 @@ namespace game::ui {
 
 namespace {
 
-// Kaydırıcı 1..100; her adım 0.0001 rad/piksel (varsayılan 0.0025 = 25).
+// Slider 1..100; each step is 0.0001 rad/pixel (default 0.0025 = 25).
 constexpr float kSensitivityPerStep = 0.0001f;
 
 } // namespace

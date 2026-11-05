@@ -13,7 +13,7 @@ std::expected<Integer, std::string> parseInteger(std::string_view text, std::str
     const char* last = text.data() + text.size();
     const auto [ptr, ec] = std::from_chars(first, last, value);
     if (ec != std::errc{} || ptr != last) {
-        return std::unexpected(std::string(flag) + " sayı olmalı: '" + std::string(text) + "'");
+        return std::unexpected(std::string(flag) + " must be a number: '" + std::string(text) + "'");
     }
     return value;
 }
@@ -32,7 +32,7 @@ std::expected<LaunchOptions_t, std::string> parseLaunchOptions(int argc, char** 
                 return std::unexpected(rate.error());
             }
             if (!isValidTickRate(*rate)) {
-                return std::unexpected("--tick-rate " + std::to_string(kMinTickRate) + "-" + std::to_string(kMaxTickRate) + " aralığında olmalı");
+                return std::unexpected("--tick-rate must be in the range " + std::to_string(kMinTickRate) + "-" + std::to_string(kMaxTickRate));
             }
             options.tickRate = *rate;
         } else if (arg.starts_with("--host=")) {
@@ -46,7 +46,7 @@ std::expected<LaunchOptions_t, std::string> parseLaunchOptions(int argc, char** 
         } else if (arg.starts_with("--log-level=")) {
             const auto level = parseLogLevel(arg.substr(12));
             if (!level) {
-                return std::unexpected("--log-level: trace|debug|info|warn|error|fatal|off olmalı");
+                return std::unexpected("--log-level must be one of: trace|debug|info|warn|error|fatal|off");
             }
             options.log.level = *level;
         } else if (arg.starts_with("--log-cat=")) {
@@ -54,7 +54,7 @@ std::expected<LaunchOptions_t, std::string> parseLaunchOptions(int argc, char** 
         } else if (arg.starts_with("--log-file=")) {
             options.log.file = std::string(arg.substr(11));
         } else {
-            return std::unexpected("bilinmeyen argüman: " + std::string(arg));
+            return std::unexpected("unknown argument: " + std::string(arg));
         }
     }
     return options;

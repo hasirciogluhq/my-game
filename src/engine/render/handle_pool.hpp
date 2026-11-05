@@ -7,9 +7,9 @@
 
 namespace game {
 
-// Generation'lı handle havuzu. Silinen slot yeniden kullanılır ama generation artar,
-// bu yüzden eski handle çözülmez (get -> nullptr).
-// Not: create() vektörü büyütebilir; get()'ten dönen pointer'ı create()'ten sonra kullanmayın.
+// Handle pool with generations. A deleted slot is reused but its generation increases,
+// so the old handle does not resolve (get -> nullptr).
+// Note: create() may grow the vector; do not use a pointer returned by get() after create().
 template <typename Handle, typename T>
 class CHandlePool {
 public:
@@ -37,7 +37,7 @@ public:
         return isAlive(handle) ? &m_slots[handle.index].value : nullptr;
     }
 
-    // Slotu serbest bırakır ve değeri geri verir (GPU kaynağını çağıran yıkar).
+    // Frees the slot and returns the value (the caller destroys the GPU resource).
     std::optional<T> destroy(Handle handle) {
         if (!isAlive(handle)) {
             return std::nullopt;
@@ -52,7 +52,7 @@ public:
         return value;
     }
 
-    // Tüm canlı değerleri fn'e verip havuzu boşaltır (shutdown).
+    // Passes every live value to fn and empties the pool (shutdown).
     template <typename Fn>
     void drain(Fn&& fn) {
         for (uint32_t index = 0; index < m_slots.size(); ++index) {

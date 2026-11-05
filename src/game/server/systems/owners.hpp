@@ -4,7 +4,7 @@
 
 namespace game::systems {
 
-// Player_t::playerId'yi pawn'ı süren controller'dan eşitler (replicate edilen "bunu kim sürüyor").
+// Sets Player_t::playerId from the controller that drives the pawn (the replicated "who is driving this").
 void owners(World_t& world);
 
 }  // namespace game::systems

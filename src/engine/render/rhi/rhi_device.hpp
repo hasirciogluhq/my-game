@@ -25,7 +25,7 @@ struct RhiCaps_t {
     bool depthZeroToOne = true;
 };
 
-// beginFrame'in döndürdüğü, bu frame'e ait ekran hedefi. backbuffer yalnızca endFrame'e kadar geçerlidir.
+// The screen target returned by beginFrame, belonging to this frame. backbuffer is valid only until endFrame.
 struct RhiFrameInfo_t {
     TextureHandle_t backbuffer;
     uint32_t width = 0;
@@ -33,8 +33,8 @@ struct RhiFrameInfo_t {
     EPixelFormat format = EPixelFormat::kUndefined;
 };
 
-// Komut kaydı. Durum (pipeline, uniform, texture) pass içinde kalıcıdır; pipeline değişince backend gerekirse yeniden bağlar.
-// Çizim komutları beginPass/endPass arasında, updateBuffer ise pass dışında çağrılır.
+// Command recording. State (pipeline, uniforms, textures) persists within a pass; when the pipeline changes, the backend rebinds if needed.
+// Draw commands are called between beginPass/endPass, while updateBuffer is called outside a pass.
 class IRhiCommandList {
 public:
     virtual ~IRhiCommandList() = default;
@@ -53,11 +53,11 @@ public:
     virtual void draw(uint32_t vertexCount, uint32_t instanceCount, uint32_t firstVertex) = 0;
     virtual void drawIndexed(uint32_t indexCount, uint32_t instanceCount, uint32_t firstIndex, int32_t baseVertex) = 0;
 
-    // Backend'in kendi komut tamponuna dışarıdan kayıt (Dear ImGui backend'i). Pass dışında,
-    // fn(user, cmd, nullptr); sonra `pass` açılır, fn(user, cmd, nativePass); sonra pass kapanır.
+    // Recording into the backend's own command buffer from outside (Dear ImGui backend). Outside a pass:
+    // fn(user, cmd, nullptr); then `pass` is opened, fn(user, cmd, nativePass); then the pass is closed.
     virtual void recordNative(const RenderPassDesc_t& pass, RenderOverlayFn fn, void* user) = 0;
 
-    // Pass dışında. Veri bu frame'in komut akışına sıralanır.
+    // Outside a pass. The data is ordered into this frame's command stream.
     virtual void updateBuffer(BufferHandle_t buffer, uint32_t offsetBytes, std::span<const std::byte> data, EUpdateMode mode) = 0;
 
     template <typename T>
@@ -76,14 +76,14 @@ public:
     [[nodiscard]] virtual const RhiCaps_t& caps() const = 0;
     [[nodiscard]] virtual const std::string& lastError() const = 0;
 
-    // --- kaynaklar. initialData boş olabilir. Hata: geçersiz handle ---
+    // --- resources. initialData may be empty. On error: an invalid handle ---
     [[nodiscard]] virtual BufferHandle_t createBuffer(const BufferDesc_t& desc, std::span<const std::byte> initialData) = 0;
     [[nodiscard]] virtual TextureHandle_t createTexture(const TextureDesc_t& desc, std::span<const std::byte> initialPixels) = 0;
     [[nodiscard]] virtual SamplerHandle_t createSampler(const SamplerDesc_t& desc) = 0;
     [[nodiscard]] virtual ShaderHandle_t createShader(const ShaderDesc_t& desc) = 0;
     [[nodiscard]] virtual PipelineHandle_t createGraphicsPipeline(const GraphicsPipelineDesc_t& desc) = 0;
 
-    // Güvenli: GPU hâlâ kullanıyorsa backend yıkımı erteler.
+    // Safe: if the GPU is still using the resource, the backend defers destruction.
     virtual void destroy(BufferHandle_t handle) = 0;
     virtual void destroy(TextureHandle_t handle) = 0;
     virtual void destroy(SamplerHandle_t handle) = 0;
@@ -91,18 +91,18 @@ public:
     virtual void destroy(PipelineHandle_t handle) = 0;
 
     virtual void setVsync(bool enabled) = 0;
-    // Backend'in yerel aygıtı (SDL_GPU: SDL_GPUDevice*). Dış kütüphane backend'leri için.
+    // The backend's native device (SDL_GPU: SDL_GPUDevice*). For external library backends.
     [[nodiscard]] virtual void* nativeDevice() const = 0;
 
-    // Frame: swapchain alınamazsa (pencere küçük) nullopt; o frame atlanır ve endFrame çağrılmaz.
+    // Frame: if the swapchain cannot be acquired (window too small), nullopt; that frame is skipped and endFrame is not called.
     [[nodiscard]] virtual std::optional<RhiFrameInfo_t> beginFrame() = 0;
     [[nodiscard]] virtual IRhiCommandList& commands() = 0;
-    virtual void endFrame() = 0;  // gönderir + present eder
+    virtual void endFrame() = 0;  // submits + presents
 
     virtual void waitIdle() = 0;
 };
 
-// Backend seçimi: render/rhi/rhi_factory.cpp
+// Backend selection: render/rhi/rhi_factory.cpp
 [[nodiscard]] std::unique_ptr<IRhiDevice> createRhiDevice(ERenderBackend backend, std::string& error);
 
 }  // namespace game::rhi

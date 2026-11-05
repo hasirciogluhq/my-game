@@ -4,7 +4,7 @@
 
 namespace game {
 
-// Derinlik testli debug çizgileri (HDR sahne üstüne). Vertex buffer her frame yeniden yazılır, gerekirse büyür.
+// Depth-tested debug lines (over the HDR scene). The vertex buffer is rewritten every frame and grows when needed.
 class CDebugPass final : public IRenderPass {
 public:
     [[nodiscard]] bool create(const PassInitContext_t& context) override;

@@ -11,8 +11,8 @@ namespace game {
 
 namespace {
 
-// Renderer'ın overlay geçidi: pass == nullptr iken yükleme (render pass dışı),
-// pass verilince çizim.
+// Overlay gate for the renderer: with pass == nullptr it uploads (outside a render pass),
+// and when a pass is given it draws.
 void drawOverlay(void *user, void *commandBuffer, void *renderPass) {
   static_cast<CUiSystem *>(user)->recordOverlay(commandBuffer, renderPass);
 }
@@ -28,14 +28,14 @@ bool CUiSystem::initialize(void *sdlWindow, void *sdlGpuDevice) {
   auto *window = static_cast<SDL_Window *>(sdlWindow);
   auto *device = static_cast<SDL_GPUDevice *>(sdlGpuDevice);
   if (window == nullptr || device == nullptr) {
-    GAME_LOG_ERROR("ui", "pencere veya GPU aygıtı yok");
+    GAME_LOG_ERROR("ui", "no window or GPU device");
     return false;
   }
   ImGui::CreateContext();
   ImGui::GetIO().IniFilename = nullptr;
   ImGui::StyleColorsDark();
   if (!ImGui_ImplSDL3_InitForSDLGPU(window)) {
-    GAME_LOG_ERROR("ui", "imgui SDL3 backend başlatılamadı");
+    GAME_LOG_ERROR("ui", "imgui SDL3 backend could not be started");
     ImGui::DestroyContext();
     return false;
   }
@@ -44,7 +44,7 @@ bool CUiSystem::initialize(void *sdlWindow, void *sdlGpuDevice) {
   info.ColorTargetFormat = SDL_GetGPUSwapchainTextureFormat(device, window);
   info.MSAASamples = SDL_GPU_SAMPLECOUNT_1;
   if (!ImGui_ImplSDLGPU3_Init(&info)) {
-    GAME_LOG_ERROR("ui", "imgui SDL_GPU backend başlatılamadı");
+    GAME_LOG_ERROR("ui", "imgui SDL_GPU backend could not be started");
     ImGui_ImplSDL3_Shutdown();
     ImGui::DestroyContext();
     return false;
@@ -53,7 +53,7 @@ bool CUiSystem::initialize(void *sdlWindow, void *sdlGpuDevice) {
   if (!m_rml.initialize(window, device)) {
     GAME_LOG_WARN(
         "ui",
-        "RmlUi başlatılamadı: oyun arayüzü (menü/HUD) yok, ImGui devam ediyor");
+        "RmlUi could not be started: no game UI (menu/HUD), ImGui continues");
   }
   return true;
 }
@@ -75,7 +75,7 @@ void CUiSystem::processEvent(const void *event) {
   }
   const auto &sdlEvent = *static_cast<const SDL_Event *>(event);
   ImGui_ImplSDL3_ProcessEvent(&sdlEvent);
-  // ImGui (konsol) bir girdiyi istiyorsa RmlUi o girdiyi görmez.
+  // If ImGui (the console) wants an input, RmlUi does not see it.
   m_rml.processEvent(sdlEvent, !wantsMouse(), !wantsKeyboard());
 }
 
@@ -90,8 +90,8 @@ void CUiSystem::beginFrame() {
 void CUiSystem::endFrame() {
   if (m_initialized) {
     ImGui::Render();
-    m_rml.update(); // oyun bu frame'deki eleman değişikliklerini yaptı; şimdi
-                    // güncelle ve çizim komutlarını kaydet
+    m_rml.update(); // the game has made its element changes for this frame; now
+                    // update and record the draw commands
   }
 }
 
@@ -105,7 +105,7 @@ bool CUiSystem::wantsMouse() const {
 
 RenderOverlayFn CUiSystem::overlay() const { return &drawOverlay; }
 
-// Sıra: RmlUi (alt katman), ImGui (üstte: konsol HUD'un üstünü kaplar).
+// Order: RmlUi (bottom layer), ImGui (on top: the console covers the HUD).
 void CUiSystem::recordOverlay(void *commandBuffer, void *renderPass) {
   auto *commands = static_cast<SDL_GPUCommandBuffer *>(commandBuffer);
   auto *pass = static_cast<SDL_GPURenderPass *>(renderPass);

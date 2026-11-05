@@ -11,29 +11,29 @@
 
 namespace game {
 
-// endFrame'de çözülmüş (handle -> pointer) tek çizim.
+// A single draw resolved (handle -> pointer) in endFrame.
 struct SceneDraw_t {
     const GpuMesh_t* mesh = nullptr;
     const MaterialDesc_t* material = nullptr;
     rhi::TextureHandle_t baseTexture;
     glm::mat4 model{1.0f};
-    uint64_t sortKey = 0;        // opak: pipeline > material > mesh gruplaması
-    float distanceSquared = 0.0f;  // kamera mesafesi² (şeffaf sıralaması)
+    uint64_t sortKey = 0;        // opaque: grouping by pipeline > material > mesh
+    float distanceSquared = 0.0f;  // squared camera distance (transparent sorting)
     uint32_t pipelineKey = 0;
     bool castShadow = false;
-    bool skinned = false;          // kPosNormalUvSkin: skin matrisleri SceneState_t::boneMatrices[boneOffset, +boneCount)
+    bool skinned = false;          // kPosNormalUvSkin: skin matrices are SceneState_t::boneMatrices[boneOffset, +boneCount)
     uint32_t boneOffset = 0;
     uint32_t boneCount = 0;
 };
 
-// submit() ile gelen çizim. Skin matrisleri çağıranın span'inde kalmaz: SceneState_t::boneMatrices'e kopyalanır.
+// A draw coming in through submit(). Skin matrices do not stay in the caller's span: they are copied into SceneState_t::boneMatrices.
 struct SubmittedDraw_t {
     DrawItem_t item;
     uint32_t boneOffset = 0;
     uint32_t boneCount = 0;
 };
 
-// Çağrılar arasında kalıcı: view, environment, post, overlay. Frame başına temizlenen: submitted, lights, debug.
+// Persist across calls: view, environment, post, overlay. Cleared every frame: submitted, lights, debug.
 struct SceneState_t {
     FrameDesc_t frame;
     ViewDesc_t view;
@@ -41,22 +41,22 @@ struct SceneState_t {
     PostProcessDesc_t post;
 
     std::vector<SubmittedDraw_t> submitted;
-    std::vector<glm::mat4> boneMatrices;  // frame başına, submit sırasıyla
+    std::vector<glm::mat4> boneMatrices;  // per frame, in submit order
     std::vector<LightDesc_t> lights;
     std::vector<gpu::DebugVertex_t> debugVertices;
-    RenderOverlayFn overlay = nullptr;  // setOverlay: kalıcı, her frame swapchain'e son adım olarak çağrılır
+    RenderOverlayFn overlay = nullptr;  // setOverlay: persistent, called every frame as the last step onto the swapchain
     void* overlayUser = nullptr;
 
-    // endFrame sırasında hesaplanır.
+    // Computed during endFrame.
     glm::mat4 viewProjection{1.0f};
     glm::mat4 lightViewProjection{1.0f};
     glm::vec3 cameraPosition{0.0f};
-    std::vector<SceneDraw_t> draws;     // görünür + gölge düşüren tüm çizimler
-    std::vector<uint32_t> opaque;       // draws indeksleri, grup sıralı
-    std::vector<uint32_t> blended;      // draws indeksleri, arkadan öne
+    std::vector<SceneDraw_t> draws;     // all visible + shadow-casting draws
+    std::vector<uint32_t> opaque;       // draws indices, grouped and sorted
+    std::vector<uint32_t> blended;      // draws indices, back to front
 };
 
-// Pass'lerin ortak girdisi. Frame boyunca değişmez (frame uniform'ları endFrame başında hesaplanır).
+// Shared input of the passes. Does not change during the frame (frame uniforms are computed at the start of endFrame).
 struct FrameContext_t {
     rhi::IRhiDevice& device;
     rhi::IRhiCommandList& commands;

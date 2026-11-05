@@ -5,8 +5,8 @@
 
 namespace game::ui {
 
-// Duraklatma menüsünün sonucu: kapanma ya da çıkış isteği. Diğer eylemler
-// (hassasiyet) burada uygulanır.
+// Result of the pause menu: a close or quit request. Other actions
+// (sensitivity) are applied here.
 struct PauseResult_t {
   bool resume = false;
   bool quit = false;
@@ -14,8 +14,8 @@ struct PauseResult_t {
 
 void showPauseMenu(IUI &ui, bool open);
 
-// Menüden gelen bir eylemi işler (resume, sensitivity <değer>, quit).
-// Tanınmayan eylem yok sayılır.
+// Handles an action coming from the menu (resume, sensitivity <value>, quit).
+// Unrecognized actions are ignored.
 void handlePauseAction(const UiAction_t &action, CInputSampler &input,
                        PauseResult_t &result);
 

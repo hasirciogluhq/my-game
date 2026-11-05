@@ -1,15 +1,15 @@
 #pragma once
 
-// Renderer001 ortak tipleri. Backend'den (Metal / D3D11 / ...) tamamen bağımsızdır.
-// Bu başlık sadece interface/ katmanındadır: engine'e veya render iç yapısına bağımlılığı yoktur.
+// Renderer001 common types. Completely independent of the backend (Metal / D3D11 / ...).
+// This header lives only in the interface/ layer: it has no dependency on engine or render internals.
 //
-// Konvansiyonlar (tüm backend'lerde aynı):
-//   - Sağ-el koordinat sistemi, +Y yukarı, yaw=0 -Z'ye bakar.
-//   - Projection derinliği 0..1 (glm::perspectiveRH_ZO). Matrisler glm column-major.
-//   - Renk alanı: MaterialDesc_t::baseColor / emissive "sanatsal" sRGB girilir; renderer lineere çevirir.
-//     Ortam/ışık renkleri (EnvironmentDesc_t, LightDesc_t) lineer uzaydadır.
-//   - Işık yönleri "ışığın gittiği yön"dür (ışık kaynağından sahneye doğru).
-//   - Birimler: metre, saniye, radyan.
+// Conventions (same in all backends):
+//   - Right-handed coordinate system, +Y up, yaw=0 looks toward -Z.
+//   - Projection depth 0..1 (glm::perspectiveRH_ZO). Matrices are glm column-major.
+//   - Color space: MaterialDesc_t::baseColor / emissive are entered as "artistic" sRGB; the renderer converts them to linear.
+//     Ambient/light colors (EnvironmentDesc_t, LightDesc_t) are in linear space.
+//   - Light directions are the "direction the light travels" (from the light source toward the scene).
+//   - Units: meters, seconds, radians.
 
 #include <cstddef>
 #include <cstdint>
@@ -23,8 +23,8 @@
 namespace game {
 
 // ---------------------------------------------------------------------------
-// Handle'lar: index + generation. generation == 0 geçersiz demektir (default-constructed = geçersiz).
-// Silinmiş bir handle'ın yeniden kullanılması güvenlidir: eski handle çözülmez, çağrı yok sayılır.
+// Handles: index + generation. generation == 0 is invalid (default-constructed = invalid).
+// Reusing a deleted handle is safe: the old handle does not resolve and the call is ignored.
 // ---------------------------------------------------------------------------
 template <typename Tag>
 struct RenderHandle_t {
@@ -43,22 +43,22 @@ using MeshHandle_t = RenderHandle_t<MeshTag_t>;
 using TextureHandle_t = RenderHandle_t<TextureTag_t>;
 using MaterialHandle_t = RenderHandle_t<MaterialTag_t>;
 
-inline constexpr uint32_t kMaxLights = 16;           // frame başına dinamik ışık (güneş hariç)
-inline constexpr uint32_t kMaxDebugLines = 65536;    // frame başına debug çizgi üst sınırı
-inline constexpr uint32_t kMaxBones = 128;           // iskeletli mesh'te çizim başına eklem (uniform bloğu 8 KB)
+inline constexpr uint32_t kMaxLights = 16;           // dynamic lights per frame (sun excluded)
+inline constexpr uint32_t kMaxDebugLines = 65536;    // upper limit of debug lines per frame
+inline constexpr uint32_t kMaxBones = 128;           // joints per draw for skinned meshes (uniform block is 8 KB)
 
 // ---------------------------------------------------------------------------
-// Backend / yüzey
+// Backend / surface
 // ---------------------------------------------------------------------------
 enum class ERenderBackend : uint8_t {
-    kAuto,    // platformun varsayılanı (macOS: Metal)
+    kAuto,    // the platform's default (macOS: Metal)
     kMetal,
-    kD3D11,   // henüz yok; initialize() hata döner
+    kD3D11,   // not implemented yet; initialize() returns an error
     kD3D12,
     kVulkan,
 };
 
-// Pencere native handle türü. Platform modülünün verdiği handle'ı tanımlar; renderer SDL'e bağımlı değildir.
+// Native window handle kind. Describes the handle the platform module provides; the renderer does not depend on SDL.
 enum class ENativeWindowKind : uint8_t {
     kSdlWindow,      // SDL_Window*
     kWin32Hwnd,      // HWND
@@ -80,20 +80,20 @@ enum class EShadowQuality : uint8_t {
 struct RenderSettings_t {
     bool vsync = true;
     EShadowQuality shadowQuality = EShadowQuality::kHigh;
-    float shadowExtent = 45.0f;  // güneş gölgesinin kamera çevresinde kapladığı yarı genişlik (metre)
-    float renderScale = 1.0f;    // iç çözünürlük çarpanı (0.25..2). Post pass ekrana ölçekler.
+    float shadowExtent = 45.0f;  // half-width of the area the sun shadow covers around the camera (meters)
+    float renderScale = 1.0f;    // internal resolution multiplier (0.25..2). The post pass scales to the screen.
 };
 
-// Dışarıdan (Dear ImGui backend'i gibi) backend'in kendi komut tamponuna kayıt. Frame'de swapchain'e çizilen son adımdır.
-// İki kez çağrılır: önce render pass dışında (nativeRenderPass == nullptr; GPU'ya veri yükleme), sonra pass içinde.
-// SDL_GPU backend'inde: nativeCommandBuffer = SDL_GPUCommandBuffer*, nativeRenderPass = SDL_GPURenderPass*.
+// Recording into the backend's command buffer from outside (like the Dear ImGui backend). It is the last step drawn into the swapchain in the frame.
+// Called twice: first outside a render pass (nativeRenderPass == nullptr; uploading data to the GPU), then inside the pass.
+// SDL_GPU backend: nativeCommandBuffer = SDL_GPUCommandBuffer*, nativeRenderPass = SDL_GPURenderPass*.
 using RenderOverlayFn = void (*)(void* user, void* nativeCommandBuffer, void* nativeRenderPass);
 
 struct RendererDesc_t {
     RenderSurface_t surface;
     ERenderBackend backend = ERenderBackend::kAuto;
     RenderSettings_t settings;
-    bool debugLayer = false;  // backend doğrulama katmanı (yavaş)
+    bool debugLayer = false;  // backend validation layer (slow)
 };
 
 struct RenderCaps_t {
@@ -123,8 +123,8 @@ struct RenderStats_t {
 // Mesh
 // ---------------------------------------------------------------------------
 enum class EVertexLayout : uint8_t {
-    kPosNormalUv,      // float3 position, float3 normal, float2 uv = 32 byte. Position her layout'ta offset 0'dadır.
-    kPosNormalUvSkin,  // kPosNormalUv + ubyte4 joints (ham indeks) + float4 weights = 52 byte (anim::SkinnedVertex_t). DrawItem_t::bones gerekir.
+    kPosNormalUv,      // float3 position, float3 normal, float2 uv = 32 bytes. Position is at offset 0 in every layout.
+    kPosNormalUvSkin,  // kPosNormalUv + ubyte4 joints (raw indices) + float4 weights = 52 bytes (anim::SkinnedVertex_t). Requires DrawItem_t::bones.
 };
 
 enum class EIndexType : uint8_t {
@@ -144,7 +144,7 @@ enum class EIndexType : uint8_t {
     return type == EIndexType::kUint16 ? 2u : 4u;
 }
 
-// Çağrı bitince renderer veriyi GPU'ya kopyalar; span'ler çağrıdan sonra tutulmaz.
+// After the call returns the renderer copies the data to the GPU; the spans are not kept after the call.
 struct MeshDesc_t {
     const char* debugName = "";
     EVertexLayout layout = EVertexLayout::kPosNormalUv;
@@ -153,12 +153,12 @@ struct MeshDesc_t {
     std::span<const std::byte> indexData;
 };
 
-// Tipli vertex/index dizilerinden MeshDesc_t üretir. Örn: makeMeshDesc<Vertex_t, uint32_t>("box", v, i)
+// Builds a MeshDesc_t from typed vertex/index arrays. E.g.: makeMeshDesc<Vertex_t, uint32_t>("box", v, i)
 template <typename Vertex, typename Index>
 [[nodiscard]] MeshDesc_t makeMeshDesc(const char* name, std::span<const Vertex> vertices, std::span<const Index> indices,
                                       EVertexLayout layout = EVertexLayout::kPosNormalUv) {
     static_assert(std::is_trivially_copyable_v<Vertex>);
-    static_assert(sizeof(Index) == 2 || sizeof(Index) == 4, "index 16 veya 32 bit olmalı");
+    static_assert(sizeof(Index) == 2 || sizeof(Index) == 4, "index must be 16 or 32 bit");
     return MeshDesc_t{
         .debugName = name,
         .layout = layout,
@@ -173,8 +173,8 @@ template <typename Vertex, typename Index>
 // ---------------------------------------------------------------------------
 enum class ETextureFormat : uint8_t {
     kR8Unorm,
-    kRgba8Unorm,      // lineer veri (normal map, maske...)
-    kRgba8UnormSrgb,  // renk (albedo)
+    kRgba8Unorm,      // linear data (normal map, mask...)
+    kRgba8UnormSrgb,  // color (albedo)
     kRgba16Float,
 };
 
@@ -184,40 +184,40 @@ struct TextureDesc_t {
     uint32_t height = 0;
     ETextureFormat format = ETextureFormat::kRgba8UnormSrgb;
     bool generateMips = true;
-    std::span<const std::byte> pixels;  // mip 0, satırlar sıkı paketli (width * pikselBoyutu)
+    std::span<const std::byte> pixels;  // mip 0, rows tightly packed (width * pixel size)
 };
 
 // ---------------------------------------------------------------------------
 // Material
 // ---------------------------------------------------------------------------
 enum class EShadingModel : uint8_t {
-    kLit,      // Blinn-Phong + güneş gölgesi + dinamik ışıklar + sis
-    kRimLit,   // kLit + gövde gradyanı ve fresnel rim ışığı (karakterler için)
-    kUnlit,    // sadece renk + emissive (sis uygulanır)
+    kLit,      // Blinn-Phong + sun shadow + dynamic lights + fog
+    kRimLit,   // kLit + body gradient and fresnel rim light (for characters)
+    kUnlit,    // only color + emissive (fog applied)
 };
 
 enum class EBlendMode : uint8_t {
     kOpaque,
-    kAlphaBlend,  // derinlik yazmaz, arkadan öne sıralanır, gölge düşürmez
+    kAlphaBlend,  // does not write depth, sorted back to front, does not cast shadows
 };
 
 struct MaterialDesc_t {
     const char* debugName = "";
     EShadingModel shading = EShadingModel::kLit;
     EBlendMode blend = EBlendMode::kOpaque;
-    glm::vec4 baseColor{1.0f};       // sRGB, a = opaklık (kAlphaBlend)
-    TextureHandle_t baseColorTexture;  // geçersizse beyaz
-    glm::vec3 emissive{0.0f};        // lineer, HDR olabilir
+    glm::vec4 baseColor{1.0f};       // sRGB, a = opacity (kAlphaBlend)
+    TextureHandle_t baseColorTexture;  // if invalid: white
+    glm::vec3 emissive{0.0f};        // linear, may be HDR
     float specularPower = 48.0f;
     float specularAmount = 0.18f;
-    float rimAmount = 0.8f;          // sadece kRimLit
-    float gridStrength = 0.0f;       // 0..1: dünya XZ düzleminde kareli desen (zemin için)
+    float rimAmount = 0.8f;          // only kRimLit
+    float gridStrength = 0.0f;       // 0..1: checkered pattern on the world XZ plane (for the ground)
     bool doubleSided = true;
     bool castShadow = true;
 };
 
 // ---------------------------------------------------------------------------
-// Frame / sahne
+// Frame / scene
 // ---------------------------------------------------------------------------
 struct FrameDesc_t {
     float timeSeconds = 0.0f;
@@ -229,14 +229,14 @@ struct ViewDesc_t {
     glm::mat4 projection{1.0f};  // perspectiveRH_ZO
 };
 
-// Lineer renkler. sunDirection: güneş ışığının gittiği yön (normalize edilmesi gerekmez).
+// Linear colors. sunDirection: the direction the sunlight travels (does not need to be normalized).
 struct EnvironmentDesc_t {
     glm::vec3 sunDirection{-0.5f, -0.7f, -0.35f};
     glm::vec3 sunColor{1.0f, 0.93f, 0.8f};
     float sunIntensity = 3.2f;
-    glm::vec3 skyColor{0.12f, 0.30f, 0.75f};      // zenit + ambient üst yarım küre
-    glm::vec3 horizonColor{0.60f, 0.72f, 0.88f};  // ufuk + sis rengi
-    glm::vec3 groundColor{0.10f, 0.09f, 0.08f};   // ambient alt yarım küre
+    glm::vec3 skyColor{0.12f, 0.30f, 0.75f};      // zenith + ambient upper hemisphere
+    glm::vec3 horizonColor{0.60f, 0.72f, 0.88f};  // horizon + fog color
+    glm::vec3 groundColor{0.10f, 0.09f, 0.08f};   // ambient lower hemisphere
     float fogDensity = 0.010f;
     float ambientIntensity = 1.0f;
 };
@@ -250,13 +250,13 @@ enum class ETonemapper : uint8_t {
 struct PostProcessDesc_t {
     float exposure = 1.0f;
     ETonemapper tonemapper = ETonemapper::kAces;
-    float bloomStrength = 0.35f;  // 0 = bloom kapalı
+    float bloomStrength = 0.35f;  // 0 = bloom off
     float bloomThreshold = 1.0f;
-    float vignette = 0.4f;        // 0 = kapalı
+    float vignette = 0.4f;        // 0 = off
 };
 
 enum class ELightType : uint8_t {
-    kDirectional,  // gölgesiz ek yön ışığı (güneş EnvironmentDesc_t'dedir)
+    kDirectional,  // extra shadowless directional light (the sun is in EnvironmentDesc_t)
     kPoint,
     kSpot,
 };
@@ -264,21 +264,21 @@ enum class ELightType : uint8_t {
 struct LightDesc_t {
     ELightType type = ELightType::kPoint;
     glm::vec3 position{0.0f};
-    glm::vec3 direction{0.0f, -1.0f, 0.0f};  // ışığın gittiği yön (kDirectional, kSpot)
-    glm::vec3 color{1.0f};                   // lineer
+    glm::vec3 direction{0.0f, -1.0f, 0.0f};  // direction the light travels (kDirectional, kSpot)
+    glm::vec3 color{1.0f};                   // linear
     float intensity = 1.0f;
-    float range = 10.0f;                     // kPoint/kSpot: etki yarıçapı (metre)
+    float range = 10.0f;                     // kPoint/kSpot: radius of influence (meters)
     float innerConeRadians = 0.35f;          // kSpot
     float outerConeRadians = 0.60f;          // kSpot
 };
 
 struct DrawItem_t {
     MeshHandle_t mesh;
-    MaterialHandle_t material;  // geçersizse defaultMaterial()
+    MaterialHandle_t material;  // if invalid: defaultMaterial()
     glm::mat4 transform{1.0f};
     bool castShadow = true;
-    // kPosNormalUvSkin mesh'i için skin matrisleri (anim::evaluate çıktısı), en çok kMaxBones. submit() kopyalar;
-    // çağrıdan sonra tutulmaz. Skinned mesh'te boşsa bind pozunda (matrisler birim) çizilir.
+    // Skin matrices for a kPosNormalUvSkin mesh (anim::evaluate output), at most kMaxBones. submit() copies them;
+    // they are not kept after the call. If empty on a skinned mesh, it is drawn in bind pose (identity matrices).
     std::span<const glm::mat4> bones;
 };
 

@@ -5,7 +5,7 @@
 namespace game::scene {
 namespace {
 
-// Yerel entity: Transform + Visual (+ ops. Spin).
+// Local entity: Transform + Visual (+ optional Spin).
 entt::entity spawnVisual(World_t &world, glm::vec3 position, float yaw,
                          const Visual_t &visual) {
   const entt::entity entity = world.registry.create();
@@ -23,7 +23,7 @@ void spawnStaticProps(World_t &world, IRenderer &renderer,
                .material = litMaterial(renderer, "ground",
                                        {0.45f, 0.5f, 0.42f, 1.0f})});
 
-  // Level kutuları: server'daki fizik kutularıyla aynı liste.
+  // Level boxes: the same list as the physics boxes on the server.
   for (const level::Box_t &box : level::boxes()) {
     spawnVisual(world, {0.0f, 0.0f, 0.0f}, 0.0f,
                 {.mesh = resources.box,
@@ -31,7 +31,7 @@ void spawnStaticProps(World_t &world, IRenderer &renderer,
                  .local = scaleAt(box.center, box.halfExtents * 2.0f)});
   }
 
-  // Model prop'ları: kaide üstünde Suzanne, dönen Spot'lar.
+  // Model props: Suzanne on a pedestal, spinning Spots.
   if (resources.suzanne.mesh) {
     spawnVisual(world, {3.5f, 1.0f, -7.0f}, 0.0f,
                 {.mesh = resources.suzanne.mesh,

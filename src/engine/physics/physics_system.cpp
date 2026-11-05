@@ -20,10 +20,10 @@
 namespace game {
 namespace {
 
-constexpr float kCapsuleRadius = kCharacterRadius;  // i_physics.hpp: ışın testi de aynı değerleri kullanır
-constexpr float kCapsuleHeight = kCharacterHeight;  // toplam boy (ayaktan tepeye)
+constexpr float kCapsuleRadius = kCharacterRadius;  // i_physics.hpp: the ray test also uses the same values
+constexpr float kCapsuleHeight = kCharacterHeight;  // total height (feet to top)
 
-// Tek katman: her şey her şeyle çarpışır. Dünya statik olduğu için yeterli.
+// Single layer: everything collides with everything. Enough because the world is static.
 class SingleBroadPhaseLayer final : public JPH::BroadPhaseLayerInterface {
 public:
     JPH::uint GetNumBroadPhaseLayers() const override { return 1; }
@@ -43,7 +43,7 @@ public:
     bool ShouldCollide(JPH::ObjectLayer, JPH::ObjectLayer) const override { return true; }
 };
 
-// Jolt varsayılan Trace'i çökertir; sessiz bir tane vermek zorunlu.
+// Jolt's default Trace crashes; a silent one is required.
 void silentTrace(const char*, ...) {}
 
 JPH::RVec3 toJolt(const glm::vec3& v) { return {v.x, v.y, v.z}; }
@@ -60,7 +60,7 @@ struct CPhysicsSystem::Impl_t {
     JPH::RefConst<JPH::Shape> capsule;
     std::unordered_map<CharacterHandle_t, JPH::Ref<JPH::CharacterVirtual>> characters;
     CharacterHandle_t nextHandle = 1;
-    // Karakter-karakter çarpışması: listedeki karakterler birbirine çarpar. Kapalıyken liste boş.
+    // Character-vs-character collision: characters in the list collide with each other. The list is empty while disabled.
     JPH::CharacterVsCharacterCollisionSimple characterCollision;
     bool characterCollisionsEnabled = false;
 };
@@ -75,17 +75,17 @@ bool CPhysicsSystem::initialize() {
     if (m_impl != nullptr) {
         return true;
     }
-    // Sıra önemli: allocator kaydedilmeden Jolt nesneleri (TempAllocator, PhysicsSystem) yaratılamaz.
+    // Order matters: Jolt objects (TempAllocator, PhysicsSystem) cannot be created before the allocator is registered.
     JPH::RegisterDefaultAllocator();
     JPH::Trace = silentTrace;
-    // Jolt kendi Factory'sini ham pointer olarak ister (new/delete Jolt API'sinin gereği).
+    // Jolt wants its own Factory as a raw pointer (new/delete is required by the Jolt API).
     JPH::Factory::sInstance = new JPH::Factory();
     JPH::RegisterTypes();
     m_impl = std::make_unique<Impl_t>();
 
     m_impl->system.Init(1024, 0, 1024, 1024, m_impl->broadPhaseLayers, m_impl->objectVsBroadPhase, m_impl->objectPairs);
 
-    // Kapsül: ayak noktası orijin olsun diye yukarı kaydırılır.
+    // Capsule: shifted upward so that the origin is at the feet.
     const float cylinderHalf = (kCapsuleHeight - 2.0f * kCapsuleRadius) * 0.5f;
     const JPH::RefConst<JPH::Shape> raw = JPH::CapsuleShapeSettings(cylinderHalf, kCapsuleRadius).Create().Get();
     m_impl->capsule = JPH::RotatedTranslatedShapeSettings(JPH::Vec3(0, kCapsuleHeight * 0.5f, 0), JPH::Quat::sIdentity(), raw)
@@ -98,7 +98,7 @@ void CPhysicsSystem::shutdown() {
     if (m_impl == nullptr) {
         return;
     }
-    m_impl.reset();  // Jolt nesneleri Factory'den önce ölmeli
+    m_impl.reset();  // Jolt objects must be destroyed before the Factory
     JPH::UnregisterTypes();
     delete JPH::Factory::sInstance;
     JPH::Factory::sInstance = nullptr;
@@ -133,7 +133,7 @@ CharacterHandle_t CPhysicsSystem::createCharacter(const glm::vec3& feetPosition)
     JPH::CharacterVirtualSettings settings;
     settings.mShape = m_impl->capsule;
     settings.mUp = JPH::Vec3::sAxisY();
-    // CharacterVirtual Jolt'un RefTarget'ıdır; Ref<> sahipliği alır.
+    // CharacterVirtual is Jolt's RefTarget; Ref<> takes ownership.
     JPH::Ref<JPH::CharacterVirtual> character = new JPH::CharacterVirtual(&settings, toJolt(feetPosition), JPH::Quat::sIdentity(), 0, &m_impl->system);
     character->SetCharacterVsCharacterCollision(&m_impl->characterCollision);
     if (m_impl->characterCollisionsEnabled) {
@@ -160,7 +160,7 @@ CharacterResult_t CPhysicsSystem::moveCharacter(CharacterHandle_t handle, const 
     }
     JPH::CharacterVirtual& character = *it->second;
     character.SetLinearVelocity(JPH::Vec3(velocity.x, velocity.y, velocity.z));
-    character.Update(dt, JPH::Vec3::sZero(),  // yerçekimini oyun kodu uygular
+    character.Update(dt, JPH::Vec3::sZero(),  // gravity is applied by the game code
                      m_impl->system.GetDefaultBroadPhaseLayerFilter(0), m_impl->system.GetDefaultLayerFilter(0),
                      {}, {}, m_impl->tempAllocator);
     return {.position = fromJolt(character.GetPosition()),

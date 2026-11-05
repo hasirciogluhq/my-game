@@ -7,8 +7,8 @@ namespace game::rml {
 
 namespace {
 
-// Bir öznitelik için yaratılır; RmlUi OnDetach'te sahipliği bırakır (bu nesne
-// kendini siler).
+// Created for one attribute; RmlUi releases ownership in OnDetach (this object
+// deletes itself).
 class CActionListener final : public Rml::EventListener {
 public:
   CActionListener(const Rml::String &attribute, std::deque<UiAction_t> &queue)
@@ -21,8 +21,8 @@ public:
   }
 
   void ProcessEvent(Rml::Event &event) override {
-    // change olayında elemanın yeni değeri parametre olarak gelir; yoksa
-    // özniteliğin ":arg" kısmı kullanılır.
+    // On a change event the element's new value arrives as a parameter; otherwise
+    // the ":arg" part of the attribute is used.
     const Rml::String value =
         event.GetParameter<Rml::String>("value", m_argument);
     m_queue.push_back({.name = m_name, .value = value});
@@ -30,7 +30,7 @@ public:
 
   void OnDetach(Rml::Element *) override {
     delete this;
-  } // RmlUi dinleyici yaşam döngüsü sözleşmesi: nesne kendini siler
+  } // RmlUi listener lifecycle contract: the object deletes itself
 
 private:
   std::deque<UiAction_t> &m_queue;
@@ -43,7 +43,7 @@ private:
 Rml::EventListener *CRmlActions::InstanceEventListener(const Rml::String &value,
                                                        Rml::Element *) {
   return new CActionListener(
-      value, m_queue); // RmlUi API'si ham işaretçi ister; OnDetach siler
+      value, m_queue); // the RmlUi API requires a raw pointer; OnDetach deletes it
 }
 
 std::optional<UiAction_t> CRmlActions::next() {

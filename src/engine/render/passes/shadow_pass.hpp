@@ -4,7 +4,7 @@
 
 namespace game {
 
-// Güneş ortho derinlik haritası (D32). Gölge kapalıyken harita sadece 1.0'a temizlenir.
+// Sun ortho depth map (D32). When shadows are off, the map is only cleared to 1.0.
 class CShadowPass final : public IRenderPass {
 public:
     [[nodiscard]] bool create(const PassInitContext_t& context) override;

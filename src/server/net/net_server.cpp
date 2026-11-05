@@ -26,7 +26,7 @@ net::Task CNetServer::serveNetwork() {
         const NetEvent_t event = co_await net::nextEvent(*m_network);
         switch (event.type) {
             case ENetEvent::kConnected:
-                std::ignore = world::spawnPlayer(*m_world, event.peer);  // oyuncu id'si = peer id
+                std::ignore = world::spawnPlayer(*m_world, event.peer);  // player id = peer id
                 sendWelcome(event.peer);
                 break;
             case ENetEvent::kDisconnected:
@@ -42,17 +42,17 @@ net::Task CNetServer::serveNetwork() {
 void CNetServer::onPacket(const NetEvent_t& event) {
     const auto envelope = protocol::decode(event.data);
     if (!envelope) {
-        GAME_LOG_WARN("server", "peer {}: paket çözülemedi: {}", event.peer, envelope.error());
+        GAME_LOG_WARN("server", "peer {}: could not decode packet: {}", event.peer, envelope.error());
         return;
     }
     if (envelope->type == netproto::Envelope::TYPE_USER_CMD) {
-        // Paket geldi: sıraya al, bir sonraki server tick'inde işlenir.
+        // Packet arrived: queue it, it is processed in the next server tick.
         world::enqueueCommand(*m_world, event.peer, envelope->cmd);
     } else if (envelope->type == netproto::Envelope::TYPE_CONTROL) {
         const bool accepted = world::handleControl(*m_world, event.peer, envelope->control);
-        GAME_LOG_DEBUG("server", "peer {}: kontrol isteği {} hedef {} -> {}", event.peer, static_cast<uint32_t>(envelope->control.action),
-                       envelope->control.targetNetId, accepted ? "kabul" : "red");
-        sendViewTarget(event.peer);  // kabul de olsa red de olsa client gerçek durumu öğrenir
+        GAME_LOG_DEBUG("server", "peer {}: control request {} target {} -> {}", event.peer, static_cast<uint32_t>(envelope->control.action),
+                       envelope->control.targetNetId, accepted ? "accepted" : "rejected");
+        sendViewTarget(event.peer);  // accepted or rejected, the client learns the real state either way
     }
 }
 
@@ -81,10 +81,10 @@ void CNetServer::broadcastSnapshot() {
     envelope.snapshot = replication::capture(*m_world);
     const auto bytes = protocol::encode(envelope);
     if (!bytes) {
-        GAME_LOG_ERROR("server", "snapshot kodlanamadı: {}", bytes.error());
+        GAME_LOG_ERROR("server", "could not encode snapshot: {}", bytes.error());
         return;
     }
-    // Snapshot her tick tam durumu taşır: kaybı sorun değil, UDP yeter. UDP'ye sığmazsa TCP.
+    // A snapshot carries the full state every tick: losing one is fine, UDP is enough. If it does not fit in UDP, use TCP.
     const EDeliver deliver = bytes->size() <= kMaxUnreliableSize ? EDeliver::kUnreliable : EDeliver::kReliable;
     m_network->broadcast(*bytes, deliver);
 }

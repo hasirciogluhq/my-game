@@ -1,6 +1,6 @@
 <rml>
 <head>
-    <title>Duraklat</title>
+    <title>Pause</title>
     <link type="text/rcss" href="common.rcss"/>
     <link type="text/rcss" href="pause_menu.rcss"/>
 </head>
@@ -8,16 +8,16 @@
     <div id="dim"></div>
     <div id="card">
         <div id="game-name">MY GAME</div>
-        <div id="subtitle">DURAKLATILDI</div>
+        <div id="subtitle">PAUSED</div>
 
-        <button id="resume" class="primary" onclick="resume">Oyuna Dön</button>
+        <button id="resume" class="primary" onclick="resume">Resume</button>
 
         <div id="setting">
-            <div id="setting-label">FARE HASSASİYETİ</div>
+            <div id="setting-label">MOUSE SENSITIVITY</div>
             <input type="range" name="sensitivity" min="1" max="100" step="1" value="25" onchange="sensitivity"/>
         </div>
 
-        <button id="quit" class="danger" onclick="quit">Oyundan Çık</button>
+        <button id="quit" class="danger" onclick="quit">Quit Game</button>
     </div>
 </body>
 </rml>

@@ -4,7 +4,7 @@
 
 namespace game::control_rules {
 
-// Pawn'ın bu tick uygulayacağı komut: controller'ının komutu. Kimse sürmüyorsa durur (bakışı korur).
+// The command the pawn applies this tick: its controller's command. If nobody drives it, it stops (keeping its view).
 [[nodiscard]] UserCmd_t commandOf(const World_t& world, entt::entity pawn);
 
 }  // namespace game::control_rules

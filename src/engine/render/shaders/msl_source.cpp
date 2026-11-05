@@ -2,9 +2,9 @@
 
 namespace game {
 
-// MSL kaynağı runtime'da derlenir (SDL_GPU Metal backend). Uniform struct'ları render/gpu_structs.hpp ile aynı düzende olmalı.
-// Kaynak bağlama: vertex buffer(0)=PassUniforms, buffer(1)=DrawUniforms; fragment buffer(0)=FrameUniforms, buffer(1)=MaterialUniforms;
-// fragment texture(0)=gölge haritası (depth), texture(1)=baseColor; sampler(0)/(1) aynı sırada.
+// The MSL source is compiled at runtime (SDL_GPU Metal backend). The uniform structs must have the same layout as in render/gpu_structs.hpp.
+// Resource binding: vertex buffer(0)=PassUniforms, buffer(1)=DrawUniforms; fragment buffer(0)=FrameUniforms, buffer(1)=MaterialUniforms;
+// fragment texture(0)=shadow map (depth), texture(1)=baseColor; samplers (0)/(1) in the same order.
 std::string_view mslShaderSource() {
     static constexpr std::string_view kSource = R"MSL(
 #include <metal_stdlib>
@@ -21,7 +21,7 @@ struct DrawUniforms_t {
 
 struct Light_t {
     float4 positionRange;
-    float4 directionType;   // xyz: ışığın gittiği yön, w: 0 yön / 1 nokta / 2 spot
+    float4 directionType;   // xyz: direction the light travels, w: 0 directional / 1 point / 2 spot
     float4 colorIntensity;
     float4 cone;            // x: cos(inner), y: cos(outer)
 };
@@ -29,8 +29,8 @@ struct Light_t {
 struct FrameUniforms_t {
     float4x4 invViewProjection;
     float4 cameraPosition;
-    float4 sunDirection;    // xyz: yüzeyden güneşe (normalize)
-    float4 sunColor;        // rgb: renk * şiddet
+    float4 sunDirection;    // xyz: from the surface toward the sun (normalize)
+    float4 sunColor;        // rgb: color * intensity
     float4 skyColor;
     float4 horizonColor;
     float4 groundColor;
@@ -53,7 +53,7 @@ struct VertexIn_t {
     float2 uv       [[attribute(2)]];
 };
 
-// kPosNormalUvSkin: VertexIn_t + joint indeksleri (ubyte4 normalized: indeks = round(x * 255)) + ağırlıklar.
+// kPosNormalUvSkin: VertexIn_t + joint indices (ubyte4 normalized: index = round(x * 255)) + weights.
 struct SkinnedVertexIn_t {
     float3 position [[attribute(0)]];
     float3 normal   [[attribute(1)]];
@@ -63,10 +63,10 @@ struct SkinnedVertexIn_t {
 };
 
 struct BoneUniforms_t {
-    float4x4 bones[128];    // kMaxBones: düğüm dünya * inverseBind
+    float4x4 bones[128];    // kMaxBones: node world * inverseBind
 };
 
-// Vertex'i modelin uzayında skin matrislerinin ağırlıklı toplamıyla dönüştürür.
+// Transforms the vertex in model space by the weighted sum of the skin matrices.
 float4x4 skinMatrix(SkinnedVertexIn_t in, constant BoneUniforms_t& b) {
     uint4 j = uint4(in.joints * 255.0 + 0.5);
     return b.bones[j.x] * in.weights.x + b.bones[j.y] * in.weights.y +
@@ -106,18 +106,18 @@ struct SceneOut_t {
     float2 uv;
 };
 
-// position/normal modelin (varsa skin uygulanmış) uzayındadır.
+// position/normal are in the model's space (with the skin applied, if any).
 SceneOut_t makeSceneOut(float3 position, float3 normal, float2 uv, constant PassUniforms_t& passData, constant DrawUniforms_t& draw) {
     SceneOut_t out;
     float4 world = draw.model * float4(position, 1.0);
-    // Normal: non-uniform scale için 3x3 cofactor yaklaşımı.
+    // Normal: 3x3 cofactor approach for non-uniform scale.
     float3x3 m3 = float3x3(draw.model[0].xyz, draw.model[1].xyz, draw.model[2].xyz);
     float3x3 cof = float3x3(cross(m3[1], m3[2]), cross(m3[2], m3[0]), cross(m3[0], m3[1]));
     float3 n = normalize(cof * normal);
     out.position = passData.viewProjection * world;
     out.worldPosition = world.xyz;
     out.normal = n;
-    // Normal-offset: gölge acne'sini azaltır.
+    // Normal offset: reduces shadow acne.
     out.shadowPosition = (passData.lightViewProjection * float4(world.xyz + n * 0.05, 1.0)).xyz;
     out.uv = uv;
     return out;
@@ -134,7 +134,7 @@ vertex SceneOut_t vertex_scene_skinned(SkinnedVertexIn_t in [[stage_in]],
                                        constant DrawUniforms_t& draw [[buffer(1)]],
                                        constant BoneUniforms_t& bones [[buffer(2)]]) {
     float4x4 skin = skinMatrix(in, bones);
-    // Normal: skin matrisinin dönme kısmı (ölçeksiz iskelet varsayımı).
+    // Normal: rotation part of the skin matrix (assumes an unscaled skeleton).
     float3 skinnedNormal = (skin * float4(in.normal, 0.0)).xyz;
     return makeSceneOut((skin * float4(in.position, 1.0)).xyz, skinnedNormal, in.uv, passData, draw);
 }
@@ -214,11 +214,11 @@ struct Surface_t {
 Surface_t readSurface(SceneOut_t in, constant MaterialUniforms_t& m, texture2d<float> baseTexture, sampler baseSampler) {
     float4 texel = baseTexture.sample(baseSampler, in.uv);
     Surface_t s;
-    s.albedo = pow(m.baseColor.rgb, float3(2.2)) * texel.rgb;  // sanatsal renk (sRGB) -> lineer
+    s.albedo = pow(m.baseColor.rgb, float3(2.2)) * texel.rgb;  // artistic color (sRGB) -> linear
     s.alpha = m.baseColor.a * texel.a;
     s.normal = normalize(in.normal);
 
-    // Kareli desen + ince çizgiler (hareketi görmek için), dünya XZ düzleminde.
+    // Checkered pattern + thin lines (to make movement visible), on the world XZ plane.
     float strength = m.emissiveGrid.w;
     if (strength > 0.0) {
         float2 p = in.worldPosition.xz;
@@ -246,7 +246,7 @@ fragment float4 fragment_lit(SceneOut_t in [[stage_in]],
     return float4(applyFog(color, f, in.worldPosition), s.alpha);
 }
 
-// Gövde gradyanı (ayak koyu, baş açık) + fresnel rim ışığı.
+// Body gradient (dark feet, light head) + fresnel rim light.
 fragment float4 fragment_rimlit(SceneOut_t in [[stage_in]],
                                 constant FrameUniforms_t& f [[buffer(0)]],
                                 constant MaterialUniforms_t& m [[buffer(1)]],
@@ -305,7 +305,7 @@ fragment float4 fragment_sky(FullscreenOut_t in [[stage_in]], constant FrameUnif
     float3 L = normalize(f.sunDirection.xyz);
     float s = max(dot(dir, L), 0.0);
     color += f.sunColor.rgb * (pow(s, 24.0) * 0.12 + pow(s, 400.0) * 0.6);
-    color += f.sunColor.rgb * smoothstep(0.9996, 0.9999, s) * 4.0;  // güneş diski (bloom'a girer)
+    color += f.sunColor.rgb * smoothstep(0.9996, 0.9999, s) * 4.0;  // sun disc (feeds into bloom)
     return float4(color, 1.0);
 }
 
@@ -335,7 +335,7 @@ fragment float4 fragment_post(FullscreenOut_t in [[stage_in]],
     float2 px = 1.0 / f.params1.xy;
     float3 color = hdr.sample(s, in.uv, level(0)).rgb;
 
-    // Bloom: eşiğin üstündeki parlak kısımların geniş gauss bulanıklığı.
+    // Bloom: wide Gaussian blur of the bright parts above the threshold.
     if (f.params0.y > 0.0) {
         float3 bloom = float3(0.0);
         float weightSum = 0.0;
@@ -362,7 +362,7 @@ fragment float4 fragment_post(FullscreenOut_t in [[stage_in]],
     return float4(color, 1.0);
 }
 
-// ---------------------------------------------------------------- debug çizgileri
+// ---------------------------------------------------------------- debug lines
 struct DebugIn_t {
     float3 position [[attribute(0)]];
     float4 color    [[attribute(1)]];

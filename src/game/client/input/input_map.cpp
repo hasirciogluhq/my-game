@@ -14,7 +14,7 @@ struct ActionInfo_t {
     std::string_view defaultKey;
 };
 
-// Yeni aksiyon için tek yer: enum + bu tabloya bir satır.
+// One place for a new action: the enum + one row in this table.
 constexpr std::array<ActionInfo_t, kActionCount> kActions{{
     {EAction::kForward, "forward", "W"},
     {EAction::kBack, "back", "S"},
@@ -84,7 +84,7 @@ void save(const Bindings_t& bindings, const std::filesystem::path& path) {
     std::error_code error;
     std::filesystem::create_directories(path.parent_path(), error);
     std::ofstream file(path);
-    file << "# Tuş atamaları. Konsolda: bind <aksiyon> <tuş>\n";
+    file << "# Key bindings. In the console: bind <action> <key>\n";
     for (const ActionInfo_t& info : kActions) {
         file << "bind " << info.name << " " << keyOf(bindings, info.action) << "\n";
     }

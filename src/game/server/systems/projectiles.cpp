@@ -12,11 +12,11 @@
 namespace game::systems {
 namespace {
 
-// Sağlık 0'ın altına inmez. Ölümü systems::death halleder.
+// Health does not go below 0. systems::death handles the death.
 void applyDamage(World_t& world, entt::entity victim, uint32_t attackerNetId, uint32_t damage) {
     auto& player = world.registry.get<Player_t>(victim);
     player.health -= std::min(player.health, damage);
-    GAME_LOG_DEBUG("combat", "pawn {} pawn {} tarafından vuruldu: -{} (hp {})", world.registry.get<Replicated_t>(victim).netId,
+    GAME_LOG_DEBUG("combat", "pawn {} was hit by pawn {}: -{} (hp {})", world.registry.get<Replicated_t>(victim).netId,
                    attackerNetId, damage, player.health);
 }
 
@@ -29,8 +29,8 @@ void projectiles(World_t& world) {
     for (auto [entity, projectile] : world.registry.view<Projectile_t>().each()) {
         const float age = static_cast<float>(world.tick - projectile.spawnTick) * dt;
 
-        // Bu tick'ten bir sonrakine giden doğru parçasında dünyaya ya da bir oyuncuya çarpıyor mu?
-        // Ateş eden pawn atlanır (mermi göz hizasından çıkar).
+        // Does it hit the world or a player on the straight segment from this tick to the next?
+        // The firing pawn is skipped (the bullet leaves from eye height).
         const glm::vec3 from = projectilePosition(projectile, world.tick, dt);
         const glm::vec3 step = projectilePosition(projectile, world.tick + 1, dt) - from;
         const float length = glm::length(step);

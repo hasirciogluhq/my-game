@@ -14,7 +14,7 @@ namespace game::rml {
 namespace {
 
 constexpr float kDesignHeight =
-    1080.0f; // 1dp = pencere yüksekliği / 1080 piksel
+    1080.0f; // 1dp = window height / 1080 pixels
 
 } // namespace
 
@@ -27,14 +27,14 @@ bool CRmlSystem::initialize(SDL_Window *window, SDL_GPUDevice *device) {
   Rml::SetFileInterface(&m_fileInterface);
   Rml::SetRenderInterface(&m_renderer);
   if (!Rml::Initialise()) {
-    GAME_LOG_ERROR("ui", "RmlUi başlatılamadı");
+    GAME_LOG_ERROR("ui", "RmlUi could not be started");
     m_renderer.shutdown();
     return false;
   }
   Rml::Factory::RegisterEventListenerInstancer(&m_actions);
   m_context = Rml::CreateContext("game", Rml::Vector2i{1280, 720});
   if (m_context == nullptr) {
-    GAME_LOG_ERROR("ui", "RmlUi bağlamı oluşturulamadı");
+    GAME_LOG_ERROR("ui", "could not create RmlUi context");
     Rml::Shutdown();
     m_renderer.shutdown();
     return false;
@@ -58,12 +58,12 @@ void CRmlSystem::shutdown() {
   m_lastRml.clear();
   m_actions.clear();
   m_context = nullptr;
-  Rml::Shutdown(); // bağlamları ve belgeleri yok eder; render/sistem arayüzleri
-                   // bundan sonra serbest kalır
+  Rml::Shutdown(); // destroys contexts and documents; render/system interfaces
+                   // are released after this point
   m_renderer.shutdown();
 }
 
-// --- girdi
+// --- input
 // ---------------------------------------------------------------------------------------------------------
 
 void CRmlSystem::processEvent(const SDL_Event &event, bool mouseAllowed,
@@ -97,7 +97,7 @@ void CRmlSystem::update() {
   if (m_context == nullptr) {
     return;
   }
-  // Girdi alan belge varken metin girişi açık olmalı (input kutuları için
+  // Text input must be enabled while a document that captures input is open (for input boxes,
   // SDL_EVENT_TEXT_INPUT).
   const bool wantsText = capturesInput();
   if (wantsText != m_textInputActive) {
@@ -114,7 +114,7 @@ void CRmlSystem::update() {
   m_context->Render();
 }
 
-// --- belgeler
+// --- documents
 // ------------------------------------------------------------------------------------------------------
 
 bool CRmlSystem::loadFont(const std::string &assetPath, bool fallback) {
@@ -130,10 +130,10 @@ bool CRmlSystem::loadDocument(const std::string &name) {
   }
   Rml::ElementDocument *document = m_context->LoadDocument(name);
   if (document == nullptr) {
-    GAME_LOG_ERROR("ui", "belge yüklenemedi: {}", name);
+    GAME_LOG_ERROR("ui", "could not load document: {}", name);
     return false;
   }
-  document->Hide(); // gizli başlar; showDocument açar
+  document->Hide(); // starts hidden; showDocument shows it
   m_documents.emplace(name, Document_t{.document = document});
   return true;
 }
@@ -181,7 +181,7 @@ bool CRmlSystem::capturesInput() const {
   });
 }
 
-// --- eleman değişiklikleri
+// --- element changes
 // -----------------------------------------------------------------------------------------
 
 Rml::Element *CRmlSystem::findElement(const std::string &document,

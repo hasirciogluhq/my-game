@@ -13,7 +13,7 @@
 
 namespace game {
 
-// Soket tanıtıcısı (RAII). Platform farkları network_system.cpp'de.
+// Socket handle (RAII). Platform differences are in network_system.cpp.
 class CSocketFd {
 public:
   CSocketFd() = default;
@@ -33,35 +33,34 @@ private:
   int m_fd = -1;
 };
 
-// Bir uçla olan bağlantı: TCP (kReliable) + o uca giden UDP yolu (kUnreliable).
-// Tel formatı: TCP = [u32 uzunluk][veri]; UDP = [u32 token][veri] (veri boşsa
-// bind isteği/onayı).
+// A connection to one end: TCP (kReliable) + the UDP path to that end (kUnreliable).
+// Wire format: TCP = [u32 length][data]; UDP = [u32 token][data] (when data is empty it is a
+// bind request/acknowledgement).
 struct Connection_t {
   CSocketFd tcp;
-  std::vector<uint8_t> in;  // henüz çerçevelenmemiş gelen TCP baytları
-  std::vector<uint8_t> out; // henüz yazılamayan giden TCP baytları
+  std::vector<uint8_t> in;  // incoming TCP bytes not yet split into frames
+  std::vector<uint8_t> out; // outgoing TCP bytes not yet written
   uint32_t token =
-      0; // UDP paketlerinin kimliği; TCP el sıkışmasında server verir
-  uint32_t udpAddress = 0; // server tarafı: karşı ucun UDP adresi (ağ sırası)
+      0; // identity of UDP packets; the server gives it during the TCP handshake
+  uint32_t udpAddress = 0; // server side: the peer's UDP address (network byte order)
   uint16_t udpPort = 0;
-  bool udpBound = false; // UDP yolu kuruldu (bind isteği onaylandı)
-  bool broken = false; // yazma hatası ya da giden tampon doldu: pump() kaldırır
+  bool udpBound = false; // UDP path established (bind request acknowledged)
+  bool broken = false; // write error or outgoing buffer full: pump() removes it
 };
 
-// Server'ın bir client'ı.
+// A client on the server.
 struct Client_t {
   PeerId_t id = 0;
   Connection_t connection;
 };
 
-// TCP + UDP, tek port. Arayüz: INetwork (Network001).
+// TCP + UDP, one port. Interface: INetwork (Network001).
 //
-// Client: `m_connection` doluysa server'a bağlıdır.
-// Server: `m_clients` her client'ı ve onun bağlantısını tutar. Aynı portta TCP
-// dinler + UDP bağlar. El sıkışma: server kabul ettiği bağlantıya ilk TCP
-// çerçevesinde [peer id, token] yollar. Client UDP'den token'ı gönderir (bind
-// isteği), server UDP adresini eşler ve onaylar; sonra kUnreliable paketler
-// UDP'den gider.
+// Client: if `m_connection` is set, it is connected to the server.
+// Server: `m_clients` holds every client and its connection. It listens on TCP and binds UDP
+// on the same port. Handshake: the server sends [peer id, token] in the first TCP frame of an
+// accepted connection. The client sends the token over UDP (bind request); the server maps the
+// UDP address and acknowledges it. After that, kUnreliable packets travel over UDP.
 class NETWORK_API CNetworkSystem final : public INetwork {
 public:
   CNetworkSystem() = default;
@@ -89,7 +88,7 @@ public:
 private:
   [[nodiscard]] Connection_t *findConnection(PeerId_t peer);
   void acceptClients();
-  // Bir bağlantıyı okur ve yazar. false: bağlantı koptu ya da bozuldu.
+  // Reads and writes one connection. false: the connection dropped or broke.
   [[nodiscard]] bool service(PeerId_t peer, Connection_t &connection);
   [[nodiscard]] bool readTcp(PeerId_t peer, Connection_t &connection);
   [[nodiscard]] bool extractFrames(PeerId_t peer, Connection_t &connection);
@@ -103,7 +102,7 @@ private:
                                   std::span<const uint8_t> data);
   [[nodiscard]] bool sendUnreliable(const Connection_t &connection,
                                     std::span<const uint8_t> data);
-  // [token][veri] datagramını yollar (server: bağlantının UDP adresine, client: server'a).
+  // Sends a [token][data] datagram (server: to the connection's UDP address, client: to the server).
   [[nodiscard]] bool writeDatagram(const Connection_t &connection,
                                    std::span<const uint8_t> payload);
   [[nodiscard]] bool flush(Connection_t &connection);
@@ -120,9 +119,9 @@ private:
   PeerId_t m_nextPeer = 1;
   // Client
   std::optional<Connection_t> m_connection;
-  PeerId_t m_localPeer = 0; // el sıkışma bitene kadar 0
+  PeerId_t m_localPeer = 0; // 0 until the handshake completes
   std::chrono::steady_clock::time_point m_lastBindRequest{};
-  // Ortak
+  // Common
   CSocketFd m_udp;
   std::deque<NetEvent_t> m_events;
   std::coroutine_handle<> m_waiter;

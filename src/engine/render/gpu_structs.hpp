@@ -1,10 +1,10 @@
 #pragma once
 
-// CPU <-> shader uniform düzeni. shaders/msl_source.cpp içindeki aynı isimli struct'larla BİREBİR aynı olmalı
-// (her şey float4 / float4x4 tabanlı; padding yok). Yeni dil (HLSL) eklenirse cbuffer düzeni de bu olmalı.
-// Slot düzeni:
-//   vertex   b0 = PassUniforms_t   (pass başına)     vertex   b1 = DrawUniforms_t     (draw başına)
-//   fragment b0 = FrameUniforms_t  (frame başına)    fragment b1 = MaterialUniforms_t (material başına)
+// CPU <-> shader uniform layout. Must match EXACTLY the same-named structs in shaders/msl_source.cpp
+// (everything is float4 / float4x4 based; no padding). If a new language (HLSL) is added, its cbuffer layout must match too.
+// Slot layout:
+//   vertex   b0 = PassUniforms_t   (per pass)     vertex   b1 = DrawUniforms_t     (per draw)
+//   fragment b0 = FrameUniforms_t  (per frame)    fragment b1 = MaterialUniforms_t (per material)
 
 #include "engine/interface/render_types.hpp"
 
@@ -18,7 +18,7 @@ inline constexpr uint32_t kPassUniformSlot = 0;
 inline constexpr uint32_t kDrawUniformSlot = 1;
 inline constexpr uint32_t kFrameUniformSlot = 0;
 inline constexpr uint32_t kMaterialUniformSlot = 1;
-inline constexpr uint32_t kBoneUniformSlot = 2;  // vertex, sadece iskeletli shader'lar
+inline constexpr uint32_t kBoneUniformSlot = 2;  // vertex only, skinned shaders
 
 struct PassUniforms_t {
     glm::mat4 viewProjection;
@@ -30,17 +30,17 @@ struct DrawUniforms_t {
 };
 
 struct Light_t {
-    glm::vec4 positionRange;    // xyz: konum, w: menzil
-    glm::vec4 directionType;    // xyz: ışığın gittiği yön (normalize), w: 0 yön / 1 nokta / 2 spot
-    glm::vec4 colorIntensity;   // rgb: renk * şiddet
+    glm::vec4 positionRange;    // xyz: position, w: range
+    glm::vec4 directionType;    // xyz: direction the light travels (normalized), w: 0 directional / 1 point / 2 spot
+    glm::vec4 colorIntensity;   // rgb: color * intensity
     glm::vec4 cone;             // x: cos(inner), y: cos(outer)
 };
 
 struct FrameUniforms_t {
     glm::mat4 invViewProjection;
     glm::vec4 cameraPosition;
-    glm::vec4 sunDirection;     // xyz: yüzeyden güneşe (normalize)
-    glm::vec4 sunColor;         // rgb: renk * şiddet
+    glm::vec4 sunDirection;     // xyz: from the surface toward the sun (normalized)
+    glm::vec4 sunColor;         // rgb: color * intensity
     glm::vec4 skyColor;
     glm::vec4 horizonColor;
     glm::vec4 groundColor;
@@ -52,12 +52,12 @@ struct FrameUniforms_t {
 };
 
 struct MaterialUniforms_t {
-    glm::vec4 baseColor;        // sRGB, a = opaklık
+    glm::vec4 baseColor;        // sRGB, a = opacity
     glm::vec4 emissiveGrid;     // rgb: emissive, a: gridStrength
     glm::vec4 params;           // x: specularPower, y: specularAmount, z: rimAmount, w: 0
 };
 
-// Skin matrisleri (düğüm dünya * inverseBind). Kullanılmayan eklemler birim matris.
+// Skin matrices (node world * inverseBind). Unused joints are identity matrices.
 struct BoneUniforms_t {
     glm::mat4 bones[kMaxBones];
 };
@@ -72,7 +72,7 @@ static_assert(sizeof(DrawUniforms_t) == 64);
 static_assert(sizeof(Light_t) == 64);
 static_assert(sizeof(FrameUniforms_t) == 64 + 10 * 16 + kMaxLights * 64);
 static_assert(sizeof(MaterialUniforms_t) == 48);
-static_assert(sizeof(BoneUniforms_t) == 8192);  // rhi::kMaxUniformBytes ile aynı
+static_assert(sizeof(BoneUniforms_t) == 8192);  // same as rhi::kMaxUniformBytes
 static_assert(sizeof(DebugVertex_t) == 28);
 
 }  // namespace game::gpu

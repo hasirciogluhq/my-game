@@ -1,5 +1,5 @@
-// Başsız animasyon testi: robot.gltf yükleme (Assimp), skin ağırlıkları, pose hesabı, klip karışımı.
-// Çalıştır: xmake run anim_test
+// Headless animation test: loads the robot model (robot.glb, Assimp), skin weights, pose calculation, clip blending.
+// Run: xmake run anim_test
 #include "engine/assets/skinned_loader.hpp"
 #include "engine/engine/anim/skinned_model.hpp"
 #include "engine/engine/core/asset_path.hpp"
@@ -17,7 +17,7 @@ void check(bool ok, const char* what) {
     g_failures += ok ? 0 : 1;
 }
 
-// Vertex'i skin matrisleriyle dönüştürür (shader'daki skinMatrix ile aynı toplam).
+// Transforms a vertex with the skin matrices (same sum as skinMatrix in the shader).
 glm::vec3 skinned(const game::anim::SkinnedVertex_t& vertex, const std::vector<glm::mat4>& skin) {
     glm::mat4 matrix{0.0f};
     for (int i = 0; i < 4; ++i) {
@@ -26,7 +26,7 @@ glm::vec3 skinned(const game::anim::SkinnedVertex_t& vertex, const std::vector<g
     return glm::vec3{matrix * glm::vec4{vertex.position, 1.0f}};
 }
 
-// Bind pozunda sağ elin (x > 0.2, y < 1.0) en yüksek noktası.
+// The highest point of the right hand (x > 0.2, y < 1.0) in the bind pose.
 float rightHandHeight(const game::anim::SkinnedModel_t& model, const std::vector<glm::mat4>& skin) {
     float height = -1.0f;
     for (const auto& vertex : model.vertices) {
@@ -55,52 +55,52 @@ bool nearIdentity(const std::vector<glm::mat4>& skin, float epsilon) {
 int main() {
     using namespace game;
     const auto file = findAssetPath("models/robot.glb");
-    check(file.has_value(), "models/robot.glb bulundu");
+    check(file.has_value(), "models/robot.glb found");
     if (!file) {
         return 1;
     }
     auto loaded = model_loader::loadSkinned(file->string());
-    check(loaded.has_value(), "skinned model yüklendi");
+    check(loaded.has_value(), "skinned model loaded");
     if (!loaded) {
         std::cout << loaded.error() << "\n";
         return 1;
     }
     const anim::SkinnedModel_t& model = *loaded;
-    std::cout << model.vertices.size() << " vertex, " << model.indices.size() / 3 << " üçgen, " << model.joints.size() << " eklem, "
-              << model.nodes.size() << " düğüm, " << model.clips.size() << " klip\n";
+    std::cout << model.vertices.size() << " vertices, " << model.indices.size() / 3 << " triangles, " << model.joints.size() << " joints, "
+              << model.nodes.size() << " nodes, " << model.clips.size() << " clips\n";
 
-    check(model.joints.size() == 11, "11 eklem");
+    check(model.joints.size() == 11, "11 joints");
     const int idle = anim::findClip(model, "idle");
     const int wave = anim::findClip(model, "wave");
-    check(idle >= 0 && wave >= 0, "idle ve wave klipleri var");
-    check(anim::findClip(model, "yok") == -1, "olmayan klip -1");
-    check(std::abs(model.clips[static_cast<size_t>(wave)].duration - 1.6f) < 1e-3f, "wave süresi 1.6 sn");
+    check(idle >= 0 && wave >= 0, "idle and wave clips exist");
+    check(anim::findClip(model, "yok") == -1, "missing clip gives -1");
+    check(std::abs(model.clips[static_cast<size_t>(wave)].duration - 1.6f) < 1e-3f, "wave duration is 1.6 s");
 
     const bool weightsOk = std::ranges::all_of(model.vertices, [](const anim::SkinnedVertex_t& v) {
         return std::abs(v.weights.x + v.weights.y + v.weights.z + v.weights.w - 1.0f) < 1e-4f;
     });
-    check(weightsOk, "her vertex'in skin ağırlıkları toplamı 1");
+    check(weightsOk, "every vertex's skin weights sum to 1");
 
     std::vector<glm::mat4> skin;
     anim::evaluate(model, {}, {}, 1.0f, skin);
-    check(skin.size() == model.joints.size(), "skin matris sayısı = eklem sayısı");
-    check(nearIdentity(skin, 1e-4f), "bind pozu: tüm skin matrisleri birim");
+    check(skin.size() == model.joints.size(), "number of skin matrices = number of joints");
+    check(nearIdentity(skin, 1e-4f), "bind pose: all skin matrices are identity");
     const float restHand = rightHandHeight(model, skin);
 
     anim::evaluate(model, {}, {.clip = idle, .seconds = 0.0f}, 1.0f, skin);
-    check(nearIdentity(skin, 0.1f) && !nearIdentity(skin, 1e-3f), "idle t=0 bind pozuna yakın ama kollar hafif açık");
+    check(nearIdentity(skin, 0.1f) && !nearIdentity(skin, 1e-3f), "idle t=0 is close to the bind pose, but the arms are slightly open");
 
     anim::evaluate(model, {}, {.clip = wave, .seconds = 0.4f}, 1.0f, skin);
     const float waveHand = rightHandHeight(model, skin);
-    check(waveHand > 1.4f && restHand < 1.0f, "wave: sağ el omuz üstüne kalktı");
+    check(waveHand > 1.4f && restHand < 1.0f, "wave: the right hand rose above the shoulder");
 
     anim::evaluate(model, {.clip = idle, .seconds = 0.4f}, {.clip = wave, .seconds = 0.4f}, 0.5f, skin);
     const float halfHand = rightHandHeight(model, skin);
-    check(halfHand > restHand + 0.05f && halfHand < waveHand, "blend 0.5: idle ile wave arasında");
+    check(halfHand > restHand + 0.05f && halfHand < waveHand, "blend 0.5: between idle and wave");
 
     anim::evaluate(model, {}, {.clip = wave, .seconds = 0.4f + 1.6f}, 1.0f, skin);
-    check(std::abs(rightHandHeight(model, skin) - waveHand) < 1e-3f, "klip süresinden sonra döngü");
+    check(std::abs(rightHandHeight(model, skin) - waveHand) < 1e-3f, "loops after the clip duration");
 
-    std::cout << (g_failures == 0 ? "TUM TESTLER GECTI" : "HATA VAR") << "\n";
+    std::cout << (g_failures == 0 ? "ALL TESTS PASSED" : "ERROR") << "\n";
     return g_failures == 0 ? 0 : 1;
 }

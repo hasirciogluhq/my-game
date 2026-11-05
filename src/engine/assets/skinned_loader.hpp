@@ -7,8 +7,8 @@
 
 namespace game::model_loader {
 
-// Assimp ile iskeletli modeli (gltf, fbx...) yükler: tek mesh + iskelet + tüm animasyon klipleri.
-// Vertex başına en çok 4 eklem; eklem sayısı kMaxBones'u aşarsa hata.
+// Loads a skinned model (gltf, fbx...) using Assimp: a single mesh + skeleton + all animation clips.
+// At most 4 joints per vertex; an error if the joint count exceeds kMaxBones.
 [[nodiscard]] std::expected<anim::SkinnedModel_t, std::string> loadSkinned(const std::string& path);
 
 }  // namespace game::model_loader

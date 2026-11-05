@@ -3,43 +3,43 @@ set_version("0.1.0")
 set_languages("c++26")
 
 add_rules("mode.debug", "mode.release")
--- Include kökü src/:  #include "engine/render/..."  #include "game/shared/..."
+-- Include root is src/:  #include "engine/render/..."  #include "game/shared/..."
 add_includedirs("src")
 
--- zlib: sistemdeki (macOS SDK) zlib'i kullan.
+-- zlib: use the system zlib (macOS SDK).
 add_requires("zlib", {system = true})
--- protoc ve libprotobuf AYNI sürüm olmalı (generated kod ile runtime uyumu).
--- Yerel protoc (brew) de 36.2; xmake-repo'daki en yüksek sürüm de 36.2.
+-- protoc and libprotobuf must be the SAME version (generated code must match the runtime).
+-- The local protoc (brew) is 36.2 too; the highest version in xmake-repo is also 36.2.
 add_requires("protobuf-cpp 36.2")
 add_requires("glm")
--- assimp: xmake tarifi minizip'i çektiği için Homebrew assimp'i pkg-config ile kullanıyoruz.
+-- assimp: the xmake recipe pulls in minizip, so we use Homebrew's assimp through pkg-config.
 add_requires("assimp", {system = true})
 add_requires("libsdl3")
--- ECS, fizik (çarpışma) ve ses: hazır kütüphaneler.
+-- ECS, physics (collision) and audio: ready-made libraries.
 add_requires("entt")
 add_requires("joltphysics")
 add_requires("miniaudio")
--- Log: async, çok thread'li, hazır sink'ler (konsol + dönen dosya).
+-- Log: async, multi-threaded, ready-made sinks (console + rotating file).
 add_requires("spdlog")
--- Font atlası (stb_truetype): TTF -> R8 atlas + harf quad bilgisi.
+-- Font atlas (stb_truetype): TTF -> R8 atlas + glyph quad data.
 add_requires("stb")
--- Dear ImGui: motorun tek UI sistemi. Resmi backend'ler: imgui_impl_sdl3 (girdi) + imgui_impl_sdlgpu3 (çizim, SDL_GPU).
+-- Dear ImGui: the engine's only UI system. Official backends: imgui_impl_sdl3 (input) + imgui_impl_sdlgpu3 (drawing, SDL_GPU).
 add_requires("imgui", {configs = {sdl3 = true, sdl3_gpu = true}})
--- RmlUi: oyuncunun gördüğü arayüz (menü, HUD, skor tablosu). HTML/CSS benzeri .rml/.rcss; çizimi ui.dll içinde SDL_GPU ile.
+-- RmlUi: the interface the player sees (menu, HUD, scoreboard). HTML/CSS-like .rml/.rcss; drawn with SDL_GPU inside ui.dll.
 add_requires("rmlui 6.3")
 
 local function is_gcc_like()
     return not is_plat("windows")
 end
 
--- Çıktı düzeni: out/<plat>-<arch>-<mode>/engine/  motor DLL'leri
---               out/<plat>-<arch>-<mode>/game/    exe'ler + oyun DLL'leri (client, server)
--- Build ara dosyaları xmake'in kendi build/<plat>/<arch>/<mode> yapısında kalır.
+-- Output layout: out/<plat>-<arch>-<mode>/engine/  engine DLLs
+--               out/<plat>-<arch>-<mode>/game/    executables + game DLLs (client, server)
+-- Build intermediates stay in xmake's own build/<plat>/<arch>/<mode> layout.
 local outdir = "$(projectdir)/out/$(plat)-$(arch)-$(mode)"
 local enginedir = outdir .. "/engine"
 local gamedir = outdir .. "/game"
 
--- Motor DLL'leri yan yana durur; oyun hedefleri motoru ../engine üzerinden bulur.
+-- Engine DLLs sit side by side; game targets find the engine through ../engine.
 local function engine_rpath()
     add_rpathdirs("@loader_path", "@executable_path")
 end
@@ -48,10 +48,10 @@ local function game_rpath()
 end
 
 -- ===========================================================================
--- ENGINE (src/engine/): oyun kuralı içermez.
+-- ENGINE (src/engine/): contains no game rules.
 -- ===========================================================================
 
--- Ortak statik lib: CreateInterface registry, CModule (dlopen), motor arayüzleri.
+-- Shared static lib: CreateInterface registry, CModule (dlopen), engine interfaces.
 target("interface")
     set_kind("static")
     set_targetdir(enginedir)
@@ -59,11 +59,11 @@ target("interface")
     add_headerfiles("src/engine/interface/*.hpp")
     add_packages("glm", {public = true})
 
--- Motorun kendi modülü (src/engine/engine): çekirdek tipler, kamera, font, config, launch options, gzip.
+-- The engine's own module (src/engine/engine): core types, camera, font, config, launch options, gzip.
 target("engine")
     set_kind("shared")
     set_targetdir(enginedir)
-    -- Windows: engine.dll. macOS/Linux: libengine.dylib/.so (-lengine linkinin beklediği isim).
+    -- Windows: engine.dll. macOS/Linux: libengine.dylib/.so (the name the -lengine link expects).
     if is_plat("windows") then set_prefixname("") end
     add_defines("ENGINE_BUILD")
     if is_gcc_like() then add_cxflags("-fvisibility=hidden") end
@@ -73,7 +73,7 @@ target("engine")
     add_packages("stb")
     engine_rpath()
 
--- Log (spdlog, async). Arayüz: Log001. Host'lar ilk bunu yükler; diğer modüller BindLog ile bağlanır.
+-- Log (spdlog, async). Interface: Log001. The hosts load this first; other modules bind through BindLog.
 target("log")
     set_kind("shared")
     set_targetdir(enginedir)
@@ -85,7 +85,7 @@ target("log")
     add_packages("spdlog")
     engine_rpath()
 
--- Ağ (TCP + UDP, tek port). Arayüz: Network001. Sadece bayt taşır; protokol oyun tarafında.
+-- Network (TCP + UDP, one port). Interface: Network001. Carries only bytes; the protocol lives on the game side.
 target("network")
     set_kind("shared")
     set_targetdir(enginedir)
@@ -97,8 +97,8 @@ target("network")
     add_headerfiles("src/engine/network/*.hpp")
     engine_rpath()
 
--- Dinamik modüller: her biri GAME_EXPORT_MODULE ile CreateInterface export eder.
--- Birbirlerini linklemezler; host üzerinden arayüzle konuşurlar.
+-- Dynamic modules: each one exports CreateInterface via GAME_EXPORT_MODULE.
+-- They do not link each other; they talk through interfaces via the host.
 target("platform")
     set_kind("shared")
     set_targetdir(enginedir)
@@ -135,7 +135,7 @@ target("particles")
     add_packages("glm")
     engine_rpath()
 
--- Asset yükleme (Assimp): model dosyaları. Arayüz: Assets001.
+-- Asset loading (Assimp): model files. Interface: Assets001.
 target("assets")
     set_kind("shared")
     set_targetdir(enginedir)
@@ -148,7 +148,7 @@ target("assets")
     add_packages("assimp", "glm", "stb")
     engine_rpath()
 
--- Ses (miniaudio). Arayüz: Audio001.
+-- Audio (miniaudio). Interface: Audio001.
 target("audio")
     set_kind("shared")
     set_targetdir(enginedir)
@@ -161,7 +161,7 @@ target("audio")
     add_packages("miniaudio")
     engine_rpath()
 
--- UI: RmlUi (oyun arayüzü) + Dear ImGui (geliştirici konsolu). Arayüz: UI001.
+-- UI: RmlUi (game UI) + Dear ImGui (developer console). Interface: UI001.
 target("ui")
     set_kind("shared")
     set_targetdir(enginedir)
@@ -174,7 +174,7 @@ target("ui")
     add_packages("glm", "imgui", "libsdl3", "rmlui", "stb")
     engine_rpath()
 
--- Fizik / çarpışma (Jolt). Arayüz: Physics001. Server ve client (tahmin için) yükler.
+-- Physics / collision (Jolt). Interface: Physics001. Loaded by the server and by the client (for prediction).
 target("physics")
     set_kind("shared")
     set_targetdir(enginedir)
@@ -188,11 +188,11 @@ target("physics")
     engine_rpath()
 
 -- ===========================================================================
--- OYUN (src/game/, src/client, src/server, src/host): motoru kullanır, motorun parçası değildir.
+-- GAME (src/game/, src/client, src/server, src/host): uses the engine; it is not part of the engine.
 -- ===========================================================================
 
--- İki tarafın da kullandığı oyun kuralları: component'ler, World_t, replikasyon, protokol (proto), level, trace, hareket.
--- Statik lib: client.dll ve server.dll kendi kopyasını içine gömer.
+-- Game rules used by both sides: components, World_t, replication, protocol (proto), level, trace, movement.
+-- Static lib: client.dll and server.dll each embed their own copy.
 target("game_shared")
     set_kind("static")
     set_targetdir(gamedir)
@@ -204,8 +204,8 @@ target("game_shared")
     add_files("proto/*.proto", {proto_public = true})
     add_packages("protobuf-cpp", "glm", "entt", {public = true})
 
--- Client container (src/client) + client tarafı oyun kuralları (src/game/client).
--- SDL'e doğrudan bağlı değil: pencere/girdi platform.dll, çizim render.dll üzerinden.
+-- Client container (src/client) + client-side game rules (src/game/client).
+-- Not directly linked to SDL: window/input go through platform.dll, drawing through render.dll.
 target("client")
     set_kind("shared")
     set_targetdir(gamedir)
@@ -218,7 +218,7 @@ target("client")
     add_packages("glm", "imgui")
     game_rpath()
 
--- Server container (src/server) + server tarafı oyun kuralları (src/game/server).
+-- Server container (src/server) + server-side game rules (src/game/server).
 target("server")
     set_kind("shared")
     set_targetdir(gamedir)
@@ -230,7 +230,7 @@ target("server")
     add_headerfiles("src/server/**.hpp", "src/game/server/**.hpp")
     game_rpath()
 
--- Host'lar: modülleri dlopen ile yükler (motor: ../engine, oyun: kendi klasörü).
+-- Hosts: load the modules with dlopen (engine: ../engine, game: its own folder).
 target("game")
     set_kind("binary")
     set_targetdir(gamedir)
@@ -247,16 +247,16 @@ target("dedicated_server")
     game_rpath()
     set_rundir("$(projectdir)")
 
--- Başsız entegrasyon testi (physics + ECS + replikasyon + protobuf): xmake run ecs_test
+-- Headless integration test (physics + ECS + replication + protobuf): xmake run ecs_test
 target("ecs_test")
     set_kind("binary")
     set_targetdir(gamedir)
     add_deps("game_shared", "engine", "interface")
     add_files("src/tests/ecs_test.cpp", "src/game/client/**.cpp", "src/game/server/**.cpp")
-    remove_files("src/game/client/ui/**.cpp") -- ImGui kodu headless testte yok
+    remove_files("src/game/client/ui/**.cpp") -- no ImGui code in the headless test
     game_rpath()
 
--- Ağ testi: network_system.cpp doğrudan derlenir (iki örnek: server + client). xmake run network_test
+-- Network test: network_system.cpp is compiled directly (two instances: server + client). xmake run network_test
 target("network_test")
     set_kind("binary")
     set_targetdir(gamedir)
@@ -264,7 +264,7 @@ target("network_test")
     add_files("src/tests/network_test.cpp", "src/engine/network/network_system.cpp")
     game_rpath()
 
--- Animasyon testi: skinned_loader.cpp doğrudan derlenir (Assimp, iskelet, pose, klip karışımı; başsız).
+-- Animation test: skinned_loader.cpp is compiled directly (Assimp, skeleton, pose, clip blending; headless).
 target("anim_test")
     set_kind("binary")
     set_targetdir(gamedir)
@@ -274,7 +274,7 @@ target("anim_test")
     game_rpath()
     set_rundir("$(projectdir)")
 
--- Font testi: atlas + metin mesh'i + billboard (başsız).
+-- Font test: atlas + text mesh + billboard (headless).
 target("font_test")
     set_kind("binary")
     set_targetdir(gamedir)
@@ -282,7 +282,7 @@ target("font_test")
     add_files("src/tests/font_test.cpp")
     game_rpath()
 
--- Dummy executable'lar: build / çıktı dizini / link zincirini doğrulamak için. Motor kodu içermez.
+-- Dummy executables: verify the build / output directory / link chain. They contain no engine code.
 target("dummy_client")
     set_kind("binary")
     set_targetdir(gamedir)
