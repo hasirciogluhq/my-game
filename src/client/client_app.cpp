@@ -336,9 +336,8 @@ void CClientApp::tickOnce(uint32_t tick) {
   // Client system'leri.
   scene::attachVisuals(m_world, m_resources);
   scene::spin(m_world, m_dt);
-  systems::projectileTransforms(m_world, m_interpolation.snapshots.empty()
-                                             ? m_world.tick
-                                             : m_interpolation.renderTick);
+  systems::projectileTransforms(
+      m_world, interpolation::displayTick(m_interpolation, m_world.tick));
 
   updateCamera(cmd);
   drawWorld();
@@ -448,6 +447,8 @@ void CClientApp::drawWorld() {
   m_renderer->setPostProcess({});
   scene::draw(m_world, *m_renderer,
               m_freeCam ? entt::entity{entt::null} : cameraEntity());
+  scene::drawSkinned(m_world, *m_renderer, m_resources,
+                     interpolation::displayTick(m_interpolation, m_world.tick));
 
   // Parçacıklar şimdilik ECS dışında: particles.dll konumları verir.
   scene::drawParticles(*m_renderer, m_resources, m_particles->livePositions());

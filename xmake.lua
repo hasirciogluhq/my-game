@@ -264,6 +264,16 @@ target("network_test")
     add_files("src/tests/network_test.cpp", "src/engine/network/network_system.cpp")
     game_rpath()
 
+-- Animasyon testi: skinned_loader.cpp doğrudan derlenir (Assimp, iskelet, pose, klip karışımı; başsız).
+target("anim_test")
+    set_kind("binary")
+    set_targetdir(gamedir)
+    add_deps("engine", "interface")
+    add_files("src/tests/anim_test.cpp", "src/engine/assets/skinned_loader.cpp")
+    add_packages("assimp", "glm")
+    game_rpath()
+    set_rundir("$(projectdir)")
+
 -- Font testi: atlas + metin mesh'i + billboard (başsız).
 target("font_test")
     set_kind("binary")

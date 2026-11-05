@@ -53,6 +53,9 @@ entt::entity spawnBot(World_t &world, const glm::vec3 &position);
 [[nodiscard]] entt::entity findController(const World_t &world,
                                           uint32_t playerId);
 void enqueueCommand(World_t &world, uint32_t playerId, const UserCmd_t &cmd);
+// Animasyonlu prop (server): replicate edilir, durumunu systems::animation seçer. Controller'sız, çarpışmasız.
+entt::entity spawnAnimated(World_t &world, EModel model,
+                           const glm::vec3 &position, float yaw = 0.0f);
 
 } // namespace world
 } // namespace game

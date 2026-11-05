@@ -27,6 +27,10 @@ void push(Interpolation_t& state, WorldSnapshot_t snapshot);
 // Her client tick: gösterim zamanını ilerletir, kullanılmayan eski snapshot'ları atar.
 void advance(Interpolation_t& state, uint32_t tickRate);
 
+// Server zamanında ekranda gösterilen an: interpolation açıkken renderTick, henüz snapshot yoksa world.tick.
+// Mermi konumu ve animasyon pozu gibi "zamandan hesaplanan" şeyler bunu kullanır.
+[[nodiscard]] double displayTick(const Interpolation_t& state, uint32_t worldTick);
+
 // Yerel oyuncu hariç tüm oyuncuların Transform_t'sini renderTick'teki karışık değere yazar.
 void apply(World_t& world, const Interpolation_t& state, uint32_t localPlayerId);
 

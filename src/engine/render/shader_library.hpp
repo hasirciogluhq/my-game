@@ -21,6 +21,8 @@ enum class EShaderId : uint8_t {
     kPostFragment,
     kDebugVertex,
     kDebugFragment,
+    kSceneSkinnedVertex,   // vertex_scene + bone palette (vertex b2)
+    kShadowSkinnedVertex,  // vertex_shadow + bone palette (vertex b2)
     kCount,
 };
 

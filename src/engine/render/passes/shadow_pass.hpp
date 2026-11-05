@@ -12,7 +12,8 @@ public:
     void execute(const FrameContext_t& context) override;
 
 private:
-    rhi::PipelineHandle_t m_pipeline;
+    rhi::PipelineHandle_t m_pipeline;         // kPosNormalUv
+    rhi::PipelineHandle_t m_skinnedPipeline;  // kPosNormalUvSkin
 };
 
 }  // namespace game

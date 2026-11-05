@@ -40,6 +40,29 @@ Model_t uploadModel(IAssets &assets, IRenderer &renderer,
           .local = fitToHeight(**mesh, height)};
 }
 
+// İskeletli modeli yükler, GPU'ya yollar; EAnimState -> klip eşlemesini adlardan kurar.
+SkinnedAsset_t uploadSkinned(IAssets &assets, IRenderer &renderer,
+                             const std::string &path,
+                             const MaterialHandle_t &material) {
+  auto model = assets.loadSkinned(path);
+  if (!model) {
+    GAME_LOG_ERROR("client", "iskeletli model yüklenemedi: {}: {}", path,
+                   model.error());
+    return {};
+  }
+  SkinnedAsset_t asset{.model = *model,
+                       .mesh = uploadSkinnedMesh(renderer, **model),
+                       .material = material};
+  asset.clipOfState[static_cast<size_t>(EAnimState::kIdle)] =
+      anim::findClip(**model, "idle");
+  asset.clipOfState[static_cast<size_t>(EAnimState::kWave)] =
+      anim::findClip(**model, "wave");
+  GAME_LOG_INFO("client", "iskeletli model yüklendi: {} ({} üçgen, {} eklem, {} klip)",
+                path, (*model)->indices.size() / 3, (*model)->joints.size(),
+                (*model)->clips.size());
+  return asset;
+}
+
 } // namespace
 
 std::optional<Resources_t> loadResources(IAssets &assets, IRenderer &renderer) {
@@ -54,6 +77,10 @@ std::optional<Resources_t> loadResources(IAssets &assets, IRenderer &renderer) {
   resources.suzanne = uploadModel(assets, renderer, "models/suzanne.obj", 1.8f);
   resources.player = makeMaterial(renderer, "player", EShadingModel::kRimLit,
                                   {0.2f, 0.6f, 1.0f, 1.0f});
+  resources.robot = uploadSkinned(
+      assets, renderer, "models/robot.gltf",
+      makeMaterial(renderer, "robot", EShadingModel::kRimLit,
+                   {0.95f, 0.55f, 0.15f, 1.0f}));
   resources.projectile =
       renderer.createMaterial({.debugName = "projectile",
                                .shading = EShadingModel::kUnlit,

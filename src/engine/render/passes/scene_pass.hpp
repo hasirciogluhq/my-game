@@ -14,8 +14,8 @@ public:
     void destroy(rhi::IRhiDevice& device) override;
     void execute(const FrameContext_t& context) override;
 
-    // Material'dan pipeline anahtarı (SceneDraw_t::pipelineKey).
-    [[nodiscard]] static uint32_t pipelineKeyFor(const MaterialDesc_t& material);
+    // Material + mesh türünden pipeline anahtarı (SceneDraw_t::pipelineKey).
+    [[nodiscard]] static uint32_t pipelineKeyFor(const MaterialDesc_t& material, bool skinned);
 
 private:
     [[nodiscard]] rhi::PipelineHandle_t pipelineFor(uint32_t key);

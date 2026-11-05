@@ -2,6 +2,9 @@
 
 #include "engine/render/frame_context.hpp"
 
+#include <algorithm>
+#include <iterator>
+
 namespace game {
 
 struct PassInitContext_t {
@@ -22,6 +25,15 @@ public:
 };
 
 namespace passes {
+
+// İskeletli çizimin skin matrislerini bone uniform bloğuna yazar (eksik eklemler birim matris = bind pozu).
+inline void setBones(rhi::IRhiCommandList& commands, const SceneState_t& scene, const SceneDraw_t& draw) {
+    gpu::BoneUniforms_t uniforms;
+    std::ranges::fill(uniforms.bones, glm::mat4{1.0f});
+    const auto first = scene.boneMatrices.begin() + draw.boneOffset;
+    std::copy(first, first + draw.boneCount, std::begin(uniforms.bones));
+    commands.setUniforms(rhi::EShaderStage::kVertex, gpu::kBoneUniformSlot, uniforms);
+}
 
 // Mesh'i bağlayıp çizer (pipeline ve ortak uniform'lar çağıranda hazır olmalı).
 inline void drawMesh(rhi::IRhiCommandList& commands, const GpuMesh_t& mesh, const glm::mat4& model) {

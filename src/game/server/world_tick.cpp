@@ -1,6 +1,7 @@
 #include "game/server/world_tick.hpp"
 
 #include "game/server/systems/ai.hpp"
+#include "game/server/systems/animation.hpp"
 #include "game/server/systems/death.hpp"
 #include "game/server/systems/input.hpp"
 #include "game/server/systems/movement.hpp"
@@ -14,6 +15,7 @@ void tick(World_t& world) {
     systems::input(world);
     systems::ai(world);
     systems::movement(world);
+    systems::animation(world);
     systems::weapon(world);
     systems::projectiles(world);
     systems::death(world);

@@ -5,9 +5,10 @@
 namespace game {
 namespace {
 
-// pipeline anahtarı: bit 0-1 shading, bit 2 blend, bit 3 doubleSided
+// pipeline anahtarı: bit 0-1 shading, bit 2 blend, bit 3 doubleSided, bit 4 iskeletli mesh
 constexpr uint32_t kBlendBit = 1u << 2;
 constexpr uint32_t kDoubleSidedBit = 1u << 3;
+constexpr uint32_t kSkinnedBit = 1u << 4;
 
 EShaderId fragmentShaderFor(EShadingModel shading) {
     switch (shading) {
@@ -26,9 +27,9 @@ gpu::MaterialUniforms_t makeMaterialUniforms(const MaterialDesc_t& material) {
 
 }  // namespace
 
-uint32_t CScenePass::pipelineKeyFor(const MaterialDesc_t& material) {
+uint32_t CScenePass::pipelineKeyFor(const MaterialDesc_t& material, bool skinned) {
     return static_cast<uint32_t>(material.shading) | (material.blend == EBlendMode::kAlphaBlend ? kBlendBit : 0u) |
-           (material.doubleSided ? kDoubleSidedBit : 0u);
+           (material.doubleSided ? kDoubleSidedBit : 0u) | (skinned ? kSkinnedBit : 0u);
 }
 
 bool CScenePass::create(const PassInitContext_t& context) {
@@ -57,11 +58,12 @@ rhi::PipelineHandle_t CScenePass::pipelineFor(uint32_t key) {
         return found->second;
     }
     const bool blended = (key & kBlendBit) != 0;
+    const bool skinned = (key & kSkinnedBit) != 0;
     const auto shading = static_cast<EShadingModel>(key & 3u);
     const rhi::PipelineHandle_t pipeline = m_device->createGraphicsPipeline(
-        {.vertexShader = m_shaders->get(EShaderId::kSceneVertex),
+        {.vertexShader = m_shaders->get(skinned ? EShaderId::kSceneSkinnedVertex : EShaderId::kSceneVertex),
          .fragmentShader = m_shaders->get(fragmentShaderFor(shading)),
-         .vertexLayout = rhiVertexLayout(EVertexLayout::kPosNormalUv),
+         .vertexLayout = rhiVertexLayout(skinned ? EVertexLayout::kPosNormalUvSkin : EVertexLayout::kPosNormalUv),
          .cull = (key & kDoubleSidedBit) != 0 ? rhi::ECullMode::kNone : rhi::ECullMode::kBack,
          .depth = {.test = true, .write = !blended, .compare = rhi::EDepthCompare::kLess},
          .blend = blended ? rhi::EBlendPreset::kAlpha : rhi::EBlendPreset::kNone,
@@ -100,6 +102,9 @@ void CScenePass::drawList(const FrameContext_t& context, const std::vector<uint3
         if (draw.baseTexture != lastTexture) {
             commands.bindTexture(rhi::EShaderStage::kFragment, 1, draw.baseTexture, context.resources.materialSampler());
             lastTexture = draw.baseTexture;
+        }
+        if (draw.skinned) {
+            passes::setBones(commands, context.scene, draw);
         }
         passes::drawMesh(commands, *draw.mesh, draw.model);
         ++context.stats.drawCalls;

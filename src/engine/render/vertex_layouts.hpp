@@ -14,6 +14,14 @@ namespace game {
                     .attributes = {{{.location = 0, .format = EVertexFormat::kFloat3, .offset = 0},
                                     {.location = 1, .format = EVertexFormat::kFloat3, .offset = 12},
                                     {.location = 2, .format = EVertexFormat::kFloat2, .offset = 24}}}};
+        case EVertexLayout::kPosNormalUvSkin:
+            return {.stride = 52,
+                    .attributeCount = 5,
+                    .attributes = {{{.location = 0, .format = EVertexFormat::kFloat3, .offset = 0},
+                                    {.location = 1, .format = EVertexFormat::kFloat3, .offset = 12},
+                                    {.location = 2, .format = EVertexFormat::kFloat2, .offset = 24},
+                                    {.location = 3, .format = EVertexFormat::kUByte4Norm, .offset = 32},  // shader: round(x * 255) = joint
+                                    {.location = 4, .format = EVertexFormat::kFloat4, .offset = 36}}}};
     }
     return {};
 }

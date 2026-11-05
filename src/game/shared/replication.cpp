@@ -29,7 +29,8 @@ WorldSnapshot_t capture(const World_t& world) {
                                      .transform = copyOf<Transform_t>(world.registry, entity),
                                      .velocity = copyOf<Velocity_t>(world.registry, entity),
                                      .player = copyOf<Player_t>(world.registry, entity),
-                                     .projectile = copyOf<Projectile_t>(world.registry, entity)});
+                                     .projectile = copyOf<Projectile_t>(world.registry, entity),
+                                     .animator = copyOf<Animator_t>(world.registry, entity)});
     }
     return snapshot;
 }
@@ -48,6 +49,7 @@ void apply(World_t& world, const WorldSnapshot_t& snapshot) {
         write(world.registry, entity, item.velocity);
         write(world.registry, entity, item.player);
         write(world.registry, entity, item.projectile);
+        write(world.registry, entity, item.animator);
     }
 
     std::vector<entt::entity> gone;

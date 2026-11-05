@@ -40,6 +40,27 @@ struct Projectile_t {
     glm::vec3 velocity{0.0f};
 };
 
+// Server'ın seçtiği animasyon durumu. Client klip adını/süresini bilmez, state'i kendi modelindeki klibe eşler.
+enum class EAnimState : uint32_t {
+    kIdle,
+    kWave,
+};
+
+enum class EModel : uint32_t {
+    kRobot,
+};
+
+// Animasyonlu (iskeletli) entity. Pozu server her tick güncellemez: sadece durum değişince yazar.
+// Client pozu hesaplar: klip zamanı = (gösterim tick'i - startTick) * dt. Durum değişince önceki durumdan
+// kAnimBlendSeconds (client/scene/scene.hpp) boyunca geçiş yapılır (prevState hâlâ prevStartTick'ten itibaren oynamaya devam eder).
+struct Animator_t {
+    EModel model = EModel::kRobot;
+    EAnimState state = EAnimState::kIdle;
+    uint32_t startTick = 0;
+    EAnimState prevState = EAnimState::kIdle;
+    uint32_t prevStartTick = 0;
+};
+
 // Ağ üzerinden kopyalanan entity'ler bunu taşır. netId server'da atanır, client'ta aynen kullanılır.
 struct Replicated_t {
     uint32_t netId = 0;

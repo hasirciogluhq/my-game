@@ -71,6 +71,14 @@ void writeEntity(netproto::Entity* proto, const EntitySnapshot_t& entity) {
         writeVec3(item->mutable_origin(), entity.projectile->origin);
         writeVec3(item->mutable_velocity(), entity.projectile->velocity);
     }
+    if (entity.animator) {
+        auto* item = proto->mutable_animator();
+        item->set_model(static_cast<uint32_t>(entity.animator->model));
+        item->set_state(static_cast<uint32_t>(entity.animator->state));
+        item->set_start_tick(entity.animator->startTick);
+        item->set_prev_state(static_cast<uint32_t>(entity.animator->prevState));
+        item->set_prev_start_tick(entity.animator->prevStartTick);
+    }
 }
 
 EntitySnapshot_t readEntity(const netproto::Entity& proto) {
@@ -94,6 +102,13 @@ EntitySnapshot_t readEntity(const netproto::Entity& proto) {
                                          .spawnTick = proto.projectile().spawn_tick(),
                                          .origin = readVec3(proto.projectile().origin()),
                                          .velocity = readVec3(proto.projectile().velocity())};
+    }
+    if (proto.has_animator()) {
+        entity.animator = Animator_t{.model = static_cast<EModel>(proto.animator().model()),
+                                     .state = static_cast<EAnimState>(proto.animator().state()),
+                                     .startTick = proto.animator().start_tick(),
+                                     .prevState = static_cast<EAnimState>(proto.animator().prev_state()),
+                                     .prevStartTick = proto.animator().prev_start_tick()};
     }
     return entity;
 }

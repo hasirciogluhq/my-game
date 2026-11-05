@@ -169,6 +169,7 @@ void CRenderSystem::shutdown() {
         m_device.reset();
     }
     m_scene.submitted.clear();
+    m_scene.boneMatrices.clear();
     m_scene.lights.clear();
     m_scene.debugVertices.clear();
     m_initialized = false;
@@ -229,14 +230,22 @@ void CRenderSystem::destroyMaterial(MaterialHandle_t material) {
 void CRenderSystem::beginFrame(const FrameDesc_t& frame) {
     m_scene.frame = frame;
     m_scene.submitted.clear();
+    m_scene.boneMatrices.clear();
     m_scene.lights.clear();
     m_scene.debugVertices.clear();
 }
 
 void CRenderSystem::submit(const DrawItem_t& item) {
-    if (m_initialized) {
-        m_scene.submitted.push_back(item);
+    if (!m_initialized) {
+        return;
     }
+    SubmittedDraw_t draw{.item = item};
+    draw.item.bones = {};  // span çağıranındır; matrisler aşağıda kopyalanır
+    const size_t boneCount = std::min<size_t>(item.bones.size(), kMaxBones);
+    draw.boneOffset = static_cast<uint32_t>(m_scene.boneMatrices.size());
+    draw.boneCount = static_cast<uint32_t>(boneCount);
+    m_scene.boneMatrices.insert(m_scene.boneMatrices.end(), item.bones.begin(), item.bones.begin() + static_cast<std::ptrdiff_t>(boneCount));
+    m_scene.submitted.push_back(draw);
 }
 
 void CRenderSystem::submitLight(const LightDesc_t& light) {
@@ -271,7 +280,8 @@ void CRenderSystem::resolveDraws() {
     const culling::Frustum_t frustum = culling::makeFrustum(scene.viewProjection);
     const MaterialHandle_t fallbackMaterial = m_resources.defaultMaterial();
 
-    for (const DrawItem_t& item : scene.submitted) {
+    for (const SubmittedDraw_t& submitted : scene.submitted) {
+        const DrawItem_t& item = submitted.item;
         const GpuMesh_t* mesh = m_resources.find(item.mesh);
         if (mesh == nullptr) {
             continue;
@@ -284,7 +294,9 @@ void CRenderSystem::resolveDraws() {
         }
 
         const glm::vec3 localCenter = (mesh->boundsMin + mesh->boundsMax) * 0.5f;
-        const float localRadius = glm::length(mesh->boundsMax - mesh->boundsMin) * 0.5f;
+        const bool skinned = mesh->layout == EVertexLayout::kPosNormalUvSkin;
+        // Bind pozu sınırları animasyonda aşılabilir (kol kalkar): iskeletli mesh'te yarıçap payı.
+        const float localRadius = glm::length(mesh->boundsMax - mesh->boundsMin) * (skinned ? 0.75f : 0.5f);
         const glm::vec3 center{item.transform * glm::vec4{localCenter, 1.0f}};
         const bool visible = culling::intersectsSphere(frustum, center, localRadius * culling::maxAxisScale(item.transform));
         const bool blended = material->blend == EBlendMode::kAlphaBlend;
@@ -296,7 +308,7 @@ void CRenderSystem::resolveDraws() {
             continue;
         }
 
-        const uint32_t pipelineKey = CScenePass::pipelineKeyFor(*material);
+        const uint32_t pipelineKey = CScenePass::pipelineKeyFor(*material, skinned);
         const glm::vec3 toCamera = center - scene.cameraPosition;
         scene.draws.push_back({.mesh = mesh,
                                .material = material,
@@ -305,7 +317,10 @@ void CRenderSystem::resolveDraws() {
                                .sortKey = (static_cast<uint64_t>(pipelineKey) << 48) | (static_cast<uint64_t>(materialHandle.index) << 24) | item.mesh.index,
                                .distanceSquared = glm::dot(toCamera, toCamera),
                                .pipelineKey = pipelineKey,
-                               .castShadow = castShadow});
+                               .castShadow = castShadow,
+                               .skinned = skinned,
+                               .boneOffset = submitted.boneOffset,
+                               .boneCount = submitted.boneCount});
         if (visible) {
             (blended ? scene.blended : scene.opaque).push_back(static_cast<uint32_t>(scene.draws.size() - 1));
         }
@@ -372,6 +387,7 @@ void CRenderSystem::endFrame() {
         m_device->endFrame();
     }
     m_scene.submitted.clear();
+    m_scene.boneMatrices.clear();
     m_scene.lights.clear();
     m_scene.debugVertices.clear();
 }

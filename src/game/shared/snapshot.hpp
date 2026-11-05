@@ -14,6 +14,7 @@ struct EntitySnapshot_t {
     std::optional<Velocity_t> velocity;
     std::optional<Player_t> player;
     std::optional<Projectile_t> projectile;
+    std::optional<Animator_t> animator;
 };
 
 struct WorldSnapshot_t {

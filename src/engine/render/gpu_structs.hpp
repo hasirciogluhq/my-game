@@ -18,6 +18,7 @@ inline constexpr uint32_t kPassUniformSlot = 0;
 inline constexpr uint32_t kDrawUniformSlot = 1;
 inline constexpr uint32_t kFrameUniformSlot = 0;
 inline constexpr uint32_t kMaterialUniformSlot = 1;
+inline constexpr uint32_t kBoneUniformSlot = 2;  // vertex, sadece iskeletli shader'lar
 
 struct PassUniforms_t {
     glm::mat4 viewProjection;
@@ -56,6 +57,11 @@ struct MaterialUniforms_t {
     glm::vec4 params;           // x: specularPower, y: specularAmount, z: rimAmount, w: 0
 };
 
+// Skin matrisleri (düğüm dünya * inverseBind). Kullanılmayan eklemler birim matris.
+struct BoneUniforms_t {
+    glm::mat4 bones[kMaxBones];
+};
+
 struct DebugVertex_t {
     glm::vec3 position;
     glm::vec4 color;
@@ -66,6 +72,7 @@ static_assert(sizeof(DrawUniforms_t) == 64);
 static_assert(sizeof(Light_t) == 64);
 static_assert(sizeof(FrameUniforms_t) == 64 + 10 * 16 + kMaxLights * 64);
 static_assert(sizeof(MaterialUniforms_t) == 48);
+static_assert(sizeof(BoneUniforms_t) == 2048);  // rhi::kMaxUniformBytes ile aynı
 static_assert(sizeof(DebugVertex_t) == 28);
 
 }  // namespace game::gpu

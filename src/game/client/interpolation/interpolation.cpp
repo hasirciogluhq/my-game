@@ -35,6 +35,10 @@ void push(Interpolation_t& state, WorldSnapshot_t snapshot) {
     }
 }
 
+double displayTick(const Interpolation_t& state, uint32_t worldTick) {
+    return state.snapshots.empty() ? static_cast<double>(worldTick) : state.renderTick;
+}
+
 void advance(Interpolation_t& state, uint32_t tickRate) {
     if (state.snapshots.empty()) {
         return;

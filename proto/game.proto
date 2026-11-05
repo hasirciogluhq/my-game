@@ -56,6 +56,15 @@ message Projectile {
     Vec3 velocity = 4;
 }
 
+// Server'ın seçtiği animasyon durumu (EAnimState). Poz gönderilmez: client (tick - start_tick) ile hesaplar.
+message Animator {
+    uint32 model = 1;             // EModel
+    uint32 state = 2;             // EAnimState
+    uint32 start_tick = 3;        // state'in başladığı server tick'i
+    uint32 prev_state = 4;        // geçişte karıştırılan önceki state
+    uint32 prev_start_tick = 5;
+}
+
 // Bir entity: net_id + sahip olduğu component'ler (olmayanlar boş).
 message Entity {
     uint32 net_id = 1;
@@ -63,6 +72,7 @@ message Entity {
     Velocity velocity = 3;
     Player player = 4;
     Projectile projectile = 5;
+    Animator animator = 6;
 }
 
 message WorldSnapshot {

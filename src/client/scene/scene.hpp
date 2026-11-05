@@ -5,7 +5,11 @@
 #include "engine/interface/i_renderer.hpp"
 #include "game/shared/world.hpp"
 
+#include "engine/engine/anim/skinned_model.hpp"
+
+#include <array>
 #include <cstdint>
+#include <memory>
 #include <optional>
 #include <span>
 
@@ -38,12 +42,24 @@ struct Model_t {
   glm::mat4 local{1.0f};
 };
 
+// GPU'ya yüklenmiş iskeletli model. clipOfState: EAnimState -> modeldeki klip indeksi (-1 = yok, bind pozu).
+struct SkinnedAsset_t {
+  std::shared_ptr<const anim::SkinnedModel_t> model;
+  MeshHandle_t mesh;
+  MaterialHandle_t material;
+  std::array<int, 2> clipOfState{-1, -1};
+};
+
+// Durum değişince önceki animasyondan yenisine geçiş süresi.
+inline constexpr float kAnimBlendSeconds = 0.25f;
+
 // GPU'ya yüklenmiş mesh'ler ve ortak material'ler.
 struct Resources_t {
   MeshHandle_t plane;
   MeshHandle_t box;
   Model_t spot;
   Model_t suzanne;
+  SkinnedAsset_t robot;        // EModel::kRobot
   MaterialHandle_t player;     // kRimLit
   MaterialHandle_t projectile; // kUnlit
   MaterialHandle_t particle;   // kUnlit
@@ -62,6 +78,10 @@ void spin(World_t &world, float dt);
 // hidden: kameranın içinde olduğu pawn (birinci şahıs) çizilmez; entt::null ise
 // hepsi çizilir.
 void draw(World_t &world, IRenderer &renderer, entt::entity hidden);
+// Animator_t'li entity'leri çizer. Poz, server'ın seçtiği state + startTick'ten ve atTick'ten (gösterim zamanı)
+// hesaplanır; client animasyon kararı vermez.
+void drawSkinned(World_t &world, IRenderer &renderer,
+                 const Resources_t &resources, double atTick);
 void drawParticles(IRenderer &renderer, const Resources_t &resources,
                    std::span<const glm::vec3> positions);
 

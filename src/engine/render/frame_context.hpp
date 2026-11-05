@@ -21,6 +21,16 @@ struct SceneDraw_t {
     float distanceSquared = 0.0f;  // kamera mesafesi² (şeffaf sıralaması)
     uint32_t pipelineKey = 0;
     bool castShadow = false;
+    bool skinned = false;          // kPosNormalUvSkin: skin matrisleri SceneState_t::boneMatrices[boneOffset, +boneCount)
+    uint32_t boneOffset = 0;
+    uint32_t boneCount = 0;
+};
+
+// submit() ile gelen çizim. Skin matrisleri çağıranın span'inde kalmaz: SceneState_t::boneMatrices'e kopyalanır.
+struct SubmittedDraw_t {
+    DrawItem_t item;
+    uint32_t boneOffset = 0;
+    uint32_t boneCount = 0;
 };
 
 // Çağrılar arasında kalıcı: view, environment, post, overlay. Frame başına temizlenen: submitted, lights, debug.
@@ -30,7 +40,8 @@ struct SceneState_t {
     EnvironmentDesc_t environment;
     PostProcessDesc_t post;
 
-    std::vector<DrawItem_t> submitted;
+    std::vector<SubmittedDraw_t> submitted;
+    std::vector<glm::mat4> boneMatrices;  // frame başına, submit sırasıyla
     std::vector<LightDesc_t> lights;
     std::vector<gpu::DebugVertex_t> debugVertices;
     RenderOverlayFn overlay = nullptr;  // setOverlay: kalıcı, her frame swapchain'e son adım olarak çağrılır

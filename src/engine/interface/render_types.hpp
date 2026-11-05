@@ -45,6 +45,7 @@ using MaterialHandle_t = RenderHandle_t<MaterialTag_t>;
 
 inline constexpr uint32_t kMaxLights = 16;           // frame başına dinamik ışık (güneş hariç)
 inline constexpr uint32_t kMaxDebugLines = 65536;    // frame başına debug çizgi üst sınırı
+inline constexpr uint32_t kMaxBones = 32;            // iskeletli mesh'te çizim başına eklem (uniform bloğu 2 KB)
 
 // ---------------------------------------------------------------------------
 // Backend / yüzey
@@ -122,7 +123,8 @@ struct RenderStats_t {
 // Mesh
 // ---------------------------------------------------------------------------
 enum class EVertexLayout : uint8_t {
-    kPosNormalUv,  // float3 position, float3 normal, float2 uv = 32 byte. Position her layout'ta offset 0'dadır.
+    kPosNormalUv,      // float3 position, float3 normal, float2 uv = 32 byte. Position her layout'ta offset 0'dadır.
+    kPosNormalUvSkin,  // kPosNormalUv + ubyte4 joints (ham indeks) + float4 weights = 52 byte (anim::SkinnedVertex_t). DrawItem_t::bones gerekir.
 };
 
 enum class EIndexType : uint8_t {
@@ -133,6 +135,7 @@ enum class EIndexType : uint8_t {
 [[nodiscard]] constexpr uint32_t vertexStride(EVertexLayout layout) {
     switch (layout) {
         case EVertexLayout::kPosNormalUv: return 32;
+        case EVertexLayout::kPosNormalUvSkin: return 52;
     }
     return 0;
 }
@@ -274,6 +277,9 @@ struct DrawItem_t {
     MaterialHandle_t material;  // geçersizse defaultMaterial()
     glm::mat4 transform{1.0f};
     bool castShadow = true;
+    // kPosNormalUvSkin mesh'i için skin matrisleri (anim::evaluate çıktısı), en çok kMaxBones. submit() kopyalar;
+    // çağrıdan sonra tutulmaz. Skinned mesh'te boşsa bind pozunda (matrisler birim) çizilir.
+    std::span<const glm::mat4> bones;
 };
 
 }  // namespace game

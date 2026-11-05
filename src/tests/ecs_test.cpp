@@ -399,6 +399,62 @@ int main(int argc, char** argv) {
         check(game::systems::projectilePosition(bullet, 5.0, 1.0f / 64.0f).x == 0.0f, "projectilePosition: doğumdan önce çıkış noktası");
     }
 
+    // Animasyonlu entity (server mantığı): uzaktaki oyuncuya döner, yaklaşınca el sallar, uzaklaşınca bırakır;
+    // state client'a replicate edilir (poz değil, sadece state + startTick).
+    {
+        game::World_t arena;
+        game::world::reset(arena, 64);
+        // Fizik yok: oyuncu Transform'u doğrudan konumlandırılır (kapsül her tick geri yazmaz).
+        const auto robot = game::world::spawnAnimated(arena, game::EModel::kRobot, {0.0f, 0.0f, 0.0f});
+        const auto visitor = game::world::spawnPlayer(arena, 20);  // x = 30: robotun dışında, uzakta (> kLookRadius)
+        const auto stateOf = [&] { return arena.registry.get<game::Animator_t>(robot).state; };
+        for (int i = 0; i < 64; ++i) {
+            game::world::tick(arena);
+        }
+        check(stateOf() == game::EAnimState::kIdle, "robot: uzaktaki oyuncuya idle");
+        check(arena.registry.get<game::Transform_t>(robot).yaw == 0.0f, "robot: menzil dışındaki oyuncuya dönmez");
+
+        const auto setVisitorX = [&](float x) {
+            arena.registry.get<game::Transform_t>(visitor).position.x = x;
+            game::world::tick(arena);
+        };
+        for (int i = 0; i < 128; ++i) {
+            setVisitorX(-8.0f);  // 8 m: görür ama el sallamaz
+        }
+        check(stateOf() == game::EAnimState::kIdle, "robot: 8 m'de idle");
+        check(arena.registry.get<game::Transform_t>(robot).yaw > 1.0f, "robot: oyuncuya doğru döndü (-X'teki oyuncu: yaw ~ pi/2)");
+
+        setVisitorX(-3.0f);
+        const uint32_t waveStart = arena.tick - 1;
+        check(stateOf() == game::EAnimState::kWave, "robot: 3 m'de el sallıyor");
+        const auto& animator = arena.registry.get<game::Animator_t>(robot);
+        check(animator.startTick == waveStart && animator.prevState == game::EAnimState::kIdle, "robot: startTick ve prevState yazıldı");
+
+        setVisitorX(-5.5f);  // giriş 5 m, çıkış 6.5 m: histerezis, hâlâ el sallar
+        check(stateOf() == game::EAnimState::kWave, "robot: histerezis (5.5 m'de hâlâ wave)");
+        setVisitorX(-7.0f);
+        check(stateOf() == game::EAnimState::kIdle, "robot: 7 m'de idle'a döndü");
+
+        // Replikasyon: robot client'ta Animator_t + Transform_t ile belirir.
+        game::Envelope_t animEnvelope;
+        animEnvelope.type = netproto::Envelope::TYPE_SNAPSHOT;
+        animEnvelope.snapshot = game::replication::capture(arena);
+        const auto animBytes = game::protocol::encode(animEnvelope);
+        const auto animDecoded = game::protocol::decode(*animBytes);
+        game::World_t animClient;
+        game::world::reset(animClient, 64);
+        game::replication::apply(animClient, animDecoded->snapshot);
+        const auto replicaRobot = animClient.registry.view<game::Animator_t>();
+        check(replicaRobot.size() == 1, "robot client'a replicate edildi");
+        if (replicaRobot.size() == 1) {
+            const auto& replica = animClient.registry.get<game::Animator_t>(replicaRobot.front());
+            const auto& source = arena.registry.get<game::Animator_t>(robot);
+            check(replica.state == source.state && replica.startTick == source.startTick && replica.prevState == source.prevState &&
+                      replica.prevStartTick == source.prevStartTick,
+                  "robot: Animator_t protobuf ile aynen taşındı");
+        }
+    }
+
     physics->shutdown();
     std::cout << (g_failures == 0 ? "TUM TESTLER GECTI\n" : "BAZI TESTLER BASARISIZ\n");
     return g_failures == 0 ? 0 : 1;

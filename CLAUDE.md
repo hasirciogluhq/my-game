@@ -60,7 +60,7 @@ On Windows the output is `engine.dll`; on macOS `libengine.dylib`; on Linux `lib
 | `platform` | shared (`platform.dll`) | SDL3 window, event pump, key state by name, typed text → `CPlatform : IPlatform` (`Platform001`). The only place that touches SDL on the input/window side. |
 | `render` | shared (`render.dll`) | Backend-independent renderer → `CRenderSystem : IRenderer` (`Renderer001`). Passes: shadow → scene (sky, opaque, alpha-blend) → debug lines → post (bloom, tonemap, vignette) → overlay (Dear ImGui callback onto the swapchain). GPU access goes through `render/rhi/` (`IRhiDevice`; `CSdlGpuDevice` = Metal). Types shared with callers: `interface/render_types.hpp`. |
 | `particles` | shared (`particles.dll`) | CPU particle simulation → `CParticleSystem : IParticles` (`Particles001`) |
-| `assets` | shared (`assets.dll`) | Assimp model loading + cache → `CAssetSystem : IAssets` (`Assets001`) |
+| `assets` | shared (`assets.dll`) | Assimp model loading + cache → `CAssetSystem : IAssets` (`Assets001`): `loadMesh` (static) and `loadSkinned` (skeleton + skin + clips, `skinned_loader.cpp`) |
 | `audio` | shared (`audio.dll`) | miniaudio → `CAudioSystem : IAudio` (`Audio001`). Optional: the client runs silent without it. |
 | `ui` | shared (`ui.dll`) | The engine's only UI system: **Dear ImGui** (xmake package `imgui`, configs `sdl3`, `sdl3_gpu`) with the official `imgui_impl_sdl3` + `imgui_impl_sdlgpu3` backends → `CUiSystem : IUI` (`UI001`). Game code writes ImGui directly; drawing is done by the renderer overlay pass. Optional: no console without it. |
 | `log` | shared (`log.dll`) | spdlog (async, rotating file + colored console) → `CLogSystem : ILog` (`Log001`, in `engine/interface/i_log.hpp`). Loaded first by both hosts; see "Logging". |
@@ -71,6 +71,7 @@ On Windows the output is `engine.dll`; on macOS `libengine.dylib`; on Linux `lib
 | `game` | binary (`src/host/client/`) | host: loads `log` first, then `platform, render, particles, assets, audio, ui, physics, network, client`, runs `ClientApp001` |
 | `dedicated_server` | binary (`src/host/server/`) | host: loads `log` first, then `physics, network, server`, runs `ServerApp001` |
 | `ecs_test` | binary | headless integration test: physics + ECS + replication + protobuf (`xmake run ecs_test`) |
+| `anim_test` | binary | headless test: glTF skinned load (Assimp), skin weights, pose evaluation, clip blend (`xmake run anim_test`) |
 | `dummy_client`, `dummy_server` | binary | empty executables that only verify the build, output directory and link chain (`src/dummy/`) |
 
 ## Interface system (Source-style CreateInterface)
@@ -126,8 +127,8 @@ Header rule: `class_name.hpp` → class `CClassName`. `user_cmd.hpp` → struct 
 
 ## ECS
 
-- Every game object (player, projectile, level prop) is an **entity** in `World_t::registry` (EnTT). Components are plain data structs in `game/shared/components.hpp`: `Transform_t`, `Velocity_t`, `Player_t`, `Projectile_t`, `Replicated_t`, `Collider_t`, `CommandQueue_t`. Client-only components (`Visual_t`, `Spin_t`, `LocalPlayer_t`) live in `client/scene.hpp`.
-- **Systems** are free functions in `game::systems` (`input`, `movement`, `weapon`, `projectiles`, `projectileTransforms`). `world::tick` runs them in that order on the server, then increments the tick.
+- Every game object (player, projectile, level prop) is an **entity** in `World_t::registry` (EnTT). Components are plain data structs in `game/shared/components.hpp`: `Transform_t`, `Velocity_t`, `Player_t`, `Projectile_t`, `Animator_t`, `Replicated_t`, `Collider_t`, `CommandQueue_t`. Client-only components (`Visual_t`, `Spin_t`, `LocalPlayer_t`) live in `client/scene.hpp`.
+- **Systems** are free functions in `game::systems` (`input`, `ai`, `movement`, `animation`, `weapon`, `projectiles`, `death`, `owners`, `projectileTransforms`). `world::tick` runs them in that order on the server, then increments the tick.
 - Entity creation/destruction goes through `world::` helpers (`spawnPlayer`, `createReplicated`, `destroy`) so the `netId → entity` map stays correct.
 - **Replication:** entities with `Replicated_t{netId}` are sent each tick as `EntitySnapshot_t` (the optional components they own). `replication::capture` (server) / `replication::apply` (client) create, update and delete entities by `netId`. Entities without `Replicated_t` are local to that process (client props).
 - To add a replicated component: struct in `components.hpp` → message in `proto/game.proto` → field in `EntitySnapshot_t` → `writeEntity`/`readEntity` in `net/protocol.cpp` → one `copyOf`/`write` line in `ecs/replication.cpp`.
@@ -215,7 +216,19 @@ Header rule: `class_name.hpp` → class `CClassName`. `user_cmd.hpp` → struct 
 ## Server config
 
 - `assets/config/server.cfg`: `key value` per line, `#` comments. Loaded by `CServerApp::connect` (`config::load`, `config::getBool`).
+- `robots.count` (default 1): animated robots spawned at start (`world::spawnAnimated`).
 - `player.collisions.enabled` (1/0, default 1): players block each other (Jolt `CharacterVsCharacterCollisionSimple` via `IPhysics::setCharacterCollisions`).
+
+## Skeletal animation (server-driven)
+
+- **Split:** the engine only knows *data and math*; the game decides *which animation plays*.
+  - Engine (`engine/engine/anim/skinned_model.{hpp,cpp}`): `SkinnedModel_t` (vertices with 4 joints + weights, node tree, `Joint_t` = node + inverse bind, `Clip_t` keyframes), `anim::findClip`, `anim::evaluate(model, from, to, blend, skin)` (samples both clips, blends at local TRS level, resolves the hierarchy, writes one skin matrix per joint). Clips loop. `assets.dll` loads glTF/FBX through `IAssets::loadSkinned`.
+  - Game: **server** `systems::animation` (`game/server/systems/animation.cpp`, runs after `movement`) is the "brain": the animated entity turns toward the nearest player within `kLookRadius` and plays `kWave` inside `kGreetEnterRadius` (leaves at `kGreetExitRadius`, hysteresis), else `kIdle`. It only writes `Animator_t{model, state, startTick, prevState, prevStartTick}` when the state changes.
+- **Replication:** `Animator_t` is a normal replicated component (proto `Animator`). **No pose is sent.** The client computes the pose from `(displayTick - startTick) * dt` (`interpolation::displayTick`), blending from `prevState` over `kAnimBlendSeconds` (`client/scene/skinned.cpp`, `scene::drawSkinned`). Same idea as projectiles: replicate the start, derive the rest.
+- Client maps `EAnimState` → clip by name (`idle`, `wave`) in `scene::uploadSkinned`; `EModel` → `SkinnedAsset_t` in `scene::Resources_t`. Spawn on the server: `world::spawnAnimated(world, EModel, position)`.
+- **Renderer:** `EVertexLayout::kPosNormalUvSkin` (52 bytes: pos, normal, uv, ubyte4 joints, float4 weights = `anim::SkinnedVertex_t`). `DrawItem_t::bones` takes the skin matrices (max `kMaxBones` = 32, the uniform block is 2 KB); `submit()` copies them. Skinned meshes use `vertex_scene_skinned` / `vertex_shadow_skinned` (bone block = vertex buffer slot 2), same fragment shaders and materials as static meshes (material = `kRimLit` etc., colour/texture in the material). Culling radius gets extra margin for skinned meshes.
+- Model: `assets/models/robot.gltf` (11 joints, `idle` 2.0 s, `wave` 1.6 s). It was generated by a script (boxes with blended skin weights at the elbows/knees), faces -Z, feet at y=0, units in metres. To add a model: put a glTF/FBX with ≤ 32 joints and clips under `assets/models/`, add an `EModel` value, one `SkinnedAsset_t` in `Resources_t`, one `case` in `assetFor` (`skinned.cpp`).
+- To add an animation state: `EAnimState` value → clip name in `uploadSkinned` → choose it in `systems::animation` (extend `chooseState`).
 
 ## Projectiles
 
@@ -269,6 +282,7 @@ xmake build
 xmake run dedicated_server --tick-rate=64
 xmake run game --host=127.0.0.1 --port=7777
 xmake run ecs_test      # headless integration test, must print TUM TESTLER GECTI
+xmake run anim_test     # skinned model load + pose math, must print TUM TESTLER GECTI
 xmake run network_test  # network.dll: TCP+UDP same port, handshake, reliable/unreliable, coroutine
 xmake run dummy_client
 xmake run dummy_server

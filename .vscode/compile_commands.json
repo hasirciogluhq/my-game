@@ -1,551 +1,591 @@
 [
 {
   "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/gens/rules/protobuf/proto/game.pb.cc.o", "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"],
-  "file": "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/client/net/net_client.cpp.o", "src/client/net/net_client.cpp"],
-  "file": "src/client/net/net_client.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/client/module.cpp.o", "src/client/module.cpp"],
-  "file": "src/client/module.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/client/client_app.cpp.o", "src/client/client_app.cpp"],
-  "file": "src/client/client_app.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/client/scene/render_helpers.cpp.o", "src/client/scene/render_helpers.cpp"],
-  "file": "src/client/scene/render_helpers.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/client/scene/resources.cpp.o", "src/client/scene/resources.cpp"],
-  "file": "src/client/scene/resources.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/client/scene/visuals.cpp.o", "src/client/scene/visuals.cpp"],
-  "file": "src/client/scene/visuals.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/client/scene/draw.cpp.o", "src/client/scene/draw.cpp"],
-  "file": "src/client/scene/draw.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/client/scene/static_props.cpp.o", "src/client/scene/static_props.cpp"],
-  "file": "src/client/scene/static_props.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/client/console/console_commands.cpp.o", "src/client/console/console_commands.cpp"],
-  "file": "src/client/console/console_commands.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/ui/console_window.cpp.o", "src/game/client/ui/console_window.cpp"],
-  "file": "src/game/client/ui/console_window.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/ui/scoreboard.cpp.o", "src/game/client/ui/scoreboard.cpp"],
-  "file": "src/game/client/ui/scoreboard.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/ui/hud.cpp.o", "src/game/client/ui/hud.cpp"],
-  "file": "src/game/client/ui/hud.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/input/input_map.cpp.o", "src/game/client/input/input_map.cpp"],
-  "file": "src/game/client/input/input_map.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/input/input_sampler.cpp.o", "src/game/client/input/input_sampler.cpp"],
-  "file": "src/game/client/input/input_sampler.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/camera/death_cam.cpp.o", "src/game/client/camera/death_cam.cpp"],
-  "file": "src/game/client/camera/death_cam.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/prediction/prediction.cpp.o", "src/game/client/prediction/prediction.cpp"],
-  "file": "src/game/client/prediction/prediction.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/effects/fire_effects.cpp.o", "src/game/client/effects/fire_effects.cpp"],
-  "file": "src/game/client/effects/fire_effects.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/interpolation/interpolation.cpp.o", "src/game/client/interpolation/interpolation.cpp"],
-  "file": "src/game/client/interpolation/interpolation.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DLOG_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/s/spdlog/v1.17.0/6f32325f1a7b483ab0705073f708dd14/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/log/macosx/arm64/debug/src/engine/log/log_system.cpp.o", "src/engine/log/log_system.cpp"],
-  "file": "src/engine/log/log_system.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/gens/rules/protobuf/proto/game.pb.cc.o", "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"],
-  "file": "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/tests/ecs_test.cpp.o", "src/tests/ecs_test.cpp"],
-  "file": "src/tests/ecs_test.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/client/input/input_map.cpp.o", "src/game/client/input/input_map.cpp"],
-  "file": "src/game/client/input/input_map.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/client/input/input_sampler.cpp.o", "src/game/client/input/input_sampler.cpp"],
-  "file": "src/game/client/input/input_sampler.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/client/camera/death_cam.cpp.o", "src/game/client/camera/death_cam.cpp"],
-  "file": "src/game/client/camera/death_cam.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/client/prediction/prediction.cpp.o", "src/game/client/prediction/prediction.cpp"],
-  "file": "src/game/client/prediction/prediction.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/client/effects/fire_effects.cpp.o", "src/game/client/effects/fire_effects.cpp"],
-  "file": "src/game/client/effects/fire_effects.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/client/interpolation/interpolation.cpp.o", "src/game/client/interpolation/interpolation.cpp"],
-  "file": "src/game/client/interpolation/interpolation.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/world_tick.cpp.o", "src/game/server/world_tick.cpp"],
-  "file": "src/game/server/world_tick.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/input.cpp.o", "src/game/server/systems/input.cpp"],
-  "file": "src/game/server/systems/input.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/ai.cpp.o", "src/game/server/systems/ai.cpp"],
-  "file": "src/game/server/systems/ai.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/death.cpp.o", "src/game/server/systems/death.cpp"],
-  "file": "src/game/server/systems/death.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/weapon.cpp.o", "src/game/server/systems/weapon.cpp"],
-  "file": "src/game/server/systems/weapon.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/movement.cpp.o", "src/game/server/systems/movement.cpp"],
-  "file": "src/game/server/systems/movement.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/owners.cpp.o", "src/game/server/systems/owners.cpp"],
-  "file": "src/game/server/systems/owners.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/projectiles.cpp.o", "src/game/server/systems/projectiles.cpp"],
-  "file": "src/game/server/systems/projectiles.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/control/control_request.cpp.o", "src/game/server/control/control_request.cpp"],
-  "file": "src/game/server/control/control_request.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/control/pawn_command.cpp.o", "src/game/server/control/pawn_command.cpp"],
-  "file": "src/game/server/control/pawn_command.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DSERVER_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/gens/rules/protobuf/proto/game.pb.cc.o", "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"],
-  "file": "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/server/macosx/arm64/debug/src/server/net/net_server.cpp.o", "src/server/net/net_server.cpp"],
-  "file": "src/server/net/net_server.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/server/macosx/arm64/debug/src/server/module.cpp.o", "src/server/module.cpp"],
-  "file": "src/server/module.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/server/macosx/arm64/debug/src/server/server_app.cpp.o", "src/server/server_app.cpp"],
-  "file": "src/server/server_app.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/world_tick.cpp.o", "src/game/server/world_tick.cpp"],
-  "file": "src/game/server/world_tick.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/input.cpp.o", "src/game/server/systems/input.cpp"],
-  "file": "src/game/server/systems/input.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/ai.cpp.o", "src/game/server/systems/ai.cpp"],
-  "file": "src/game/server/systems/ai.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/death.cpp.o", "src/game/server/systems/death.cpp"],
-  "file": "src/game/server/systems/death.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/weapon.cpp.o", "src/game/server/systems/weapon.cpp"],
-  "file": "src/game/server/systems/weapon.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/movement.cpp.o", "src/game/server/systems/movement.cpp"],
-  "file": "src/game/server/systems/movement.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/owners.cpp.o", "src/game/server/systems/owners.cpp"],
-  "file": "src/game/server/systems/owners.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/projectiles.cpp.o", "src/game/server/systems/projectiles.cpp"],
-  "file": "src/game/server/systems/projectiles.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/control/control_request.cpp.o", "src/game/server/control/control_request.cpp"],
-  "file": "src/game/server/control/control_request.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/control/pawn_command.cpp.o", "src/game/server/control/pawn_command.cpp"],
-  "file": "src/game/server/control/pawn_command.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-o", "build/.objs/dummy_client/macosx/arm64/debug/src/host/client/client.dummy.cpp.o", "src/host/client/client.dummy.cpp"],
-  "file": "src/host/client/client.dummy.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-o", "build/.objs/dummy_server/macosx/arm64/debug/src/host/server/server.dummy.cpp.o", "src/host/server/server.dummy.cpp"],
-  "file": "src/host/server/server.dummy.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/font_test/macosx/arm64/debug/src/tests/font_test.cpp.o", "src/tests/font_test.cpp"],
-  "file": "src/tests/font_test.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/dedicated_server/macosx/arm64/debug/src/host/server/main.cpp.o", "src/host/server/main.cpp"],
-  "file": "src/host/server/main.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DPARTICLES_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/particles/macosx/arm64/debug/src/engine/particles/module.cpp.o", "src/engine/particles/module.cpp"],
-  "file": "src/engine/particles/module.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DPARTICLES_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/particles/macosx/arm64/debug/src/engine/particles/particle_system.cpp.o", "src/engine/particles/particle_system.cpp"],
-  "file": "src/engine/particles/particle_system.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DAUDIO_BUILD", "-DMA_NO_RUNTIME_LINKING", "-framework", "AudioToolbox", "-framework", "CoreAudio", "-framework", "AudioUnit", "-framework", "AVFoundation", "-framework", "CoreFoundation", "-framework", "Foundation", "-isystem", "/Users/hasircioglu/.xmake/packages/m/miniaudio/0.11.25/84be083d6c914829b87ef2884eaecbfd/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-fvisibility=hidden", "-o", "build/.objs/audio/macosx/arm64/debug/src/engine/audio/audio_system.cpp.o", "src/engine/audio/audio_system.cpp"],
-  "file": "src/engine/audio/audio_system.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DAUDIO_BUILD", "-DMA_NO_RUNTIME_LINKING", "-framework", "AudioToolbox", "-framework", "CoreAudio", "-framework", "AudioUnit", "-framework", "AVFoundation", "-framework", "CoreFoundation", "-framework", "Foundation", "-isystem", "/Users/hasircioglu/.xmake/packages/m/miniaudio/0.11.25/84be083d6c914829b87ef2884eaecbfd/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-fvisibility=hidden", "-o", "build/.objs/audio/macosx/arm64/debug/src/engine/audio/module.cpp.o", "src/engine/audio/module.cpp"],
-  "file": "src/engine/audio/module.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-Wno-float-conversion", "-Wno-implicit-float-conversion", "-Wno-implicit-int-float-conversion", "-Wno-unknown-warning-option", "-Wno-unused-command-line-argument", "-fvisibility=hidden", "-fPIC", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/gens/rules/protobuf/proto/game.pb.cc.o", "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"],
-  "file": "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-Wno-float-conversion", "-Wno-implicit-float-conversion", "-Wno-implicit-int-float-conversion", "-Wno-unknown-warning-option", "-Wno-unused-command-line-argument", "-fvisibility=hidden", "-fPIC", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/level.cpp.o", "src/game/shared/level.cpp"],
-  "file": "src/game/shared/level.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-Wno-float-conversion", "-Wno-implicit-float-conversion", "-Wno-implicit-int-float-conversion", "-Wno-unknown-warning-option", "-Wno-unused-command-line-argument", "-fvisibility=hidden", "-fPIC", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/trace.cpp.o", "src/game/shared/trace.cpp"],
-  "file": "src/game/shared/trace.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-Wno-float-conversion", "-Wno-implicit-float-conversion", "-Wno-implicit-int-float-conversion", "-Wno-unknown-warning-option", "-Wno-unused-command-line-argument", "-fvisibility=hidden", "-fPIC", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/replication.cpp.o", "src/game/shared/replication.cpp"],
-  "file": "src/game/shared/replication.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-Wno-float-conversion", "-Wno-implicit-float-conversion", "-Wno-implicit-int-float-conversion", "-Wno-unknown-warning-option", "-Wno-unused-command-line-argument", "-fvisibility=hidden", "-fPIC", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/movement.cpp.o", "src/game/shared/movement.cpp"],
-  "file": "src/game/shared/movement.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-Wno-float-conversion", "-Wno-implicit-float-conversion", "-Wno-implicit-int-float-conversion", "-Wno-unknown-warning-option", "-Wno-unused-command-line-argument", "-fvisibility=hidden", "-fPIC", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/protocol.cpp.o", "src/game/shared/protocol.cpp"],
-  "file": "src/game/shared/protocol.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DPROTOBUF_USE_DLLS", "-DNOMINMAX", "-framework", "CoreFoundation", "-isystem", "/opt/homebrew/Cellar/protobuf/36.2/include", "-isystem", "/opt/homebrew/Cellar/abseil/20260817.0/include", "-isystem", "/Users/hasircioglu/.xmake/packages/a/abseil/20260107.1/e38972a8e50040c4871494d8ffbc4b26/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-Wno-float-conversion", "-Wno-implicit-float-conversion", "-Wno-implicit-int-float-conversion", "-Wno-unknown-warning-option", "-Wno-unused-command-line-argument", "-fvisibility=hidden", "-fPIC", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/world.cpp.o", "src/game/shared/world.cpp"],
-  "file": "src/game/shared/world.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/game/macosx/arm64/debug/src/host/client/main.cpp.o", "src/host/client/main.cpp"],
-  "file": "src/host/client/main.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DENGINE_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include/stb", "-fvisibility=hidden", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/net/gzip.cpp.o", "src/engine/engine/net/gzip.cpp"],
-  "file": "src/engine/engine/net/gzip.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DENGINE_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include/stb", "-fvisibility=hidden", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/engine_log.cpp.o", "src/engine/engine/core/engine_log.cpp"],
-  "file": "src/engine/engine/core/engine_log.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DENGINE_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include/stb", "-fvisibility=hidden", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/camera.cpp.o", "src/engine/engine/core/camera.cpp"],
-  "file": "src/engine/engine/core/camera.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DENGINE_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include/stb", "-fvisibility=hidden", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/font.cpp.o", "src/engine/engine/core/font.cpp"],
-  "file": "src/engine/engine/core/font.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DENGINE_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include/stb", "-fvisibility=hidden", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/launch_options.cpp.o", "src/engine/engine/core/launch_options.cpp"],
-  "file": "src/engine/engine/core/launch_options.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DENGINE_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include/stb", "-fvisibility=hidden", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/config.cpp.o", "src/engine/engine/core/config.cpp"],
-  "file": "src/engine/engine/core/config.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DENGINE_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include/stb", "-fvisibility=hidden", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/primitives.cpp.o", "src/engine/engine/core/primitives.cpp"],
-  "file": "src/engine/engine/core/primitives.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DENGINE_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include/stb", "-fvisibility=hidden", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/asset_path.cpp.o", "src/engine/engine/core/asset_path.cpp"],
-  "file": "src/engine/engine/core/asset_path.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DENGINE_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include/stb", "-fvisibility=hidden", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/ecs/control.cpp.o", "src/engine/engine/ecs/control.cpp"],
-  "file": "src/engine/engine/ecs/control.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DRENDER_BUILD", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/module.cpp.o", "src/engine/render/module.cpp"],
-  "file": "src/engine/render/module.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DRENDER_BUILD", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/shader_library.cpp.o", "src/engine/render/shader_library.cpp"],
-  "file": "src/engine/render/shader_library.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DRENDER_BUILD", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/passes/post_pass.cpp.o", "src/engine/render/passes/post_pass.cpp"],
-  "file": "src/engine/render/passes/post_pass.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DRENDER_BUILD", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/passes/debug_pass.cpp.o", "src/engine/render/passes/debug_pass.cpp"],
-  "file": "src/engine/render/passes/debug_pass.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DRENDER_BUILD", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/passes/shadow_pass.cpp.o", "src/engine/render/passes/shadow_pass.cpp"],
-  "file": "src/engine/render/passes/shadow_pass.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DRENDER_BUILD", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/passes/scene_pass.cpp.o", "src/engine/render/passes/scene_pass.cpp"],
-  "file": "src/engine/render/passes/scene_pass.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DRENDER_BUILD", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/passes/overlay_pass.cpp.o", "src/engine/render/passes/overlay_pass.cpp"],
-  "file": "src/engine/render/passes/overlay_pass.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DRENDER_BUILD", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/rhi/rhi_factory.cpp.o", "src/engine/render/rhi/rhi_factory.cpp"],
-  "file": "src/engine/render/rhi/rhi_factory.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DRENDER_BUILD", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/rhi/sdl_gpu_device.cpp.o", "src/engine/render/rhi/sdl_gpu_device.cpp"],
-  "file": "src/engine/render/rhi/sdl_gpu_device.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DRENDER_BUILD", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/render_system.cpp.o", "src/engine/render/render_system.cpp"],
-  "file": "src/engine/render/render_system.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DRENDER_BUILD", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/render_targets.cpp.o", "src/engine/render/render_targets.cpp"],
-  "file": "src/engine/render/render_targets.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DRENDER_BUILD", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/shaders/msl_source.cpp.o", "src/engine/render/shaders/msl_source.cpp"],
-  "file": "src/engine/render/shaders/msl_source.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DRENDER_BUILD", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/render_resources.cpp.o", "src/engine/render/render_resources.cpp"],
-  "file": "src/engine/render/render_resources.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/interface/macosx/arm64/debug/src/engine/interface/module_loader.cpp.o", "src/engine/interface/module_loader.cpp"],
-  "file": "src/engine/interface/module_loader.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/interface/macosx/arm64/debug/src/engine/interface/create_interface.cpp.o", "src/engine/interface/create_interface.cpp"],
-  "file": "src/engine/interface/create_interface.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DASSETS_BUILD", "-isystem", "/opt/homebrew/Cellar/assimp/6.0.5/include", "-isystem", "/Users/hasircioglu/.xmake/packages/z/zlib/v1.3.2/0261a93891114651929e57ba93f049f1/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-fvisibility=hidden", "-o", "build/.objs/assets/macosx/arm64/debug/src/engine/assets/module.cpp.o", "src/engine/assets/module.cpp"],
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DASSETS_BUILD", "-o", "build/.objs/assets/macosx/arm64/debug/src/engine/assets/module.cpp.o", "src/engine/assets/module.cpp"],
   "file": "src/engine/assets/module.cpp"
 },
 {
   "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DASSETS_BUILD", "-isystem", "/opt/homebrew/Cellar/assimp/6.0.5/include", "-isystem", "/Users/hasircioglu/.xmake/packages/z/zlib/v1.3.2/0261a93891114651929e57ba93f049f1/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-fvisibility=hidden", "-o", "build/.objs/assets/macosx/arm64/debug/src/engine/assets/model_loader.cpp.o", "src/engine/assets/model_loader.cpp"],
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DASSETS_BUILD", "-o", "build/.objs/assets/macosx/arm64/debug/src/engine/assets/model_loader.cpp.o", "src/engine/assets/model_loader.cpp"],
   "file": "src/engine/assets/model_loader.cpp"
 },
 {
   "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DASSETS_BUILD", "-isystem", "/opt/homebrew/Cellar/assimp/6.0.5/include", "-isystem", "/Users/hasircioglu/.xmake/packages/z/zlib/v1.3.2/0261a93891114651929e57ba93f049f1/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-fvisibility=hidden", "-o", "build/.objs/assets/macosx/arm64/debug/src/engine/assets/asset_system.cpp.o", "src/engine/assets/asset_system.cpp"],
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DASSETS_BUILD", "-o", "build/.objs/assets/macosx/arm64/debug/src/engine/assets/skinned_loader.cpp.o", "src/engine/assets/skinned_loader.cpp"],
+  "file": "src/engine/assets/skinned_loader.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DASSETS_BUILD", "-o", "build/.objs/assets/macosx/arm64/debug/src/engine/assets/asset_system.cpp.o", "src/engine/assets/asset_system.cpp"],
   "file": "src/engine/assets/asset_system.cpp"
 },
 {
   "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DNETWORK_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/network/macosx/arm64/debug/src/engine/network/module.cpp.o", "src/engine/network/module.cpp"],
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/anim_test/macosx/arm64/debug/src/tests/anim_test.cpp.o", "src/tests/anim_test.cpp"],
+  "file": "src/tests/anim_test.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/anim_test/macosx/arm64/debug/src/engine/assets/skinned_loader.cpp.o", "src/engine/assets/skinned_loader.cpp"],
+  "file": "src/engine/assets/skinned_loader.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DNETWORK_BUILD", "-o", "build/.objs/network/macosx/arm64/debug/src/engine/network/module.cpp.o", "src/engine/network/module.cpp"],
   "file": "src/engine/network/module.cpp"
 },
 {
   "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DNETWORK_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/network/macosx/arm64/debug/src/engine/network/network_system.cpp.o", "src/engine/network/network_system.cpp"],
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DNETWORK_BUILD", "-o", "build/.objs/network/macosx/arm64/debug/src/engine/network/network_system.cpp.o", "src/engine/network/network_system.cpp"],
   "file": "src/engine/network/network_system.cpp"
 },
 {
   "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/network_test/macosx/arm64/debug/src/tests/network_test.cpp.o", "src/tests/network_test.cpp"],
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/anim/skinned_model.cpp.o", "src/engine/engine/anim/skinned_model.cpp"],
+  "file": "src/engine/engine/anim/skinned_model.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/net/gzip.cpp.o", "src/engine/engine/net/gzip.cpp"],
+  "file": "src/engine/engine/net/gzip.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/engine_log.cpp.o", "src/engine/engine/core/engine_log.cpp"],
+  "file": "src/engine/engine/core/engine_log.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/camera.cpp.o", "src/engine/engine/core/camera.cpp"],
+  "file": "src/engine/engine/core/camera.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/font.cpp.o", "src/engine/engine/core/font.cpp"],
+  "file": "src/engine/engine/core/font.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/launch_options.cpp.o", "src/engine/engine/core/launch_options.cpp"],
+  "file": "src/engine/engine/core/launch_options.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/config.cpp.o", "src/engine/engine/core/config.cpp"],
+  "file": "src/engine/engine/core/config.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/primitives.cpp.o", "src/engine/engine/core/primitives.cpp"],
+  "file": "src/engine/engine/core/primitives.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/asset_path.cpp.o", "src/engine/engine/core/asset_path.cpp"],
+  "file": "src/engine/engine/core/asset_path.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/ecs/control.cpp.o", "src/engine/engine/ecs/control.cpp"],
+  "file": "src/engine/engine/ecs/control.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DAUDIO_BUILD", "-o", "build/.objs/audio/macosx/arm64/debug/src/engine/audio/audio_system.cpp.o", "src/engine/audio/audio_system.cpp"],
+  "file": "src/engine/audio/audio_system.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DAUDIO_BUILD", "-o", "build/.objs/audio/macosx/arm64/debug/src/engine/audio/module.cpp.o", "src/engine/audio/module.cpp"],
+  "file": "src/engine/audio/module.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/network_test/macosx/arm64/debug/src/tests/network_test.cpp.o", "src/tests/network_test.cpp"],
   "file": "src/tests/network_test.cpp"
 },
 {
   "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-g", "-O0", "-std=c++26", "-Isrc", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-o", "build/.objs/network_test/macosx/arm64/debug/src/engine/network/network_system.cpp.o", "src/engine/network/network_system.cpp"],
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/network_test/macosx/arm64/debug/src/engine/network/network_system.cpp.o", "src/engine/network/network_system.cpp"],
   "file": "src/engine/network/network_system.cpp"
 },
 {
   "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DUI_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include/stb", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-fvisibility=hidden", "-o", "build/.objs/ui/macosx/arm64/debug/src/engine/ui/module.cpp.o", "src/engine/ui/module.cpp"],
-  "file": "src/engine/ui/module.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DUI_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include/stb", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-fvisibility=hidden", "-o", "build/.objs/ui/macosx/arm64/debug/src/engine/ui/ui_system.cpp.o", "src/engine/ui/ui_system.cpp"],
-  "file": "src/engine/ui/ui_system.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DUI_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include/stb", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-fvisibility=hidden", "-o", "build/.objs/ui/macosx/arm64/debug/src/engine/ui/rml/render.cpp.o", "src/engine/ui/rml/render.cpp"],
-  "file": "src/engine/ui/rml/render.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DUI_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include/stb", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-fvisibility=hidden", "-o", "build/.objs/ui/macosx/arm64/debug/src/engine/ui/rml/rml_system.cpp.o", "src/engine/ui/rml/rml_system.cpp"],
-  "file": "src/engine/ui/rml/rml_system.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DUI_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include/stb", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-fvisibility=hidden", "-o", "build/.objs/ui/macosx/arm64/debug/src/engine/ui/rml/input.cpp.o", "src/engine/ui/rml/input.cpp"],
-  "file": "src/engine/ui/rml/input.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DUI_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include/stb", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-fvisibility=hidden", "-o", "build/.objs/ui/macosx/arm64/debug/src/engine/ui/rml/host.cpp.o", "src/engine/ui/rml/host.cpp"],
-  "file": "src/engine/ui/rml/host.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DUI_BUILD", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/imgui", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/backends", "-isystem", "/Users/hasircioglu/.xmake/packages/i/imgui/v1.92.9+b-docking/4d5caa676b4e4e109984ddbffe794bb4/include/misc/cpp", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include", "-isystem", "/Users/hasircioglu/.xmake/packages/s/stb/2026.03.18/5a142dc04ed4408bb23577a4d3bc3715/include/stb", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-isystem", "/Users/hasircioglu/.xmake/packages/e/entt/v4.0.0/a0eab47731e34ae59506bb6a6eafde28/include", "-fvisibility=hidden", "-o", "build/.objs/ui/macosx/arm64/debug/src/engine/ui/rml/actions.cpp.o", "src/engine/ui/rml/actions.cpp"],
-  "file": "src/engine/ui/rml/actions.cpp"
-},
-{
-  "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DPHYSICS_BUILD", "-DJPH_OBJECT_LAYER_BITS=16", "-DJPH_PROFILE_ENABLED", "-DJPH_DEBUG_RENDERER", "-DJPH_NO_DEBUG", "-DJPH_OBJECT_STREAM", "-DJPH_USE_CPU_COMPUTE", "-isystem", "/Users/hasircioglu/.xmake/packages/j/joltphysics/v5.6.0/c848bfe1b3e2497a97cf7a0fa6e531c2/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/physics/macosx/arm64/debug/src/engine/physics/module.cpp.o", "src/engine/physics/module.cpp"],
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DPHYSICS_BUILD", "-o", "build/.objs/physics/macosx/arm64/debug/src/engine/physics/module.cpp.o", "src/engine/physics/module.cpp"],
   "file": "src/engine/physics/module.cpp"
 },
 {
   "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DPHYSICS_BUILD", "-DJPH_OBJECT_LAYER_BITS=16", "-DJPH_PROFILE_ENABLED", "-DJPH_DEBUG_RENDERER", "-DJPH_NO_DEBUG", "-DJPH_OBJECT_STREAM", "-DJPH_USE_CPU_COMPUTE", "-isystem", "/Users/hasircioglu/.xmake/packages/j/joltphysics/v5.6.0/c848bfe1b3e2497a97cf7a0fa6e531c2/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/physics/macosx/arm64/debug/src/engine/physics/physics_system.cpp.o", "src/engine/physics/physics_system.cpp"],
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DPHYSICS_BUILD", "-o", "build/.objs/physics/macosx/arm64/debug/src/engine/physics/physics_system.cpp.o", "src/engine/physics/physics_system.cpp"],
   "file": "src/engine/physics/physics_system.cpp"
 },
 {
   "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DPLATFORM_BUILD", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/platform/macosx/arm64/debug/src/engine/platform/module.cpp.o", "src/engine/platform/module.cpp"],
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/font_test/macosx/arm64/debug/src/tests/font_test.cpp.o", "src/tests/font_test.cpp"],
+  "file": "src/tests/font_test.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/game/macosx/arm64/debug/src/host/client/main.cpp.o", "src/host/client/main.cpp"],
+  "file": "src/host/client/main.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DSERVER_BUILD", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/gens/rules/protobuf/proto/game.pb.cc.o", "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"],
+  "file": "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/server/net/net_server.cpp.o", "src/server/net/net_server.cpp"],
+  "file": "src/server/net/net_server.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/server/module.cpp.o", "src/server/module.cpp"],
+  "file": "src/server/module.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/server/server_app.cpp.o", "src/server/server_app.cpp"],
+  "file": "src/server/server_app.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/world_tick.cpp.o", "src/game/server/world_tick.cpp"],
+  "file": "src/game/server/world_tick.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/input.cpp.o", "src/game/server/systems/input.cpp"],
+  "file": "src/game/server/systems/input.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/ai.cpp.o", "src/game/server/systems/ai.cpp"],
+  "file": "src/game/server/systems/ai.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/death.cpp.o", "src/game/server/systems/death.cpp"],
+  "file": "src/game/server/systems/death.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/weapon.cpp.o", "src/game/server/systems/weapon.cpp"],
+  "file": "src/game/server/systems/weapon.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/movement.cpp.o", "src/game/server/systems/movement.cpp"],
+  "file": "src/game/server/systems/movement.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/owners.cpp.o", "src/game/server/systems/owners.cpp"],
+  "file": "src/game/server/systems/owners.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/animation.cpp.o", "src/game/server/systems/animation.cpp"],
+  "file": "src/game/server/systems/animation.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/projectiles.cpp.o", "src/game/server/systems/projectiles.cpp"],
+  "file": "src/game/server/systems/projectiles.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/control/control_request.cpp.o", "src/game/server/control/control_request.cpp"],
+  "file": "src/game/server/control/control_request.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/control/pawn_command.cpp.o", "src/game/server/control/pawn_command.cpp"],
+  "file": "src/game/server/control/pawn_command.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/gens/rules/protobuf/proto/game.pb.cc.o", "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"],
+  "file": "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/level.cpp.o", "src/game/shared/level.cpp"],
+  "file": "src/game/shared/level.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/trace.cpp.o", "src/game/shared/trace.cpp"],
+  "file": "src/game/shared/trace.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/replication.cpp.o", "src/game/shared/replication.cpp"],
+  "file": "src/game/shared/replication.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/movement.cpp.o", "src/game/shared/movement.cpp"],
+  "file": "src/game/shared/movement.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/protocol.cpp.o", "src/game/shared/protocol.cpp"],
+  "file": "src/game/shared/protocol.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/world.cpp.o", "src/game/shared/world.cpp"],
+  "file": "src/game/shared/world.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DPLATFORM_BUILD", "-o", "build/.objs/platform/macosx/arm64/debug/src/engine/platform/module.cpp.o", "src/engine/platform/module.cpp"],
   "file": "src/engine/platform/module.cpp"
 },
 {
   "directory": "/Users/hasircioglu/projects/my-game",
-  "arguments": ["/Library/Developer/CommandLineTools/usr/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk", "-fPIC", "-g", "-O0", "-std=c++26", "-Isrc", "-DPLATFORM_BUILD", "-isystem", "/opt/homebrew/include", "-isystem", "/Users/hasircioglu/.xmake/packages/g/glm/1.0.3/809056d7ad4b4d1d8d9df26d1bf9faed/include", "-fvisibility=hidden", "-o", "build/.objs/platform/macosx/arm64/debug/src/engine/platform/platform.cpp.o", "src/engine/platform/platform.cpp"],
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DPLATFORM_BUILD", "-o", "build/.objs/platform/macosx/arm64/debug/src/engine/platform/platform.cpp.o", "src/engine/platform/platform.cpp"],
   "file": "src/engine/platform/platform.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/dummy_client/macosx/arm64/debug/src/host/client/client.dummy.cpp.o", "src/host/client/client.dummy.cpp"],
+  "file": "src/host/client/client.dummy.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/dedicated_server/macosx/arm64/debug/src/host/server/main.cpp.o", "src/host/server/main.cpp"],
+  "file": "src/host/server/main.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/module.cpp.o", "src/engine/render/module.cpp"],
+  "file": "src/engine/render/module.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/shader_library.cpp.o", "src/engine/render/shader_library.cpp"],
+  "file": "src/engine/render/shader_library.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/passes/post_pass.cpp.o", "src/engine/render/passes/post_pass.cpp"],
+  "file": "src/engine/render/passes/post_pass.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/passes/debug_pass.cpp.o", "src/engine/render/passes/debug_pass.cpp"],
+  "file": "src/engine/render/passes/debug_pass.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/passes/shadow_pass.cpp.o", "src/engine/render/passes/shadow_pass.cpp"],
+  "file": "src/engine/render/passes/shadow_pass.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/passes/scene_pass.cpp.o", "src/engine/render/passes/scene_pass.cpp"],
+  "file": "src/engine/render/passes/scene_pass.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/passes/overlay_pass.cpp.o", "src/engine/render/passes/overlay_pass.cpp"],
+  "file": "src/engine/render/passes/overlay_pass.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/rhi/rhi_factory.cpp.o", "src/engine/render/rhi/rhi_factory.cpp"],
+  "file": "src/engine/render/rhi/rhi_factory.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/rhi/sdl_gpu_device.cpp.o", "src/engine/render/rhi/sdl_gpu_device.cpp"],
+  "file": "src/engine/render/rhi/sdl_gpu_device.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/render_system.cpp.o", "src/engine/render/render_system.cpp"],
+  "file": "src/engine/render/render_system.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/render_targets.cpp.o", "src/engine/render/render_targets.cpp"],
+  "file": "src/engine/render/render_targets.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/shaders/msl_source.cpp.o", "src/engine/render/shaders/msl_source.cpp"],
+  "file": "src/engine/render/shaders/msl_source.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/render_resources.cpp.o", "src/engine/render/render_resources.cpp"],
+  "file": "src/engine/render/render_resources.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/tests/ecs_test.cpp.o", "src/tests/ecs_test.cpp"],
+  "file": "src/tests/ecs_test.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/client/input/input_map.cpp.o", "src/game/client/input/input_map.cpp"],
+  "file": "src/game/client/input/input_map.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/client/input/input_sampler.cpp.o", "src/game/client/input/input_sampler.cpp"],
+  "file": "src/game/client/input/input_sampler.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/client/camera/death_cam.cpp.o", "src/game/client/camera/death_cam.cpp"],
+  "file": "src/game/client/camera/death_cam.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/client/prediction/prediction.cpp.o", "src/game/client/prediction/prediction.cpp"],
+  "file": "src/game/client/prediction/prediction.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/client/effects/fire_effects.cpp.o", "src/game/client/effects/fire_effects.cpp"],
+  "file": "src/game/client/effects/fire_effects.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/client/interpolation/interpolation.cpp.o", "src/game/client/interpolation/interpolation.cpp"],
+  "file": "src/game/client/interpolation/interpolation.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/world_tick.cpp.o", "src/game/server/world_tick.cpp"],
+  "file": "src/game/server/world_tick.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/input.cpp.o", "src/game/server/systems/input.cpp"],
+  "file": "src/game/server/systems/input.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/ai.cpp.o", "src/game/server/systems/ai.cpp"],
+  "file": "src/game/server/systems/ai.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/death.cpp.o", "src/game/server/systems/death.cpp"],
+  "file": "src/game/server/systems/death.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/weapon.cpp.o", "src/game/server/systems/weapon.cpp"],
+  "file": "src/game/server/systems/weapon.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/movement.cpp.o", "src/game/server/systems/movement.cpp"],
+  "file": "src/game/server/systems/movement.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/owners.cpp.o", "src/game/server/systems/owners.cpp"],
+  "file": "src/game/server/systems/owners.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/animation.cpp.o", "src/game/server/systems/animation.cpp"],
+  "file": "src/game/server/systems/animation.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/projectiles.cpp.o", "src/game/server/systems/projectiles.cpp"],
+  "file": "src/game/server/systems/projectiles.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/control/control_request.cpp.o", "src/game/server/control/control_request.cpp"],
+  "file": "src/game/server/control/control_request.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/control/pawn_command.cpp.o", "src/game/server/control/pawn_command.cpp"],
+  "file": "src/game/server/control/pawn_command.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/dummy_server/macosx/arm64/debug/src/host/server/server.dummy.cpp.o", "src/host/server/server.dummy.cpp"],
+  "file": "src/host/server/server.dummy.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DPARTICLES_BUILD", "-o", "build/.objs/particles/macosx/arm64/debug/src/engine/particles/module.cpp.o", "src/engine/particles/module.cpp"],
+  "file": "src/engine/particles/module.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DPARTICLES_BUILD", "-o", "build/.objs/particles/macosx/arm64/debug/src/engine/particles/particle_system.cpp.o", "src/engine/particles/particle_system.cpp"],
+  "file": "src/engine/particles/particle_system.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/interface/macosx/arm64/debug/src/engine/interface/module_loader.cpp.o", "src/engine/interface/module_loader.cpp"],
+  "file": "src/engine/interface/module_loader.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/interface/macosx/arm64/debug/src/engine/interface/create_interface.cpp.o", "src/engine/interface/create_interface.cpp"],
+  "file": "src/engine/interface/create_interface.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DCLIENT_BUILD", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/gens/rules/protobuf/proto/game.pb.cc.o", "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"],
+  "file": "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/net/net_client.cpp.o", "src/client/net/net_client.cpp"],
+  "file": "src/client/net/net_client.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/module.cpp.o", "src/client/module.cpp"],
+  "file": "src/client/module.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/client_app.cpp.o", "src/client/client_app.cpp"],
+  "file": "src/client/client_app.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/scene/render_helpers.cpp.o", "src/client/scene/render_helpers.cpp"],
+  "file": "src/client/scene/render_helpers.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/scene/resources.cpp.o", "src/client/scene/resources.cpp"],
+  "file": "src/client/scene/resources.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/scene/visuals.cpp.o", "src/client/scene/visuals.cpp"],
+  "file": "src/client/scene/visuals.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/scene/draw.cpp.o", "src/client/scene/draw.cpp"],
+  "file": "src/client/scene/draw.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/scene/skinned.cpp.o", "src/client/scene/skinned.cpp"],
+  "file": "src/client/scene/skinned.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/scene/static_props.cpp.o", "src/client/scene/static_props.cpp"],
+  "file": "src/client/scene/static_props.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/console/console_commands.cpp.o", "src/client/console/console_commands.cpp"],
+  "file": "src/client/console/console_commands.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/ui/console_window.cpp.o", "src/game/client/ui/console_window.cpp"],
+  "file": "src/game/client/ui/console_window.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/ui/documents.cpp.o", "src/game/client/ui/documents.cpp"],
+  "file": "src/game/client/ui/documents.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/ui/scoreboard.cpp.o", "src/game/client/ui/scoreboard.cpp"],
+  "file": "src/game/client/ui/scoreboard.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/ui/hud.cpp.o", "src/game/client/ui/hud.cpp"],
+  "file": "src/game/client/ui/hud.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/ui/pause_menu.cpp.o", "src/game/client/ui/pause_menu.cpp"],
+  "file": "src/game/client/ui/pause_menu.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/input/input_map.cpp.o", "src/game/client/input/input_map.cpp"],
+  "file": "src/game/client/input/input_map.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/input/input_sampler.cpp.o", "src/game/client/input/input_sampler.cpp"],
+  "file": "src/game/client/input/input_sampler.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/camera/death_cam.cpp.o", "src/game/client/camera/death_cam.cpp"],
+  "file": "src/game/client/camera/death_cam.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/prediction/prediction.cpp.o", "src/game/client/prediction/prediction.cpp"],
+  "file": "src/game/client/prediction/prediction.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/effects/fire_effects.cpp.o", "src/game/client/effects/fire_effects.cpp"],
+  "file": "src/game/client/effects/fire_effects.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/interpolation/interpolation.cpp.o", "src/game/client/interpolation/interpolation.cpp"],
+  "file": "src/game/client/interpolation/interpolation.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DUI_BUILD", "-o", "build/.objs/ui/macosx/arm64/debug/src/engine/ui/module.cpp.o", "src/engine/ui/module.cpp"],
+  "file": "src/engine/ui/module.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DUI_BUILD", "-o", "build/.objs/ui/macosx/arm64/debug/src/engine/ui/ui_system.cpp.o", "src/engine/ui/ui_system.cpp"],
+  "file": "src/engine/ui/ui_system.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DUI_BUILD", "-o", "build/.objs/ui/macosx/arm64/debug/src/engine/ui/rml/render.cpp.o", "src/engine/ui/rml/render.cpp"],
+  "file": "src/engine/ui/rml/render.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DUI_BUILD", "-o", "build/.objs/ui/macosx/arm64/debug/src/engine/ui/rml/rml_system.cpp.o", "src/engine/ui/rml/rml_system.cpp"],
+  "file": "src/engine/ui/rml/rml_system.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DUI_BUILD", "-o", "build/.objs/ui/macosx/arm64/debug/src/engine/ui/rml/input.cpp.o", "src/engine/ui/rml/input.cpp"],
+  "file": "src/engine/ui/rml/input.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DUI_BUILD", "-o", "build/.objs/ui/macosx/arm64/debug/src/engine/ui/rml/host.cpp.o", "src/engine/ui/rml/host.cpp"],
+  "file": "src/engine/ui/rml/host.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DUI_BUILD", "-o", "build/.objs/ui/macosx/arm64/debug/src/engine/ui/rml/actions.cpp.o", "src/engine/ui/rml/actions.cpp"],
+  "file": "src/engine/ui/rml/actions.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DLOG_BUILD", "-o", "build/.objs/log/macosx/arm64/debug/src/engine/log/log_system.cpp.o", "src/engine/log/log_system.cpp"],
+  "file": "src/engine/log/log_system.cpp"
 }]

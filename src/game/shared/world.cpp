@@ -126,6 +126,13 @@ entt::entity spawnBot(World_t& world, const glm::vec3& position) {
     return pawn;
 }
 
+entt::entity spawnAnimated(World_t& world, EModel model, const glm::vec3& position, float yaw) {
+    const entt::entity entity = createReplicated(world);
+    world.registry.emplace<Transform_t>(entity, Transform_t{.position = position, .yaw = yaw});
+    world.registry.emplace<Animator_t>(entity, Animator_t{.model = model, .startTick = world.tick, .prevStartTick = world.tick});
+    return entity;
+}
+
 void enqueueCommand(World_t& world, uint32_t playerId, const UserCmd_t& cmd) {
     const entt::entity controller = findController(world, playerId);
     if (controller != entt::null) {

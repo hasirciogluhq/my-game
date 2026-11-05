@@ -22,6 +22,7 @@ private:
     World_t m_world;  // entity listesi: server'daki her şey
     CNetServer m_network;
     int m_botCount = 0;
+    int m_robotCount = 1;
 };
 
 }  // namespace game

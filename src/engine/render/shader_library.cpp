@@ -19,6 +19,8 @@ constexpr std::array<ShaderInfo_t, static_cast<size_t>(EShaderId::kCount)> kShad
     /* kPostFragment     */ {EShaderStage::kFragment, "fragment_post", 1, 1},
     /* kDebugVertex      */ {EShaderStage::kVertex, "vertex_debug", 1, 0},
     /* kDebugFragment    */ {EShaderStage::kFragment, "fragment_debug", 0, 0},
+    /* kSceneSkinnedVertex  */ {EShaderStage::kVertex, "vertex_scene_skinned", 3, 0},
+    /* kShadowSkinnedVertex */ {EShaderStage::kVertex, "vertex_shadow_skinned", 3, 0},
 }};
 
 }  // namespace

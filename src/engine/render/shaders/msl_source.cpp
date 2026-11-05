@@ -53,6 +53,26 @@ struct VertexIn_t {
     float2 uv       [[attribute(2)]];
 };
 
+// kPosNormalUvSkin: VertexIn_t + joint indeksleri (ubyte4 normalized: indeks = round(x * 255)) + ağırlıklar.
+struct SkinnedVertexIn_t {
+    float3 position [[attribute(0)]];
+    float3 normal   [[attribute(1)]];
+    float2 uv       [[attribute(2)]];
+    float4 joints   [[attribute(3)]];
+    float4 weights  [[attribute(4)]];
+};
+
+struct BoneUniforms_t {
+    float4x4 bones[32];     // kMaxBones: düğüm dünya * inverseBind
+};
+
+// Vertex'i modelin uzayında skin matrislerinin ağırlıklı toplamıyla dönüştürür.
+float4x4 skinMatrix(SkinnedVertexIn_t in, constant BoneUniforms_t& b) {
+    uint4 j = uint4(in.joints * 255.0 + 0.5);
+    return b.bones[j.x] * in.weights.x + b.bones[j.y] * in.weights.y +
+           b.bones[j.z] * in.weights.z + b.bones[j.w] * in.weights.w;
+}
+
 // ---------------------------------------------------------------- shadow
 struct ShadowOut_t {
     float4 position [[position]];
@@ -63,6 +83,15 @@ vertex ShadowOut_t vertex_shadow(VertexIn_t in [[stage_in]],
                                  constant DrawUniforms_t& draw [[buffer(1)]]) {
     ShadowOut_t out;
     out.position = passData.viewProjection * (draw.model * float4(in.position, 1.0));
+    return out;
+}
+
+vertex ShadowOut_t vertex_shadow_skinned(SkinnedVertexIn_t in [[stage_in]],
+                                         constant PassUniforms_t& passData [[buffer(0)]],
+                                         constant DrawUniforms_t& draw [[buffer(1)]],
+                                         constant BoneUniforms_t& bones [[buffer(2)]]) {
+    ShadowOut_t out;
+    out.position = passData.viewProjection * (draw.model * (skinMatrix(in, bones) * float4(in.position, 1.0)));
     return out;
 }
 
@@ -77,22 +106,37 @@ struct SceneOut_t {
     float2 uv;
 };
 
-vertex SceneOut_t vertex_scene(VertexIn_t in [[stage_in]],
-                               constant PassUniforms_t& passData [[buffer(0)]],
-                               constant DrawUniforms_t& draw [[buffer(1)]]) {
+// position/normal modelin (varsa skin uygulanmış) uzayındadır.
+SceneOut_t makeSceneOut(float3 position, float3 normal, float2 uv, constant PassUniforms_t& passData, constant DrawUniforms_t& draw) {
     SceneOut_t out;
-    float4 world = draw.model * float4(in.position, 1.0);
+    float4 world = draw.model * float4(position, 1.0);
     // Normal: non-uniform scale için 3x3 cofactor yaklaşımı.
     float3x3 m3 = float3x3(draw.model[0].xyz, draw.model[1].xyz, draw.model[2].xyz);
     float3x3 cof = float3x3(cross(m3[1], m3[2]), cross(m3[2], m3[0]), cross(m3[0], m3[1]));
-    float3 n = normalize(cof * in.normal);
+    float3 n = normalize(cof * normal);
     out.position = passData.viewProjection * world;
     out.worldPosition = world.xyz;
     out.normal = n;
     // Normal-offset: gölge acne'sini azaltır.
     out.shadowPosition = (passData.lightViewProjection * float4(world.xyz + n * 0.05, 1.0)).xyz;
-    out.uv = in.uv;
+    out.uv = uv;
     return out;
+}
+
+vertex SceneOut_t vertex_scene(VertexIn_t in [[stage_in]],
+                               constant PassUniforms_t& passData [[buffer(0)]],
+                               constant DrawUniforms_t& draw [[buffer(1)]]) {
+    return makeSceneOut(in.position, in.normal, in.uv, passData, draw);
+}
+
+vertex SceneOut_t vertex_scene_skinned(SkinnedVertexIn_t in [[stage_in]],
+                                       constant PassUniforms_t& passData [[buffer(0)]],
+                                       constant DrawUniforms_t& draw [[buffer(1)]],
+                                       constant BoneUniforms_t& bones [[buffer(2)]]) {
+    float4x4 skin = skinMatrix(in, bones);
+    // Normal: skin matrisinin dönme kısmı (ölçeksiz iskelet varsayımı).
+    float3 skinnedNormal = (skin * float4(in.normal, 0.0)).xyz;
+    return makeSceneOut((skin * float4(in.position, 1.0)).xyz, skinnedNormal, in.uv, passData, draw);
 }
 
 float shadowFactor(depth2d<float> shadowMap, sampler s, float3 sc, float ndl, float texel) {

@@ -14,6 +14,13 @@ MeshHandle_t uploadMesh(IRenderer &renderer, const MeshData_t &mesh) {
       mesh.name.c_str(), mesh.vertices, mesh.indices));
 }
 
+MeshHandle_t uploadSkinnedMesh(IRenderer &renderer,
+                               const anim::SkinnedModel_t &model) {
+  return renderer.createMesh(makeMeshDesc<anim::SkinnedVertex_t, uint32_t>(
+      model.name.c_str(), model.vertices, model.indices,
+      EVertexLayout::kPosNormalUvSkin));
+}
+
 MaterialHandle_t makeMaterial(IRenderer &renderer, const char *name,
                               EShadingModel shading, const glm::vec4 &color,
                               EBlendMode blend) {
