@@ -1,11 +1,13 @@
 #include "client/client_app.hpp"
 
 #include "client/console/console_commands.hpp"
-#include "game/client/ui/console_window.hpp"
-#include "game/client/ui/hud.hpp"
-#include "game/client/ui/scoreboard.hpp"
 #include "game/client/camera/death_cam.hpp"
 #include "game/client/effects/fire_effects.hpp"
+#include "game/client/ui/console_window.hpp"
+#include "game/client/ui/documents.hpp"
+#include "game/client/ui/hud.hpp"
+#include "game/client/ui/pause_menu.hpp"
+#include "game/client/ui/scoreboard.hpp"
 #include "game/shared/level.hpp"
 #include "game/shared/movement.hpp"
 #include "game/shared/snapshot.hpp"
@@ -157,9 +159,11 @@ int CClientApp::run(const LaunchOptions_t &options) {
   return 0;
 }
 
-// ui.dll'in ImGui bağlamını bu DLL'e bağlar (her DLL'in kendi ImGui kopyası var), olay kancasını ve overlay'i kurar.
+// ui.dll'in ImGui bağlamını bu DLL'e bağlar (her DLL'in kendi ImGui kopyası
+// var), olay kancasını ve overlay'i kurar.
 bool CClientApp::initUi() {
-  if (!m_ui->initialize(m_platform->nativeWindow(), m_renderer->nativeDevice())) {
+  if (!m_ui->initialize(m_platform->nativeWindow(),
+                        m_renderer->nativeDevice())) {
     GAME_LOG_WARN("client", "ui başlatılamadı, konsol yok");
     return false;
   }
@@ -176,7 +180,31 @@ bool CClientApp::initUi() {
       },
       m_ui);
   m_renderer->setOverlay(m_ui->overlay(), m_ui->overlayUser());
+  if (!ui::loadDocuments(*m_ui)) {
+    GAME_LOG_WARN("client", "RmlUi belgeleri yüklenemedi: HUD/menü/skor tablosu yok");
+  }
   return true;
+}
+
+// Duraklatma menüsü: açıkken fare serbest, oyun girdisi durur (konsol odağıyla aynı mantık).
+void CClientApp::setMenuOpen(bool open) {
+  m_menuOpen = open;
+  ui::showPauseMenu(*m_ui, open);
+  m_platform->setRelativeMouse(!open);
+  m_input.setEnabled(!open);
+}
+
+void CClientApp::updateMenu() {
+  ui::PauseResult_t result;
+  while (const auto action = m_ui->nextAction()) {
+    ui::handlePauseAction(*action, m_input, result);
+  }
+  if (result.quit) {
+    m_quitRequested = true;
+  }
+  if (result.resume && m_menuOpen) {
+    setMenuOpen(false);
+  }
 }
 
 // Konsol açılınca odak konsoldadır; kapanınca oyuna döner.
@@ -194,23 +222,36 @@ void CClientApp::setConsoleFocus(bool focused) {
   m_input.setEnabled(!focused);
 }
 
-// ImGui frame'ini açar, UI katmanlarını sırayla çizer (HUD, skor tablosu, konsol), konsolu aç/kapa, Enter ile gelen komutu çalıştırır.
+// ImGui frame'ini açar, UI katmanlarını sırayla çizer (HUD, skor tablosu,
+// konsol), konsolu aç/kapa, Enter ile gelen komutu çalıştırır.
 void CClientApp::updateConsole() {
   if (m_ui == nullptr) {
     return;
   }
   m_ui->beginFrame();
   // Çizim sırası (alttan üste): HUD -> skor tablosu -> konsol.
-  ui::drawHud(m_world, selfEntity());
-  ui::drawScoreboard(m_world, input::isDown(*m_platform, m_bindings, EAction::kScoreboard));
+  ui::updateHud(*m_ui, m_world, selfEntity());
+  ui::updateScoreboard(
+      *m_ui, m_world, selfEntity(),
+      !m_menuOpen &&
+          input::isDown(*m_platform, m_bindings, EAction::kScoreboard));
+  updateMenu();
   const bool wasOpen = m_console.open;
   if (input::wasPressed(*m_platform, m_bindings, EAction::kConsole)) {
+    if (m_menuOpen) {
+      setMenuOpen(false);
+    }
     setConsoleOpen(!wasOpen);
-  } else if (wasOpen && m_platform->keyPressedByName("Escape")) {
-    setConsoleOpen(false);
+  } else if (m_platform->keyPressedByName("Escape")) {
+    if (wasOpen) {
+      setConsoleOpen(false);
+    } else {
+      setMenuOpen(!m_menuOpen);
+    }
   }
 
-  // Pencere dışına tıklamak fareyi oyuna kilitler; Enter odağı konsola geri verir.
+  // Pencere dışına tıklamak fareyi oyuna kilitler; Enter odağı konsola geri
+  // verir.
   if (wasOpen && m_console.open) {
     if (m_console.focused && m_platform->keyPressedByName("Mouse1") &&
         !m_ui->wantsMouse()) {
@@ -232,7 +273,7 @@ void CClientApp::tickOnce(uint32_t tick) {
   // Free-cam: aksiyon tuşuna basılınca aç/kapa (kenar algılama). Konsol açıkken
   // çalışmaz.
   const bool freeCamDown =
-      !m_console.focused &&
+      !m_console.focused && !m_menuOpen &&
       input::isDown(*m_platform, m_bindings, EAction::kFreeCam);
   if (freeCamDown && !m_freeCamKeyWasDown) {
     m_freeCam = !m_freeCam;

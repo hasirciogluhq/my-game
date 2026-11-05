@@ -25,6 +25,8 @@ add_requires("spdlog")
 add_requires("stb")
 -- Dear ImGui: motorun tek UI sistemi. Resmi backend'ler: imgui_impl_sdl3 (girdi) + imgui_impl_sdlgpu3 (çizim, SDL_GPU).
 add_requires("imgui", {configs = {sdl3 = true, sdl3_gpu = true}})
+-- RmlUi: oyuncunun gördüğü arayüz (menü, HUD, skor tablosu). HTML/CSS benzeri .rml/.rcss; çizimi ui.dll içinde SDL_GPU ile.
+add_requires("rmlui 6.3")
 
 local function is_gcc_like()
     return not is_plat("windows")
@@ -159,7 +161,7 @@ target("audio")
     add_packages("miniaudio")
     engine_rpath()
 
--- UI (geliştirici konsolu: Dear ImGui, çizim verisi). Arayüz: UI001.
+-- UI: RmlUi (oyun arayüzü) + Dear ImGui (geliştirici konsolu). Arayüz: UI001.
 target("ui")
     set_kind("shared")
     set_targetdir(enginedir)
@@ -167,9 +169,9 @@ target("ui")
     add_defines("UI_BUILD")
     if is_gcc_like() then add_cxflags("-fvisibility=hidden") end
     add_deps("interface", "engine")
-    add_files("src/engine/ui/*.cpp")
-    add_headerfiles("src/engine/ui/*.hpp")
-    add_packages("glm", "imgui", "libsdl3")
+    add_files("src/engine/ui/**.cpp")
+    add_headerfiles("src/engine/ui/**.hpp")
+    add_packages("glm", "imgui", "libsdl3", "rmlui", "stb")
     engine_rpath()
 
 -- Fizik / çarpışma (Jolt). Arayüz: Physics001. Server ve client (tahmin için) yükler.

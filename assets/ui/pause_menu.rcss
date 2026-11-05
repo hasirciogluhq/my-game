@@ -1,0 +1,44 @@
+#dim { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(4, 6, 10, 170); }
+
+#card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 520dp;
+    margin-left: -260dp;
+    margin-top: -240dp;
+    padding: 40dp 48dp 44dp 48dp;
+    border-radius: 10dp;
+    background-color: rgba(16, 21, 29, 245);
+    border: 1dp rgba(255, 255, 255, 25);
+}
+
+#game-name { font-size: 40dp; letter-spacing: 8dp; text-align: center; color: #ffffff; }
+#subtitle  { font-size: 15dp; letter-spacing: 5dp; text-align: center; color: #6f7b8c; margin: 6dp 0 34dp 0; }
+
+button {
+    display: block;
+    width: 100%;
+    height: 58dp;
+    margin-bottom: 14dp;
+    line-height: 58dp;
+    text-align: center;
+    font-size: 21dp;
+    color: #e8ecf1;
+    border-radius: 6dp;
+    background-color: rgba(255, 255, 255, 18);
+    transition: background-color 0.12s, transform 0.12s;
+}
+button:hover { background-color: rgba(255, 255, 255, 40); }
+button:active { transform: scale(0.98); }
+button.primary { background-color: #3a6fd8; color: #ffffff; }
+button.primary:hover { background-color: #4f8cff; }
+button.danger:hover { background-color: #c0393c; }
+
+#setting { margin: 10dp 0 24dp 0; }
+#setting-label { font-size: 14dp; letter-spacing: 3dp; color: #9aa5b4; margin-bottom: 10dp; }
+
+input.range { display: block; width: 100%; height: 26dp; }
+input.range slidertrack { height: 6dp; margin-top: 10dp; border-radius: 3dp; background-color: rgba(255, 255, 255, 35); }
+input.range sliderbar { width: 22dp; height: 22dp; margin-top: 2dp; border-radius: 11dp; background-color: #4f8cff; }
+input.range sliderbar:hover { background-color: #7aa8ff; }

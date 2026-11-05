@@ -39,6 +39,8 @@ private:
   void updateConsole();
   void setConsoleOpen(bool open);
   void setConsoleFocus(bool focused);
+  void setMenuOpen(bool open);
+  void updateMenu();
   void updateCamera(const UserCmd_t &cmd);
   void drawWorld();
   [[nodiscard]] entt::entity
@@ -64,6 +66,7 @@ private:
   CInputSampler m_input;
   Bindings_t m_bindings; // aksiyon -> tuş (assets/config/input.cfg)
   bool m_quitRequested = false;
+  bool m_menuOpen = false; // RmlUi duraklatma menüsü (Esc)
   World_t
       m_world; // sadece server snapshot'larından + yerel prop'lardan beslenir
   CCamera m_camera;

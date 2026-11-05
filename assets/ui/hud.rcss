@@ -1,0 +1,28 @@
+body { pointer-events: none; }
+
+/* Nişangah: ekran merkezinde 4 çizgi */
+#crosshair { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
+#crosshair .tick { position: absolute; background-color: rgba(255, 255, 255, 215); }
+#crosshair .up    { left: -1dp; top: -16dp; width: 2dp; height: 9dp; }
+#crosshair .down  { left: -1dp; top: 7dp;   width: 2dp; height: 9dp; }
+#crosshair .left  { left: -16dp; top: -1dp; width: 9dp; height: 2dp; }
+#crosshair .right { left: 7dp;   top: -1dp; width: 9dp; height: 2dp; }
+
+/* Can paneli: sol alt */
+#health-panel {
+    position: absolute;
+    left: 48dp;
+    bottom: 44dp;
+    width: 260dp;
+    padding: 14dp 20dp 16dp 20dp;
+    border-radius: 6dp;
+    background-color: rgba(10, 14, 20, 150);
+    border-left: 4dp #e5484d;
+}
+#health-label { font-size: 14dp; letter-spacing: 3dp; color: #9aa5b4; }
+#health-value { font-size: 52dp; color: #ffffff; margin-top: -2dp; }
+#health-track { height: 6dp; margin-top: 8dp; border-radius: 3dp; background-color: rgba(255, 255, 255, 40); }
+#health-fill  { width: 100%; height: 6dp; border-radius: 3dp; background-color: #e5484d; }
+
+#health-panel.low { border-left-color: #ff2d2d; }
+#health-panel.low #health-value { color: #ff6b6b; }

@@ -1,0 +1,23 @@
+<rml>
+<head>
+    <title>Duraklat</title>
+    <link type="text/rcss" href="common.rcss"/>
+    <link type="text/rcss" href="pause_menu.rcss"/>
+</head>
+<body>
+    <div id="dim"></div>
+    <div id="card">
+        <div id="game-name">MY GAME</div>
+        <div id="subtitle">DURAKLATILDI</div>
+
+        <button id="resume" class="primary" onclick="resume">Oyuna Dön</button>
+
+        <div id="setting">
+            <div id="setting-label">FARE HASSASİYETİ</div>
+            <input type="range" name="sensitivity" min="1" max="100" step="1" value="25" onchange="sensitivity"/>
+        </div>
+
+        <button id="quit" class="danger" onclick="quit">Oyundan Çık</button>
+    </div>
+</body>
+</rml>

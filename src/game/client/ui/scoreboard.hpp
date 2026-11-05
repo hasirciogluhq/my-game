@@ -1,10 +1,14 @@
 #pragma once
 
+#include "engine/interface/i_ui.hpp"
 #include "game/shared/world.hpp"
 
 namespace game::ui {
 
-// Tab istatistik tablosu: dünyadaki tüm karakterler (netId, kim sürüyor, can). visible false ise çizmez.
-void drawScoreboard(const World_t& world, bool visible);
+// Skor tablosu (RmlUi, assets/ui/scoreboard.rml): CS2 tarzı geniş tablo,
+// oyuncular ve botlar ayrı bölümlerde. visible false iken belge gizlenir ve
+// satırlar üretilmez. self: yerel oyuncunun pawn'ı (satırı vurgulanır).
+void updateScoreboard(IUI &ui, const World_t &world, entt::entity self,
+                      bool visible);
 
-}  // namespace game::ui
+} // namespace game::ui

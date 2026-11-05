@@ -1,0 +1,86 @@
+/* CS2 tarzı skor tablosu: geniş (ekran genişliğinin %76'sı), ortada, koyu yarı saydam paneller. */
+body { pointer-events: none; }
+
+#board {
+    position: absolute;
+    left: 12%;
+    width: 76%;
+    top: 9%;
+}
+
+#header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14dp 28dp;
+    margin-bottom: 10dp;
+    border-radius: 6dp;
+    background-color: rgba(8, 11, 16, 215);
+}
+#title   { font-size: 22dp; letter-spacing: 6dp; color: #ffffff; }
+#summary { font-size: 17dp; color: #9aa5b4; }
+
+.section {
+    margin-bottom: 10dp;
+    border-radius: 6dp;
+    background-color: rgba(14, 18, 25, 200);
+    border-left: 6dp #4f8cff;
+}
+.section.bots { border-left-color: #e8b04a; }
+
+.section-head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 12dp 28dp 8dp 22dp;
+}
+.section-name  { font-size: 19dp; letter-spacing: 4dp; color: #4f8cff; }
+.bots .section-name { color: #e8b04a; }
+.section-count { font-size: 17dp; color: #9aa5b4; }
+
+.columns, .row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 28dp 0 22dp;
+}
+.columns { height: 30dp; font-size: 14dp; letter-spacing: 2dp; color: #6f7b8c; border-bottom: 1dp rgba(255, 255, 255, 22); }
+.row     { height: 48dp; font-size: 20dp; }
+.row.alt { background-color: rgba(255, 255, 255, 9); }
+.row.self { background-color: rgba(79, 140, 255, 55); }
+.row.low .hp-num { color: #ff6b6b; }
+
+.rank   { width: 70dp; color: #9aa5b4; }
+.name   { width: 46%; display: flex; flex-direction: row; align-items: center; }
+.health { width: 32%; display: flex; flex-direction: row; align-items: center; }
+.id     { width: 10%; text-align: right; color: #6f7b8c; }
+.columns .id { text-align: right; }
+.columns .name, .columns .health { display: block; }
+
+.avatar {
+    width: 32dp;
+    height: 32dp;
+    margin-right: 14dp;
+    border-radius: 4dp;
+    text-align: center;
+    line-height: 32dp;
+    font-size: 17dp;
+    color: #ffffff;
+    background-color: #3a6fd8;
+}
+.bots .avatar { background-color: #b98a2e; }
+.tag {
+    margin-left: 12dp;
+    padding: 2dp 8dp;
+    font-size: 12dp;
+    letter-spacing: 1dp;
+    border-radius: 3dp;
+    color: #cfe0ff;
+    background-color: rgba(79, 140, 255, 90);
+}
+
+.hp-num   { width: 56dp; color: #ffffff; }
+.hp-track { width: 55%; height: 8dp; border-radius: 4dp; background-color: rgba(255, 255, 255, 30); }
+.hp-fill  { height: 8dp; border-radius: 4dp; background-color: #4cc38a; }
+.row.low .hp-fill { background-color: #ff5a5a; }
