@@ -31,6 +31,14 @@ constexpr float kFarPlane = 500.0f;
 
 } // namespace
 
+void CClientApp::applyMap(EMap map) {
+  scene::spawnStaticProps(m_world, *m_renderer, m_resources, level::boxes(map));
+  if (m_physics != nullptr) {
+    level::buildPhysics(*m_physics, map);
+  }
+  GAME_LOG_INFO("client", "map {}", mapName(map));
+}
+
 bool CClientApp::connect(CreateInterfaceFn factory) {
   m_platform = queryInterface<IPlatform>(factory, kPlatformInterface);
   m_renderer = queryInterface<IRenderer>(factory, kRendererInterface);
@@ -38,7 +46,8 @@ bool CClientApp::connect(CreateInterfaceFn factory) {
   m_assets = queryInterface<IAssets>(factory, kAssetsInterface);
   m_audio = queryInterface<IAudio>(factory, kAudioInterface); // optional
   m_ui = queryInterface<IUI>(factory, kUIInterface);          // optional
-  INetwork *network = queryInterface<INetwork>(factory, kNetworkInterface);
+  auto *networkFactory = queryInterface<INetworkFactory>(factory, kNetworkFactoryInterface);
+  INetwork *network = networkFactory != nullptr ? networkFactory->createNetwork() : nullptr;
   if (m_platform == nullptr || m_renderer == nullptr ||
       m_particles == nullptr || m_assets == nullptr || network == nullptr) {
     GAME_LOG_ERROR("client", "platform/renderer/particles/assets/network "
@@ -49,7 +58,9 @@ bool CClientApp::connect(CreateInterfaceFn factory) {
   if (m_audio != nullptr && !m_audio->initialize()) {
     m_audio = nullptr;
   }
-  m_physics = queryInterface<IPhysics>(factory, kPhysicsInterface); // optional
+  // Own physics world for prediction (optional: without it the client predicts on flat ground).
+  auto *physicsFactory = queryInterface<IPhysicsFactory>(factory, kPhysicsFactoryInterface);
+  m_physics = physicsFactory != nullptr ? physicsFactory->createWorld() : nullptr;
   if (m_physics != nullptr && !m_physics->initialize()) {
     m_physics = nullptr;
   }
@@ -86,12 +97,8 @@ int CClientApp::run(const LaunchOptions_t &options) {
   }
   m_resources = std::move(*resources);
   world::reset(m_world, options.tickRate);
-  scene::spawnStaticProps(m_world, *m_renderer, m_resources);
-  if (m_physics != nullptr) {
-    m_world.physics =
-        m_physics; // only for the local player's prediction; the same world as the server
-    level::buildPhysics(*m_physics);
-  }
+  // The map's boxes and physics are built when WELCOME arrives (applyMap), not here.
+  m_world.physics = m_physics; // only for the local player's prediction
 
   if (!m_network.connectTo(options.host, options.port)) {
     GAME_LOG_ERROR("client", "could not connect to {}:{}", options.host, options.port);
@@ -126,6 +133,12 @@ int CClientApp::run(const LaunchOptions_t &options) {
     m_network.poll();
     if (const auto movement = m_network.movement()) {
       m_world.movement = *movement;  // the server's move.* cvars, from WELCOME
+    }
+    if (!m_mapApplied) {
+      if (const auto map = m_network.map()) {
+        applyMap(*map);
+        m_mapApplied = true;
+      }
     }
 
     // The server states the tick rate in the welcome packet; the default is used until then.

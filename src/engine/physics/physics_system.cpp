@@ -14,6 +14,7 @@
 
 #include "engine/physics/physics_system.hpp"
 
+#include <atomic>
 #include <cstdarg>
 #include <unordered_map>
 
@@ -46,6 +47,12 @@ public:
 // Jolt's default Trace crashes; a silent one is required.
 void silentTrace(const char*, ...) {}
 
+// Number of live CPhysicsSystem worlds (Jolt's global setup is process-wide).
+std::atomic<int>& joltUsers() {
+    static std::atomic<int> users{0};
+    return users;
+}
+
 JPH::RVec3 toJolt(const glm::vec3& v) { return {v.x, v.y, v.z}; }
 glm::vec3 fromJolt(JPH::RVec3Arg v) { return {static_cast<float>(v.GetX()), static_cast<float>(v.GetY()), static_cast<float>(v.GetZ())}; }
 
@@ -76,11 +83,14 @@ bool CPhysicsSystem::initialize() {
         return true;
     }
     // Order matters: Jolt objects (TempAllocator, PhysicsSystem) cannot be created before the allocator is registered.
-    JPH::RegisterDefaultAllocator();
-    JPH::Trace = silentTrace;
-    // Jolt wants its own Factory as a raw pointer (new/delete is required by the Jolt API).
-    JPH::Factory::sInstance = new JPH::Factory();
-    JPH::RegisterTypes();
+    // Jolt's global setup is shared by every world in the process: done by the first one, undone by the last one.
+    if (joltUsers().fetch_add(1) == 0) {
+        JPH::RegisterDefaultAllocator();
+        JPH::Trace = silentTrace;
+        // Jolt wants its own Factory as a raw pointer (new/delete is required by the Jolt API).
+        JPH::Factory::sInstance = new JPH::Factory();
+        JPH::RegisterTypes();
+    }
     m_impl = std::make_unique<Impl_t>();
 
     m_impl->system.Init(1024, 0, 1024, 1024, m_impl->broadPhaseLayers, m_impl->objectVsBroadPhase, m_impl->objectPairs);
@@ -99,9 +109,11 @@ void CPhysicsSystem::shutdown() {
         return;
     }
     m_impl.reset();  // Jolt objects must be destroyed before the Factory
-    JPH::UnregisterTypes();
-    delete JPH::Factory::sInstance;
-    JPH::Factory::sInstance = nullptr;
+    if (joltUsers().fetch_sub(1) == 1) {
+        JPH::UnregisterTypes();
+        delete JPH::Factory::sInstance;
+        JPH::Factory::sInstance = nullptr;
+    }
 }
 
 void CPhysicsSystem::setCharacterCollisions(bool enabled) {

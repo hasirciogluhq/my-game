@@ -191,18 +191,30 @@ target("physics")
 -- GAME (src/game/, src/client, src/server, src/host): uses the engine; it is not part of the engine.
 -- ===========================================================================
 
--- Game rules used by both sides: components, World_t, replication, protocol (proto), level, trace, movement.
--- Static lib: client.dll and server.dll each embed their own copy.
+-- Wire protocol (game.proto + protocol.cpp). ONE shared lib: protobuf's descriptor pool is per process, so the generated
+-- code may exist only once. client.dll, server.dll and the tests all link this same libprotocol.
+target("protocol")
+    set_kind("shared")
+    set_targetdir(gamedir)
+    add_defines("PROTOCOL_BUILD")
+    add_rules("protobuf.cpp")
+    add_deps("engine")
+    add_files("src/game/shared/protocol.cpp")
+    add_files("proto/*.proto", {proto_public = true})
+    add_packages("protobuf-cpp", "glm", {public = true})
+    game_rpath()
+
+-- Game rules used by both sides: components, World_t, replication, level, trace, movement.
+-- Static lib: client.dll and server.dll each embed their own copy (no protobuf in here; see protocol).
 target("game_shared")
     set_kind("static")
     set_targetdir(gamedir)
     if is_gcc_like() then add_cxflags("-fvisibility=hidden", "-fPIC") end
-    add_rules("protobuf.cpp")
-    add_deps("engine", "interface")
+    add_deps("engine", "interface", "protocol", {public = true})
     add_files("src/game/shared/*.cpp")
+    remove_files("src/game/shared/protocol.cpp")
     add_headerfiles("src/game/shared/*.hpp")
-    add_files("proto/*.proto", {proto_public = true})
-    add_packages("protobuf-cpp", "glm", "entt", {public = true})
+    add_packages("glm", "entt", {public = true})
 
 -- Client container (src/client) + client-side game rules (src/game/client).
 -- Not directly linked to SDL: window/input go through platform.dll, drawing through render.dll.
@@ -247,13 +259,12 @@ target("dedicated_server")
     game_rpath()
     set_rundir("$(projectdir)")
 
--- Test server: the same host, with test content (random animated props, game/server/test_scene). Not for real play.
-target("test_server")
+-- Test game: the client with a local server built in (server.dll runs in this process; the client joins it over the network).
+target("test_game")
     set_kind("binary")
     set_targetdir(gamedir)
     add_deps("engine", "interface")
-    add_files("src/host/server/main.cpp")
-    add_defines("GAME_TEST_SERVER=1")
+    add_files("src/host/test_game/main.cpp")
     game_rpath()
     set_rundir("$(projectdir)")
 

@@ -216,7 +216,16 @@ Header rule: `class_name.hpp` → class `CClassName`. `user_cmd.hpp` → struct 
 ## Server config
 
 - `assets/config/server.cfg`: `key value` per line, `#` comments. Loaded by `CServerApp::connect` (`config::load`, `config::getBool`).
-- `bots.count` (bots at start) and `bots.turn_rate` (rad/s). Test content (animated robots and dancers at random places) is NOT config: only `test_server` spawns it (`game/server/test_scene`, `LaunchOptions_t::testScene`, define `GAME_TEST_SERVER`). The dedicated server has players and bots only.
+- `bots.count` (bots at start) and `bots.turn_rate` (rad/s). Test content (animated robots and dancers at random places) is NOT config: only `test_game` spawns it (`game/server/test_scene`, called from the map rules when `LaunchOptions_t::testScene` is set). The dedicated server has players and bots only.
+
+## Maps (worlds), test_game
+
+- A **map** (`EMap`, `game/shared/map.hpp`) is one world: its boxes (`level::boxes(map)`), its rules (`game/server/map_rules.cpp`, `maprules::setup`: content and changes to `world.movement`) and its name in `server.cfg` (`map.name arena|moon`). `World_t::map` holds it. The server sends it in WELCOME; the client builds the map's boxes and prediction physics when WELCOME arrives (`CClientApp::applyMap`).
+- **test_game** (`src/host/test_game/main.cpp`): the client with a local server inside the process. It loads `server.dll` next to `client.dll`, calls `open` on the main thread, runs `loop` on a thread, and the client joins `127.0.0.1` through the normal network. `dedicated_server` is the same server without a client and without test content.
+- **Factories (one instance per user):** `PhysicsFactory001` (`IPhysicsFactory::createWorld`) and `NetworkFactory001` (`INetworkFactory::createNetwork`). The client and the server each create their own physics world and network instance, so both can live in one process. The factories own them until the module exits.
+- **IServerApp:** `connect`, `open(options)` (world, map, listen), `loop()` (tick loop).
+- **Protocol is one shared lib** (`libprotocol`: `game.pb.cc` + `protocol.cpp`). Protobuf's descriptor pool is per process: two copies of `game.proto` in one process abort at startup.
+- **Exit:** hosts end with `game::exitProcess(log, code)`: flush, then `std::_Exit`. Modules log from their destructors, and the spdlog thread pool is gone by static destruction, so running static destructors aborts ("thread pool doesn't exist anymore", `mutex lock failed`).
 - `player.collisions.enabled` (1/0, default 1): players block each other (Jolt `CharacterVsCharacterCollisionSimple` via `IPhysics::setCharacterCollisions`).
 
 ## Skeletal animation (server-driven)

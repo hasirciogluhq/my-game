@@ -15,13 +15,15 @@ namespace game {
 class SERVER_API CServerApp final : public IServerApp {
 public:
     [[nodiscard]] bool connect(CreateInterfaceFn factory) override;
-    [[nodiscard]] int run(const LaunchOptions_t& options) override;
+    [[nodiscard]] bool open(const LaunchOptions_t& options) override;
+    void loop() override;
 
 private:
-    IPhysics* m_physics = nullptr;
-    World_t m_world;  // the entity list: everything on the server
-    CNetServer m_network;
-    MovementSettings_t m_movement;  // move.* cvars from server.cfg; copied into m_world in run()
+    IPhysics* m_physics = nullptr;  // own physics world (IPhysicsFactory::createWorld)
+    World_t m_world;                // the entity list: everything on the server
+    CNetServer m_network;           // own network instance (INetworkFactory::createNetwork)
+    MovementSettings_t m_movement;  // move.* cvars from server.cfg; copied into m_world in open()
+    EMap m_map = EMap::kArena;      // map.name from server.cfg
     int m_botCount = 0;
     float m_botTurnRate = 0.6f;
 };

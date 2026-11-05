@@ -1,9 +1,9 @@
-#include "engine/network/network_system.hpp"
+#include "engine/network/network_factory.hpp"
 #include "engine/interface/create_interface.hpp"
 
 namespace game {
 
-GAME_EXPOSE_INTERFACE(CNetworkSystem, INetwork, kNetworkInterface)
+GAME_EXPOSE_INTERFACE(CNetworkFactory, INetworkFactory, kNetworkFactoryInterface)
 
 }  // namespace game
 

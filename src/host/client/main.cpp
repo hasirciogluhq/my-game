@@ -1,5 +1,6 @@
 #include "client/i_client.hpp"
 #include "engine/engine/core/engine_log.hpp"
+#include "engine/engine/core/engine_log.hpp"
 #include "engine/engine/core/launch_options.hpp"
 #include "engine/interface/create_interface.hpp"
 #include "engine/interface/module_loader.hpp"
@@ -56,8 +57,5 @@ int main(int argc, char** argv) {
         return 1;
     }
     const int result = app->run(*options);
-    if (log != nullptr) {
-        log->flush();
-    }
-    return result;
+    game::exitProcess(log, result);
 }

@@ -42,6 +42,8 @@ private:
   void setMenuOpen(bool open);
   void updateMenu();
   void updateCamera(const UserCmd_t &cmd);
+  // Builds the server's map locally: draws its boxes and adds them to the prediction physics.
+  void applyMap(EMap map);
   void drawWorld();
   [[nodiscard]] entt::entity
   selfEntity() const; // the pawn we are driving right now, or entt::null
@@ -72,6 +74,7 @@ private:
   CCamera m_camera;
   death_cam::DeathCam_t m_deathCam;
   scene::Resources_t m_resources;
+  bool m_mapApplied = false; // the server's map (WELCOME) has been built locally
 
   float m_dt = tickDeltaFor(kDefaultTickRate);
   float m_time = 0.0f;

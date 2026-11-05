@@ -99,13 +99,14 @@ int main(int argc, char** argv) {
     if (!physicsModule.load(engineDir / game::moduleFileName("physics"))) {
         return 1;
     }
-    auto* physics = physicsModule.getInterface<game::IPhysics>(game::kPhysicsInterface);
+    auto* physicsFactory = physicsModule.getInterface<game::IPhysicsFactory>(game::kPhysicsFactoryInterface);
+    game::IPhysics* physics = physicsFactory != nullptr ? physicsFactory->createWorld() : nullptr;
     check(physics != nullptr && physics->initialize(), "physics.dll loaded");
     if (physics == nullptr) {
         return 1;
     }
     physics->setCharacterCollisions(true);
-    game::level::buildPhysics(*physics);
+    game::level::buildPhysics(*physics, game::EMap::kArena);
 
     game::World_t server;
     game::world::reset(server, 64);

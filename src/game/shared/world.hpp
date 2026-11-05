@@ -3,6 +3,7 @@
 #include "engine/engine/core/types.hpp"
 #include "engine/interface/i_physics.hpp"
 #include "game/shared/components.hpp"
+#include "game/shared/map.hpp"
 #include "game/shared/movement_settings.hpp"
 
 #include <cstdint>
@@ -17,6 +18,7 @@ struct World_t {
   entt::registry registry;
   IPhysics *physics = nullptr; // on the client, only for local prediction
   MovementSettings_t movement; // server cvars; the client gets them in WELCOME
+  EMap map = EMap::kArena;     // this world's map (the server sets it, the client gets it in WELCOME)
   uint32_t tick = 0;
   uint32_t tickRate = kDefaultTickRate;
   uint32_t nextNetId = 1;

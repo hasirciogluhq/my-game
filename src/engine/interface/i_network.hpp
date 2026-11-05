@@ -62,6 +62,14 @@ public:
     virtual void setWaiter(std::coroutine_handle<> waiter) = 0;
 };
 
-inline constexpr char kNetworkInterface[] = "Network001";
+// Network instances are created per user: a server and a client in one process each get their own.
+// The factory owns them until the module exits (no ownership transfer).
+class INetworkFactory {
+public:
+    virtual ~INetworkFactory() = default;
+    [[nodiscard]] virtual INetwork* createNetwork() = 0;
+};
+
+inline constexpr char kNetworkFactoryInterface[] = "NetworkFactory001";
 
 }  // namespace game

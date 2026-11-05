@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/shared/game_types.hpp"
+#include "game/shared/map.hpp"
 #include "game/shared/movement_settings.hpp"
 #include "game/shared/snapshot.hpp"
 
@@ -15,7 +16,7 @@
 namespace game {
 
 // A single wire message. The meaning of the fields depends on the type:
-//  WELCOME   -> playerId, tickRate, movement
+//  WELCOME   -> playerId, tickRate, movement, map
 //  USER_CMD  -> cmd
 //  SNAPSHOT  -> snapshot
 //  CONTROL   -> control (client -> server)
@@ -25,19 +26,28 @@ struct Envelope_t {
     uint32_t playerId = 0;
     uint32_t tickRate = 0;
     MovementSettings_t movement;
+    EMap map = EMap::kArena;
     UserCmd_t cmd;
     WorldSnapshot_t snapshot;
     ControlRequest_t control;
     uint32_t viewTargetNetId = 0;
 };
 
-// Wire: protobuf serialize -> gzip. Framing is done in network.dll.
+// Wire: protobuf serialize -> gzip. Framing is done in network.dll. Implemented in libprotocol (one copy per process).
+#if defined(_WIN32)
+    #if defined(PROTOCOL_BUILD)
+        #define PROTOCOL_API __declspec(dllexport)
+    #else
+        #define PROTOCOL_API __declspec(dllimport)
+    #endif
+#else
+    #define PROTOCOL_API __attribute__((visibility("default")))
+#endif
+
 namespace protocol {
 
-[[nodiscard]] netproto::Envelope toProto(const Envelope_t& envelope);
-[[nodiscard]] Envelope_t fromProto(const netproto::Envelope& proto);
-[[nodiscard]] std::expected<std::vector<uint8_t>, std::string> encode(const Envelope_t& envelope);
-[[nodiscard]] std::expected<Envelope_t, std::string> decode(std::span<const uint8_t> gzipBytes);
+[[nodiscard]] PROTOCOL_API std::expected<std::vector<uint8_t>, std::string> encode(const Envelope_t& envelope);
+[[nodiscard]] PROTOCOL_API std::expected<Envelope_t, std::string> decode(std::span<const uint8_t> gzipBytes);
 
 }  // namespace protocol
 }  // namespace game

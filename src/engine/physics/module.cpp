@@ -1,9 +1,9 @@
 #include "engine/interface/create_interface.hpp"
-#include "engine/physics/physics_system.hpp"
+#include "engine/physics/physics_factory.hpp"
 
 namespace game {
 
-GAME_EXPOSE_INTERFACE(CPhysicsSystem, IPhysics, kPhysicsInterface)
+GAME_EXPOSE_INTERFACE(CPhysicsFactory, IPhysicsFactory, kPhysicsFactoryInterface)
 
 }  // namespace game
 

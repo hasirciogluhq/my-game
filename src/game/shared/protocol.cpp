@@ -169,6 +169,7 @@ netproto::Envelope toProto(const Envelope_t& envelope) {
     proto.mutable_control()->set_target_net_id(envelope.control.targetNetId);
     proto.set_view_target_net_id(envelope.viewTargetNetId);
     *proto.mutable_movement() = toProtoMovement(envelope.movement);
+    proto.set_map(static_cast<uint32_t>(envelope.map));
 
     auto* snapshot = proto.mutable_snapshot();
     snapshot->set_tick(envelope.snapshot.tick);
@@ -188,6 +189,7 @@ Envelope_t fromProto(const netproto::Envelope& proto) {
     envelope.control = {.action = static_cast<EControlAction>(proto.control().action()), .targetNetId = proto.control().target_net_id()};
     envelope.viewTargetNetId = proto.view_target_net_id();
     envelope.movement = fromProtoMovement(proto.movement());
+    envelope.map = static_cast<EMap>(proto.map());
     envelope.snapshot.tick = proto.snapshot().tick();
     envelope.snapshot.tickRate = proto.snapshot().tick_rate();
     for (const auto& item : proto.snapshot().entities()) {

@@ -8,30 +8,21 @@
 #include <filesystem>
 #include <print>
 
-// Same host for both servers. The test_server target defines GAME_TEST_SERVER=1 (test content, see game/server/test_scene).
-#ifdef GAME_TEST_SERVER
-constexpr bool kTestServer = true;
-constexpr const char* kHostName = "test_server";
-#else
-constexpr bool kTestServer = false;
-constexpr const char* kHostName = "dedicated_server";
-#endif
-
+// dedicated_server: players and bots only. (test_game runs the same server inside the game with test content.)
 int main(int argc, char** argv) {
     auto options = game::parseLaunchOptions(argc, argv);
     if (!options) {
-        std::println(stderr, "{}: {}", kHostName, options.error());
+        std::println(stderr, "dedicated_server: {}", options.error());
         return 2;
     }
-    options->testScene = kTestServer;
 
     // Engine modules are in out/.../engine; game modules are in the same folder as the exe (out/.../game).
     const std::filesystem::path gameDir = std::filesystem::absolute(argv[0]).parent_path();
     const std::filesystem::path engineDir = gameDir.parent_path() / "engine";
 
-    // Log first: every later module connects to the sink as it is loaded. Default file: out/.../logs/<host>.log
+    // Log first: every later module connects to the sink as it is loaded. Default file: out/.../logs/dedicated_server.log
     if (options->log.file.empty()) {
-        options->log.file = (gameDir.parent_path() / "logs" / (std::string(kHostName) + ".log")).string();
+        options->log.file = (gameDir.parent_path() / "logs" / "dedicated_server.log").string();
     }
     game::CModule logModule;
     game::ILog* log = game::startLogging(logModule, engineDir, options->log);
@@ -58,12 +49,9 @@ int main(int argc, char** argv) {
         GAME_LOG_ERROR("server", "{} interface not found", game::kServerAppInterface);
         return 1;
     }
-    if (!app->connect(&game::resolveInterface)) {
-        return 1;
+    if (!app->connect(&game::resolveInterface) || !app->open(*options)) {
+        game::exitProcess(log, 1);
     }
-    const int result = app->run(*options);
-    if (log != nullptr) {
-        log->flush();
-    }
-    return result;
+    app->loop();
+    game::exitProcess(log, 0);
 }

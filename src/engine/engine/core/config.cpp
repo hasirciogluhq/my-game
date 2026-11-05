@@ -41,6 +41,11 @@ int getInt(const ConfigValues_t& values, const std::string& key, int fallback) {
     return number;
 }
 
+std::string getString(const ConfigValues_t& values, const std::string& key, const std::string& fallback) {
+    const auto it = values.find(key);
+    return it != values.end() ? it->second : fallback;
+}
+
 float getFloat(const ConfigValues_t& values, const std::string& key, float fallback) {
     const auto it = values.find(key);
     if (it == values.end()) {

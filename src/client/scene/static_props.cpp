@@ -17,14 +17,15 @@ entt::entity spawnVisual(World_t &world, glm::vec3 position, float yaw,
 } // namespace
 
 void spawnStaticProps(World_t &world, IRenderer &renderer,
-                      const Resources_t &resources) {
+                      const Resources_t &resources,
+                      std::span<const level::Box_t> boxes) {
   spawnVisual(world, {0.0f, 0.0f, 0.0f}, 0.0f,
               {.mesh = resources.plane,
                .material = litMaterial(renderer, "ground",
                                        {0.45f, 0.5f, 0.42f, 1.0f})});
 
   // Level boxes: the same list as the physics boxes on the server.
-  for (const level::Box_t &box : level::boxes()) {
+  for (const level::Box_t &box : boxes) {
     spawnVisual(world, {0.0f, 0.0f, 0.0f}, 0.0f,
                 {.mesh = resources.box,
                  .material = litMaterial(renderer, "level-box", box.color),

@@ -127,4 +127,5 @@ message Envelope {
     ControlRequest control = 6;
     uint32 view_target_net_id = 7;   // in VIEW_TARGET: net_id of the watched pawn, 0 = not watching
     MovementSettings movement = 8;   // in WELCOME
+    uint32 map = 9;                  // in WELCOME: EMap, the map the server runs
 }

@@ -46,6 +46,14 @@ public:
     virtual void setCharacterPosition(CharacterHandle_t handle, const glm::vec3& feetPosition) = 0;
 };
 
-inline constexpr char kPhysicsInterface[] = "Physics001";
+// Physics worlds are created per user: the client (prediction) and the server each get their own.
+// The factory owns them until the module exits (no ownership transfer).
+class IPhysicsFactory {
+public:
+    virtual ~IPhysicsFactory() = default;
+    [[nodiscard]] virtual IPhysics* createWorld() = 0;
+};
+
+inline constexpr char kPhysicsFactoryInterface[] = "PhysicsFactory001";
 
 }  // namespace game

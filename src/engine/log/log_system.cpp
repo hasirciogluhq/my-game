@@ -54,9 +54,9 @@ std::vector<std::pair<std::string, ELogLevel>> parseCategories(std::string_view 
 
 class CLogSystem final : public ILog {
 public:
+    // No spdlog::shutdown() here: other modules may still log while the process ends (see game::exitProcess).
     ~CLogSystem() override {
         flush();
-        spdlog::shutdown();
     }
 
     void configure(const LogConfig_t& config) override {

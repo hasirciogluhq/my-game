@@ -3,6 +3,7 @@
 #include "engine/engine/core/camera.hpp"
 #include "engine/interface/i_assets.hpp"
 #include "engine/interface/i_renderer.hpp"
+#include "game/shared/level.hpp"
 #include "game/shared/world.hpp"
 
 #include "engine/engine/anim/skinned_model.hpp"
@@ -72,8 +73,10 @@ struct Resources_t {
 // Loads the models from disk with Assets001 and sends them to the renderer's GPU.
 [[nodiscard]] std::optional<Resources_t> loadResources(IAssets &assets,
                                                        IRenderer &renderer);
+// boxes: the map's static boxes (level::boxes(map)); the server uses the same list for physics.
 void spawnStaticProps(World_t &world, IRenderer &renderer,
-                      const Resources_t &resources);
+                      const Resources_t &resources,
+                      std::span<const level::Box_t> boxes);
 
 // Called every frame.
 void attachVisuals(World_t &world, const Resources_t &resources);

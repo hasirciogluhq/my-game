@@ -1,6 +1,7 @@
 #pragma once
 
 #include "engine/interface/i_physics.hpp"
+#include "game/shared/map.hpp"
 
 #include <span>
 
@@ -9,18 +10,18 @@
 
 namespace game::level {
 
-// Static world boxes. The server uses them for physics; the client uses the same list for drawing.
+// Static world boxes. The server uses them for physics; the client draws the same list.
 struct Box_t {
     glm::vec3 center;
     glm::vec3 halfExtents;
     glm::vec4 color;
 };
 
-[[nodiscard]] std::span<const Box_t> boxes();
-
 inline constexpr float kGroundHalfExtent = 50.0f;
 
-// Adds the ground and the boxes to the physics world.
-void buildPhysics(IPhysics& physics);
+[[nodiscard]] std::span<const Box_t> boxes(EMap map);
+
+// Adds the ground and the map's boxes to the physics world.
+void buildPhysics(IPhysics& physics, EMap map);
 
 }  // namespace game::level
