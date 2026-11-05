@@ -1,0 +1,27 @@
+# xmake
+.xmake/
+build/
+# Son çıktılar: out/<arch>-<plat>-<mode>/ (exe, dylib/dll, so, lib)
+out/
+
+# derleme artıkları
+*.o
+*.obj
+*.d
+*.a
+*.lib
+*.exp
+*.pdb
+
+# paylaşılan kütüphaneler ve exe'ler (out/ dışında da olsa)
+*.dylib
+*.so
+*.dll
+*.exe
+
+# editör / IDE
+.DS_Store
+.vscode/compile_commands.json
+.cache/
+.idea/
+*.swp

@@ -1,0 +1,501 @@
+[
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/network_test/macosx/arm64/debug/src/tests/network_test.cpp.o", "src/tests/network_test.cpp"],
+  "file": "src/tests/network_test.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/network_test/macosx/arm64/debug/src/engine/network/network_system.cpp.o", "src/engine/network/network_system.cpp"],
+  "file": "src/engine/network/network_system.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/dedicated_server/macosx/arm64/debug/src/host/server/main.cpp.o", "src/host/server/main.cpp"],
+  "file": "src/host/server/main.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DPARTICLES_BUILD", "-o", "build/.objs/particles/macosx/arm64/debug/src/engine/particles/module.cpp.o", "src/engine/particles/module.cpp"],
+  "file": "src/engine/particles/module.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DPARTICLES_BUILD", "-o", "build/.objs/particles/macosx/arm64/debug/src/engine/particles/particle_system.cpp.o", "src/engine/particles/particle_system.cpp"],
+  "file": "src/engine/particles/particle_system.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/interface/macosx/arm64/debug/src/engine/interface/module_loader.cpp.o", "src/engine/interface/module_loader.cpp"],
+  "file": "src/engine/interface/module_loader.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/interface/macosx/arm64/debug/src/engine/interface/create_interface.cpp.o", "src/engine/interface/create_interface.cpp"],
+  "file": "src/engine/interface/create_interface.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/font_test/macosx/arm64/debug/src/tests/font_test.cpp.o", "src/tests/font_test.cpp"],
+  "file": "src/tests/font_test.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/net/gzip.cpp.o", "src/engine/engine/net/gzip.cpp"],
+  "file": "src/engine/engine/net/gzip.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/engine_log.cpp.o", "src/engine/engine/core/engine_log.cpp"],
+  "file": "src/engine/engine/core/engine_log.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/camera.cpp.o", "src/engine/engine/core/camera.cpp"],
+  "file": "src/engine/engine/core/camera.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/font.cpp.o", "src/engine/engine/core/font.cpp"],
+  "file": "src/engine/engine/core/font.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/launch_options.cpp.o", "src/engine/engine/core/launch_options.cpp"],
+  "file": "src/engine/engine/core/launch_options.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/config.cpp.o", "src/engine/engine/core/config.cpp"],
+  "file": "src/engine/engine/core/config.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/primitives.cpp.o", "src/engine/engine/core/primitives.cpp"],
+  "file": "src/engine/engine/core/primitives.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/core/asset_path.cpp.o", "src/engine/engine/core/asset_path.cpp"],
+  "file": "src/engine/engine/core/asset_path.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DENGINE_BUILD", "-o", "build/.objs/engine/macosx/arm64/debug/src/engine/engine/ecs/control.cpp.o", "src/engine/engine/ecs/control.cpp"],
+  "file": "src/engine/engine/ecs/control.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DASSETS_BUILD", "-o", "build/.objs/assets/macosx/arm64/debug/src/engine/assets/module.cpp.o", "src/engine/assets/module.cpp"],
+  "file": "src/engine/assets/module.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DASSETS_BUILD", "-o", "build/.objs/assets/macosx/arm64/debug/src/engine/assets/model_loader.cpp.o", "src/engine/assets/model_loader.cpp"],
+  "file": "src/engine/assets/model_loader.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DASSETS_BUILD", "-o", "build/.objs/assets/macosx/arm64/debug/src/engine/assets/asset_system.cpp.o", "src/engine/assets/asset_system.cpp"],
+  "file": "src/engine/assets/asset_system.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DUI_BUILD", "-o", "build/.objs/ui/macosx/arm64/debug/src/engine/ui/module.cpp.o", "src/engine/ui/module.cpp"],
+  "file": "src/engine/ui/module.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DUI_BUILD", "-o", "build/.objs/ui/macosx/arm64/debug/src/engine/ui/ui_system.cpp.o", "src/engine/ui/ui_system.cpp"],
+  "file": "src/engine/ui/ui_system.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/game/macosx/arm64/debug/src/host/client/main.cpp.o", "src/host/client/main.cpp"],
+  "file": "src/host/client/main.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DLOG_BUILD", "-o", "build/.objs/log/macosx/arm64/debug/src/engine/log/log_system.cpp.o", "src/engine/log/log_system.cpp"],
+  "file": "src/engine/log/log_system.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DNETWORK_BUILD", "-o", "build/.objs/network/macosx/arm64/debug/src/engine/network/module.cpp.o", "src/engine/network/module.cpp"],
+  "file": "src/engine/network/module.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DNETWORK_BUILD", "-o", "build/.objs/network/macosx/arm64/debug/src/engine/network/network_system.cpp.o", "src/engine/network/network_system.cpp"],
+  "file": "src/engine/network/network_system.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/dummy_client/macosx/arm64/debug/src/host/client/client.dummy.cpp.o", "src/host/client/client.dummy.cpp"],
+  "file": "src/host/client/client.dummy.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/gens/rules/protobuf/proto/game.pb.cc.o", "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"],
+  "file": "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/tests/ecs_test.cpp.o", "src/tests/ecs_test.cpp"],
+  "file": "src/tests/ecs_test.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/client/input/input_map.cpp.o", "src/game/client/input/input_map.cpp"],
+  "file": "src/game/client/input/input_map.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/client/input/input_sampler.cpp.o", "src/game/client/input/input_sampler.cpp"],
+  "file": "src/game/client/input/input_sampler.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/client/prediction/prediction.cpp.o", "src/game/client/prediction/prediction.cpp"],
+  "file": "src/game/client/prediction/prediction.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/client/effects/fire_effects.cpp.o", "src/game/client/effects/fire_effects.cpp"],
+  "file": "src/game/client/effects/fire_effects.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/client/interpolation/interpolation.cpp.o", "src/game/client/interpolation/interpolation.cpp"],
+  "file": "src/game/client/interpolation/interpolation.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/world_tick.cpp.o", "src/game/server/world_tick.cpp"],
+  "file": "src/game/server/world_tick.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/input.cpp.o", "src/game/server/systems/input.cpp"],
+  "file": "src/game/server/systems/input.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/ai.cpp.o", "src/game/server/systems/ai.cpp"],
+  "file": "src/game/server/systems/ai.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/weapon.cpp.o", "src/game/server/systems/weapon.cpp"],
+  "file": "src/game/server/systems/weapon.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/movement.cpp.o", "src/game/server/systems/movement.cpp"],
+  "file": "src/game/server/systems/movement.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/owners.cpp.o", "src/game/server/systems/owners.cpp"],
+  "file": "src/game/server/systems/owners.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/systems/projectiles.cpp.o", "src/game/server/systems/projectiles.cpp"],
+  "file": "src/game/server/systems/projectiles.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/control/control_request.cpp.o", "src/game/server/control/control_request.cpp"],
+  "file": "src/game/server/control/control_request.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/ecs_test/macosx/arm64/debug/src/game/server/control/pawn_command.cpp.o", "src/game/server/control/pawn_command.cpp"],
+  "file": "src/game/server/control/pawn_command.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-o", "build/.objs/dummy_server/macosx/arm64/debug/src/host/server/server.dummy.cpp.o", "src/host/server/server.dummy.cpp"],
+  "file": "src/host/server/server.dummy.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/level.cpp.o", "src/game/shared/level.cpp"],
+  "file": "src/game/shared/level.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/trace.cpp.o", "src/game/shared/trace.cpp"],
+  "file": "src/game/shared/trace.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/replication.cpp.o", "src/game/shared/replication.cpp"],
+  "file": "src/game/shared/replication.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/movement.cpp.o", "src/game/shared/movement.cpp"],
+  "file": "src/game/shared/movement.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/protocol.cpp.o", "src/game/shared/protocol.cpp"],
+  "file": "src/game/shared/protocol.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/src/game/shared/world.cpp.o", "src/game/shared/world.cpp"],
+  "file": "src/game/shared/world.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/module.cpp.o", "src/engine/render/module.cpp"],
+  "file": "src/engine/render/module.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/shader_library.cpp.o", "src/engine/render/shader_library.cpp"],
+  "file": "src/engine/render/shader_library.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/passes/post_pass.cpp.o", "src/engine/render/passes/post_pass.cpp"],
+  "file": "src/engine/render/passes/post_pass.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/passes/debug_pass.cpp.o", "src/engine/render/passes/debug_pass.cpp"],
+  "file": "src/engine/render/passes/debug_pass.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/passes/shadow_pass.cpp.o", "src/engine/render/passes/shadow_pass.cpp"],
+  "file": "src/engine/render/passes/shadow_pass.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/passes/scene_pass.cpp.o", "src/engine/render/passes/scene_pass.cpp"],
+  "file": "src/engine/render/passes/scene_pass.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/passes/overlay_pass.cpp.o", "src/engine/render/passes/overlay_pass.cpp"],
+  "file": "src/engine/render/passes/overlay_pass.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/rhi/rhi_factory.cpp.o", "src/engine/render/rhi/rhi_factory.cpp"],
+  "file": "src/engine/render/rhi/rhi_factory.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/rhi/sdl_gpu_device.cpp.o", "src/engine/render/rhi/sdl_gpu_device.cpp"],
+  "file": "src/engine/render/rhi/sdl_gpu_device.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/render_system.cpp.o", "src/engine/render/render_system.cpp"],
+  "file": "src/engine/render/render_system.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/render_targets.cpp.o", "src/engine/render/render_targets.cpp"],
+  "file": "src/engine/render/render_targets.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/shaders/msl_source.cpp.o", "src/engine/render/shaders/msl_source.cpp"],
+  "file": "src/engine/render/shaders/msl_source.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DRENDER_BUILD", "-o", "build/.objs/render/macosx/arm64/debug/src/engine/render/render_resources.cpp.o", "src/engine/render/render_resources.cpp"],
+  "file": "src/engine/render/render_resources.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DSERVER_BUILD", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/gens/rules/protobuf/proto/game.pb.cc.o", "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"],
+  "file": "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/server/net/net_server.cpp.o", "src/server/net/net_server.cpp"],
+  "file": "src/server/net/net_server.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/server/module.cpp.o", "src/server/module.cpp"],
+  "file": "src/server/module.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/server/server_app.cpp.o", "src/server/server_app.cpp"],
+  "file": "src/server/server_app.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/world_tick.cpp.o", "src/game/server/world_tick.cpp"],
+  "file": "src/game/server/world_tick.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/input.cpp.o", "src/game/server/systems/input.cpp"],
+  "file": "src/game/server/systems/input.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/ai.cpp.o", "src/game/server/systems/ai.cpp"],
+  "file": "src/game/server/systems/ai.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/weapon.cpp.o", "src/game/server/systems/weapon.cpp"],
+  "file": "src/game/server/systems/weapon.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/movement.cpp.o", "src/game/server/systems/movement.cpp"],
+  "file": "src/game/server/systems/movement.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/owners.cpp.o", "src/game/server/systems/owners.cpp"],
+  "file": "src/game/server/systems/owners.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/systems/projectiles.cpp.o", "src/game/server/systems/projectiles.cpp"],
+  "file": "src/game/server/systems/projectiles.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/control/control_request.cpp.o", "src/game/server/control/control_request.cpp"],
+  "file": "src/game/server/control/control_request.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DSERVER_BUILD", "-o", "build/.objs/server/macosx/arm64/debug/src/game/server/control/pawn_command.cpp.o", "src/game/server/control/pawn_command.cpp"],
+  "file": "src/game/server/control/pawn_command.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DPHYSICS_BUILD", "-o", "build/.objs/physics/macosx/arm64/debug/src/engine/physics/module.cpp.o", "src/engine/physics/module.cpp"],
+  "file": "src/engine/physics/module.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DPHYSICS_BUILD", "-o", "build/.objs/physics/macosx/arm64/debug/src/engine/physics/physics_system.cpp.o", "src/engine/physics/physics_system.cpp"],
+  "file": "src/engine/physics/physics_system.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DCLIENT_BUILD", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-o", "build/.objs/game_shared/macosx/arm64/debug/gens/rules/protobuf/proto/game.pb.cc.o", "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"],
+  "file": "build/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto/game.pb.cc"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/net/net_client.cpp.o", "src/client/net/net_client.cpp"],
+  "file": "src/client/net/net_client.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/module.cpp.o", "src/client/module.cpp"],
+  "file": "src/client/module.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/client_app.cpp.o", "src/client/client_app.cpp"],
+  "file": "src/client/client_app.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/scene/render_helpers.cpp.o", "src/client/scene/render_helpers.cpp"],
+  "file": "src/client/scene/render_helpers.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/scene/resources.cpp.o", "src/client/scene/resources.cpp"],
+  "file": "src/client/scene/resources.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/scene/visuals.cpp.o", "src/client/scene/visuals.cpp"],
+  "file": "src/client/scene/visuals.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/scene/draw.cpp.o", "src/client/scene/draw.cpp"],
+  "file": "src/client/scene/draw.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/scene/static_props.cpp.o", "src/client/scene/static_props.cpp"],
+  "file": "src/client/scene/static_props.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/client/console/console_commands.cpp.o", "src/client/console/console_commands.cpp"],
+  "file": "src/client/console/console_commands.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/ui/console_window.cpp.o", "src/game/client/ui/console_window.cpp"],
+  "file": "src/game/client/ui/console_window.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/ui/scoreboard.cpp.o", "src/game/client/ui/scoreboard.cpp"],
+  "file": "src/game/client/ui/scoreboard.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/ui/hud.cpp.o", "src/game/client/ui/hud.cpp"],
+  "file": "src/game/client/ui/hud.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/input/input_map.cpp.o", "src/game/client/input/input_map.cpp"],
+  "file": "src/game/client/input/input_map.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/input/input_sampler.cpp.o", "src/game/client/input/input_sampler.cpp"],
+  "file": "src/game/client/input/input_sampler.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/prediction/prediction.cpp.o", "src/game/client/prediction/prediction.cpp"],
+  "file": "src/game/client/prediction/prediction.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/effects/fire_effects.cpp.o", "src/game/client/effects/fire_effects.cpp"],
+  "file": "src/game/client/effects/fire_effects.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-Ibuild/.gens/game_shared/macosx/arm64/debug/rules/protobuf/proto", "-DCLIENT_BUILD", "-o", "build/.objs/client/macosx/arm64/debug/src/game/client/interpolation/interpolation.cpp.o", "src/game/client/interpolation/interpolation.cpp"],
+  "file": "src/game/client/interpolation/interpolation.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DAUDIO_BUILD", "-o", "build/.objs/audio/macosx/arm64/debug/src/engine/audio/audio_system.cpp.o", "src/engine/audio/audio_system.cpp"],
+  "file": "src/engine/audio/audio_system.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DAUDIO_BUILD", "-o", "build/.objs/audio/macosx/arm64/debug/src/engine/audio/module.cpp.o", "src/engine/audio/module.cpp"],
+  "file": "src/engine/audio/module.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DPLATFORM_BUILD", "-o", "build/.objs/platform/macosx/arm64/debug/src/engine/platform/module.cpp.o", "src/engine/platform/module.cpp"],
+  "file": "src/engine/platform/module.cpp"
+},
+{
+  "directory": "/Users/hasircioglu/projects/my-game",
+  "arguments": ["/opt/homebrew/opt/llvm/bin/clang++", "-c", "-Qunused-arguments", "-target", "arm64-apple-macos", "-isysroot", "-g", "-O0", "-Isrc", "-DPLATFORM_BUILD", "-o", "build/.objs/platform/macosx/arm64/debug/src/engine/platform/platform.cpp.o", "src/engine/platform/platform.cpp"],
+  "file": "src/engine/platform/platform.cpp"
+}]

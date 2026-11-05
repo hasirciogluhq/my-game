@@ -1,0 +1,98 @@
+syntax = "proto3";
+
+package netproto;
+
+// Client her tick'te bir tane gönderir. Server paket gelince sıraya alır ve
+// sonraki server tick'inde işler. Rewind / lag compensation yok.
+// tick: client'ın komut sıra numarası (1'den başlar). Server işlediği son numarayı
+// Player.last_cmd_seq ile geri bildirir; client prediction bununla uzlaşır (reconcile).
+message UserCmd {
+    uint32 tick = 1;
+
+    // Normalize hareket değerleri, -1..1 aralığında.
+    float forward_move = 2;   // W = +1, S = -1
+    float side_move = 3;      // D = +1, A = -1
+    float up_move = 4;        // şimdilik kullanılmıyor, ileride uçuş/yüzme için
+
+    // Bakış yönü (radyan).
+    float yaw = 5;
+    float pitch = 6;
+
+    // Butonlar (EButton bitmask'i).
+    uint32 buttons = 7;            // basılı tutulanlar
+    uint32 buttons_pressed = 8;    // bu tick'te basılmaya başlanan (edge)
+    uint32 buttons_released = 9;   // bu tick'te bırakılan (edge)
+}
+
+message Vec3 {
+    float x = 1;
+    float y = 2;
+    float z = 3;
+}
+
+// Component mesajları: engine/ecs/components.hpp ile birebir.
+message Transform {
+    Vec3 position = 1;
+    float yaw = 2;
+    float pitch = 3;
+}
+
+message Velocity {
+    Vec3 linear = 1;
+}
+
+message Player {
+    uint32 player_id = 1;
+    uint32 health = 2;
+    bool on_ground = 3;
+    uint32 last_cmd_seq = 4;   // server'ın işlediği son UserCmd.tick (prediction ack)
+}
+
+// Mermi konumu hesaplanmaz, saklanır: pos(t) = origin + velocity * (t - spawn_tick) * dt
+message Projectile {
+    uint32 owner_id = 1;
+    uint32 spawn_tick = 2;
+    Vec3 origin = 3;
+    Vec3 velocity = 4;
+}
+
+// Bir entity: net_id + sahip olduğu component'ler (olmayanlar boş).
+message Entity {
+    uint32 net_id = 1;
+    Transform transform = 2;
+    Velocity velocity = 3;
+    Player player = 4;
+    Projectile projectile = 5;
+}
+
+message WorldSnapshot {
+    uint32 tick = 1;
+    uint32 tick_rate = 2;
+    repeated Entity entities = 3;
+}
+
+// Client -> server: izle / bot'u devral / bırak (EControlAction).
+message ControlRequest {
+    uint32 action = 1;
+    uint32 target_net_id = 2;   // izlenecek pawn
+}
+
+message Envelope {
+    enum Type {
+        TYPE_UNSPECIFIED = 0;
+        TYPE_HELLO = 1;
+        TYPE_WELCOME = 2;
+        TYPE_USER_CMD = 3;
+        TYPE_SNAPSHOT = 4;
+        TYPE_CONTROL = 5;       // client -> server: ControlRequest
+        TYPE_VIEW_TARGET = 6;   // server -> client: izlenen pawn değişti
+    }
+
+    Type type = 1;
+    uint32 player_id = 2;
+    uint32 tick_rate = 3;      // WELCOME'da server tick rate'i
+    UserCmd cmd = 4;
+    WorldSnapshot snapshot = 5;
+    ControlRequest control = 6;
+    uint32 view_target_net_id = 7;   // VIEW_TARGET'ta izlenen pawn'ın net_id'si, 0 = izlemiyor
+}
