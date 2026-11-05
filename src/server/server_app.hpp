@@ -21,6 +21,7 @@ private:
     IPhysics* m_physics = nullptr;
     World_t m_world;  // the entity list: everything on the server
     CNetServer m_network;
+    MovementSettings_t m_movement;  // move.* cvars from server.cfg; copied into m_world in run()
     int m_botCount = 0;
     int m_robotCount = 1;
     int m_dancerCount = 1;

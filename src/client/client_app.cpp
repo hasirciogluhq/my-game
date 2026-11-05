@@ -124,6 +124,9 @@ int CClientApp::run(const LaunchOptions_t &options) {
     }
     m_input.addMouseDelta(events.mouseDeltaX, events.mouseDeltaY);
     m_network.poll();
+    if (const auto movement = m_network.movement()) {
+      m_world.movement = *movement;  // the server's move.* cvars, from WELCOME
+    }
 
     // The server states the tick rate in the welcome packet; the default is used until then.
     const uint32_t rate = m_network.tickRate().value_or(kDefaultTickRate);

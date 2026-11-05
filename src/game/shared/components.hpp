@@ -30,6 +30,8 @@ struct Player_t {
     bool onGround = true;
     // Sequence number of the last command the server processed (UserCmd_t::tick). Client prediction acks with this.
     uint32_t lastCmdSeq = 0;
+    // Seconds of slide left (0 = not sliding). Predicted and replicated like the velocity.
+    float slideTime = 0.0f;
 };
 
 // The projectile position is not updated every tick: pos(t) = origin + velocity * (t - spawnTick) * dt.

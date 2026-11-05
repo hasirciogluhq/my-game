@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/shared/game_types.hpp"
+#include "game/shared/movement_settings.hpp"
 #include "game/shared/snapshot.hpp"
 
 #include <cstdint>
@@ -14,7 +15,7 @@
 namespace game {
 
 // A single wire message. The meaning of the fields depends on the type:
-//  WELCOME   -> playerId, tickRate
+//  WELCOME   -> playerId, tickRate, movement
 //  USER_CMD  -> cmd
 //  SNAPSHOT  -> snapshot
 //  CONTROL   -> control (client -> server)
@@ -23,6 +24,7 @@ struct Envelope_t {
     netproto::Envelope::Type type = netproto::Envelope::TYPE_UNSPECIFIED;
     uint32_t playerId = 0;
     uint32_t tickRate = 0;
+    MovementSettings_t movement;
     UserCmd_t cmd;
     WorldSnapshot_t snapshot;
     ControlRequest_t control;

@@ -3,6 +3,7 @@
 #include "engine/engine/core/types.hpp"
 #include "engine/interface/i_physics.hpp"
 #include "game/shared/components.hpp"
+#include "game/shared/movement_settings.hpp"
 
 #include <cstdint>
 #include <unordered_map>
@@ -15,6 +16,7 @@ namespace game {
 struct World_t {
   entt::registry registry;
   IPhysics *physics = nullptr; // on the client, only for local prediction
+  MovementSettings_t movement; // server cvars; the client gets them in WELCOME
   uint32_t tick = 0;
   uint32_t tickRate = kDefaultTickRate;
   uint32_t nextNetId = 1;

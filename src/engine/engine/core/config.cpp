@@ -41,4 +41,15 @@ int getInt(const ConfigValues_t& values, const std::string& key, int fallback) {
     return number;
 }
 
+float getFloat(const ConfigValues_t& values, const std::string& key, float fallback) {
+    const auto it = values.find(key);
+    if (it == values.end()) {
+        return fallback;
+    }
+    float number = fallback;
+    const auto& text = it->second;
+    std::from_chars(text.data(), text.data() + text.size(), number);  // on error, number keeps the fallback
+    return number;
+}
+
 }  // namespace game::config

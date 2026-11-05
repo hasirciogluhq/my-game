@@ -46,6 +46,48 @@ UserCmd_t fromProtoCmd(const netproto::UserCmd& proto) {
 }
 
 
+netproto::MovementSettings toProtoMovement(const MovementSettings_t& settings) {
+    netproto::MovementSettings proto;
+    proto.set_walk_speed(settings.walkSpeed);
+    proto.set_run_speed(settings.runSpeed);
+    proto.set_crouch_scale(settings.crouchScale);
+    proto.set_jump_speed(settings.jumpSpeed);
+    proto.set_gravity(settings.gravity);
+    proto.set_max_speed(settings.maxSpeed);
+    proto.set_ground_accelerate(settings.groundAccelerate);
+    proto.set_ground_friction(settings.groundFriction);
+    proto.set_ground_stop_speed(settings.groundStopSpeed);
+    proto.set_air_accelerate(settings.airAccelerate);
+    proto.set_air_wish_cap(settings.airWishCap);
+    proto.set_bunnyhop(settings.bunnyhop);
+    proto.set_slide(settings.slide);
+    proto.set_slide_min_speed(settings.slideMinSpeed);
+    proto.set_slide_duration(settings.slideDuration);
+    proto.set_slide_friction(settings.slideFriction);
+    return proto;
+}
+
+MovementSettings_t fromProtoMovement(const netproto::MovementSettings& proto) {
+    return MovementSettings_t{
+        .walkSpeed = proto.walk_speed(),
+        .runSpeed = proto.run_speed(),
+        .crouchScale = proto.crouch_scale(),
+        .jumpSpeed = proto.jump_speed(),
+        .gravity = proto.gravity(),
+        .maxSpeed = proto.max_speed(),
+        .groundAccelerate = proto.ground_accelerate(),
+        .groundFriction = proto.ground_friction(),
+        .groundStopSpeed = proto.ground_stop_speed(),
+        .airAccelerate = proto.air_accelerate(),
+        .airWishCap = proto.air_wish_cap(),
+        .bunnyhop = proto.bunnyhop(),
+        .slide = proto.slide(),
+        .slideMinSpeed = proto.slide_min_speed(),
+        .slideDuration = proto.slide_duration(),
+        .slideFriction = proto.slide_friction(),
+    };
+}
+
 void writeEntity(netproto::Entity* proto, const EntitySnapshot_t& entity) {
     proto->set_net_id(entity.netId);
     if (entity.transform) {
@@ -63,6 +105,7 @@ void writeEntity(netproto::Entity* proto, const EntitySnapshot_t& entity) {
         item->set_health(entity.player->health);
         item->set_on_ground(entity.player->onGround);
         item->set_last_cmd_seq(entity.player->lastCmdSeq);
+        item->set_slide_time(entity.player->slideTime);
     }
     if (entity.projectile) {
         auto* item = proto->mutable_projectile();
@@ -95,7 +138,8 @@ EntitySnapshot_t readEntity(const netproto::Entity& proto) {
         entity.player = Player_t{.playerId = proto.player().player_id(),
                                  .health = proto.player().health(),
                                  .onGround = proto.player().on_ground(),
-                                 .lastCmdSeq = proto.player().last_cmd_seq()};
+                                 .lastCmdSeq = proto.player().last_cmd_seq(),
+                                 .slideTime = proto.player().slide_time()};
     }
     if (proto.has_projectile()) {
         entity.projectile = Projectile_t{.ownerId = proto.projectile().owner_id(),
@@ -124,6 +168,7 @@ netproto::Envelope toProto(const Envelope_t& envelope) {
     proto.mutable_control()->set_action(static_cast<uint32_t>(envelope.control.action));
     proto.mutable_control()->set_target_net_id(envelope.control.targetNetId);
     proto.set_view_target_net_id(envelope.viewTargetNetId);
+    *proto.mutable_movement() = toProtoMovement(envelope.movement);
 
     auto* snapshot = proto.mutable_snapshot();
     snapshot->set_tick(envelope.snapshot.tick);
@@ -142,6 +187,7 @@ Envelope_t fromProto(const netproto::Envelope& proto) {
     envelope.cmd = fromProtoCmd(proto.cmd());
     envelope.control = {.action = static_cast<EControlAction>(proto.control().action()), .targetNetId = proto.control().target_net_id()};
     envelope.viewTargetNetId = proto.view_target_net_id();
+    envelope.movement = fromProtoMovement(proto.movement());
     envelope.snapshot.tick = proto.snapshot().tick();
     envelope.snapshot.tickRate = proto.snapshot().tick_rate();
     for (const auto& item : proto.snapshot().entities()) {

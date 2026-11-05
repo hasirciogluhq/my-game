@@ -30,6 +30,8 @@ public:
     [[nodiscard]] uint32_t viewTargetNetId() const { return m_viewTargetNetId; }
     // The server's authoritative tick rate (from the welcome packet).
     [[nodiscard]] std::optional<uint32_t> tickRate() const;
+    // The server's movement cvars (from the welcome packet): the client predicts with these.
+    [[nodiscard]] std::optional<MovementSettings_t> movement() const { return m_movement; }
     // All snapshots received since the last call, in tick order (interpolation uses all of them).
     [[nodiscard]] std::vector<WorldSnapshot_t> consumeSnapshots();
 
@@ -39,6 +41,7 @@ private:
     INetwork* m_network = nullptr;
     std::optional<uint32_t> m_playerId;
     std::optional<uint32_t> m_tickRate;
+    std::optional<MovementSettings_t> m_movement;
     uint32_t m_viewTargetNetId = 0;
     std::vector<WorldSnapshot_t> m_snapshots;
     uint32_t m_lastTick = 0;  // snapshots with this tick or an older one are dropped (UDP can arrive out of order)

@@ -61,6 +61,7 @@ void CNetServer::sendWelcome(PeerId_t peer) {
     welcome.type = netproto::Envelope::TYPE_WELCOME;
     welcome.playerId = peer;
     welcome.tickRate = m_world->tickRate;
+    welcome.movement = m_world->movement;
     if (const auto bytes = protocol::encode(welcome)) {
         std::ignore = m_network->send(peer, *bytes, EDeliver::kReliable);
     }

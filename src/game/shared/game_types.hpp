@@ -8,10 +8,6 @@ namespace game {
 // ---------------------------------------------------------------------------
 // Game constants (units: meters, seconds)
 // ---------------------------------------------------------------------------
-inline constexpr float kRunSpeed = 6.0f;
-inline constexpr float kWalkSpeed = 3.0f;
-inline constexpr float kJumpSpeed = 6.0f;
-inline constexpr float kGravity = 20.0f;
 inline constexpr float kEyeHeight = 1.6f;
 inline constexpr float kProjectileSpeed = 60.0f;
 inline constexpr float kProjectileLifetime = 3.0f;

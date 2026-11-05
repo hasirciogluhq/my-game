@@ -44,6 +44,7 @@ void CNetClient::onPacket(const NetEvent_t& event) {
         case netproto::Envelope::TYPE_WELCOME:
             m_playerId = envelope->playerId;
             m_tickRate = envelope->tickRate;
+            m_movement = envelope->movement;
             break;
         case netproto::Envelope::TYPE_VIEW_TARGET:
             m_viewTargetNetId = envelope->viewTargetNetId;

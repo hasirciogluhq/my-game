@@ -20,6 +20,8 @@ namespace config {
 [[nodiscard]] ENGINE_API bool getBool(const ConfigValues_t& values, const std::string& key, bool fallback);
 // Fallback if the value is not a number.
 [[nodiscard]] ENGINE_API int getInt(const ConfigValues_t& values, const std::string& key, int fallback);
+// Fallback if the value is not a number.
+[[nodiscard]] ENGINE_API float getFloat(const ConfigValues_t& values, const std::string& key, float fallback);
 
 }  // namespace config
 }  // namespace game

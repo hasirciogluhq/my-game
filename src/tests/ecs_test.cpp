@@ -35,10 +35,64 @@ game::UserCmd_t forwardCmd() {
     return cmd;
 }
 
+// Movement rules without physics (flat ground at y=0): acceleration, friction, slide, bunnyhop.
+void movementChecks() {
+    game::World_t world;
+    game::world::reset(world, 64);
+    const auto pawn = game::world::spawnPlayer(world, 1);
+    auto& velocity = world.registry.get<game::Velocity_t>(pawn).linear;
+    auto& player = world.registry.get<game::Player_t>(pawn);
+    player.onGround = true;
+
+    // Accelerates toward run speed, does not overshoot it.
+    for (int i = 0; i < 64; ++i) {
+        game::systems::movePlayer(world, pawn, forwardCmd());
+    }
+    const float runSpeed = world.movement.runSpeed;
+    check(std::abs(std::hypot(velocity.x, velocity.z) - runSpeed) < 0.05f, "movement: reaches run speed (move.run.speed)");
+
+    // Lets go: friction brings it to a stop.
+    for (int i = 0; i < 128; ++i) {
+        game::systems::movePlayer(world, pawn, game::UserCmd_t{});
+    }
+    check(std::hypot(velocity.x, velocity.z) < 0.01f, "movement: friction stops the player");
+
+    // Sprint, then crouch pressed: starts a slide that lasts move.slide.duration.
+    for (int i = 0; i < 64; ++i) {
+        game::systems::movePlayer(world, pawn, forwardCmd());
+    }
+    game::UserCmd_t crouch = forwardCmd();
+    crouch.buttons = game::buttonBit(game::EButton::kCrouch);
+    crouch.buttonsPressed = crouch.buttons;
+    game::systems::movePlayer(world, pawn, crouch);
+    check(player.slideTime > 0.0f, "slide: crouch at speed starts a slide");
+    for (int i = 0; i < 200; ++i) {
+        game::systems::movePlayer(world, pawn, forwardCmd());
+    }
+    check(player.slideTime == 0.0f, "slide: ends after move.slide.duration");
+
+    // Bunnyhop: jumping on landing keeps the speed (no friction on the jump tick).
+    game::UserCmd_t jump = forwardCmd();
+    jump.buttons = game::buttonBit(game::EButton::kJump);
+    jump.buttonsPressed = jump.buttons;
+    for (int i = 0; i < 64; ++i) {
+        game::systems::movePlayer(world, pawn, forwardCmd());
+    }
+    const float beforeJump = std::hypot(velocity.x, velocity.z);
+    game::systems::movePlayer(world, pawn, jump);
+    check(std::abs(std::hypot(velocity.x, velocity.z) - beforeJump) < 0.05f, "bunnyhop: jump keeps the horizontal speed");
+    check(velocity.y > 0.0f, "jump: vertical speed set");
+    world.movement.bunnyhop = false;
+    player.onGround = true;
+    game::systems::movePlayer(world, pawn, jump);
+    check(std::hypot(velocity.x, velocity.z) <= runSpeed + 0.01f, "bunnyhop off: jump caps the speed at run speed");
+}
+
 }  // namespace
 
 int main(int argc, char** argv) {
     (void)argc;
+    movementChecks();
     // Engine modules are under out/.../engine; the test exe is under out/.../game.
     const std::filesystem::path engineDir = std::filesystem::absolute(argv[0]).parent_path().parent_path() / "engine";
     game::CModule physicsModule;

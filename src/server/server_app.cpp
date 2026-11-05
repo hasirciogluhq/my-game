@@ -34,6 +34,7 @@ bool CServerApp::connect(CreateInterfaceFn factory) {
     const bool playerCollisions = config::getBool(settings, "player.collisions.enabled", true);
     m_physics->setCharacterCollisions(playerCollisions);
     GAME_LOG_INFO("server", "player.collisions.enabled = {}", playerCollisions);
+    m_movement = movementSettingsFrom(settings);
     m_botCount = std::max(0, config::getInt(settings, "bots.count", 0));
     GAME_LOG_INFO("server", "bots.count = {}", m_botCount);
     m_robotCount = std::max(0, config::getInt(settings, "robots.count", 1));
@@ -46,6 +47,9 @@ bool CServerApp::connect(CreateInterfaceFn factory) {
 int CServerApp::run(const LaunchOptions_t& options) {
     world::reset(m_world, options.tickRate);
     m_world.physics = m_physics;
+    m_world.movement = m_movement;
+    GAME_LOG_INFO("server", "move.run.speed = {}, move.slide.enabled = {}, move.bunnyhop.enabled = {}", m_movement.runSpeed,
+                  m_movement.slide, m_movement.bunnyhop);
     level::buildPhysics(*m_physics);
     for (int i = 0; i < m_botCount; ++i) {
         std::ignore = world::spawnBot(m_world, {-3.0f - static_cast<float>(i) * 1.5f, 0.0f, -4.0f});

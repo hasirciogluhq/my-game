@@ -46,6 +46,27 @@ message Player {
     uint32 health = 2;
     bool on_ground = 3;
     uint32 last_cmd_seq = 4;   // last UserCmd.tick the server processed (prediction ack)
+    float slide_time = 5;      // seconds of slide left (0 = not sliding)
+}
+
+// Movement tuning (cvars move.*). Sent in WELCOME so client prediction uses the same values.
+message MovementSettings {
+    float walk_speed = 1;
+    float run_speed = 2;
+    float crouch_scale = 3;
+    float jump_speed = 4;
+    float gravity = 5;
+    float max_speed = 6;
+    float ground_accelerate = 7;
+    float ground_friction = 8;
+    float ground_stop_speed = 9;
+    float air_accelerate = 10;
+    float air_wish_cap = 11;
+    bool bunnyhop = 12;
+    bool slide = 13;
+    float slide_min_speed = 14;
+    float slide_duration = 15;
+    float slide_friction = 16;
 }
 
 // The projectile position is not computed, it is stored: pos(t) = origin + velocity * (t - spawn_tick) * dt
@@ -105,4 +126,5 @@ message Envelope {
     WorldSnapshot snapshot = 5;
     ControlRequest control = 6;
     uint32 view_target_net_id = 7;   // in VIEW_TARGET: net_id of the watched pawn, 0 = not watching
+    MovementSettings movement = 8;   // in WELCOME
 }
