@@ -17,6 +17,8 @@ struct LaunchOptions_t {
     std::string host = "127.0.0.1";
     uint16_t port = kDefaultPort;
     LogConfig_t log;
+    // Set by the test_server host (not a command line flag): the server spawns the test scene (game/server/test_scene).
+    bool testScene = false;
 };
 
 // argv: char** (argv[0] is the program name and is skipped).

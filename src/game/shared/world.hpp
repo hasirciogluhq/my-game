@@ -43,8 +43,8 @@ entt::entity spawnPlayer(World_t &world, uint32_t playerId);
 void despawnPlayer(World_t &world, uint32_t playerId);
 // Deletes the character pawn (with its physics capsule). The controller stays (when a player dies, the connection and controller remain).
 void killPawn(World_t &world, entt::entity pawn);
-// Bot: AiController_t + character pawn. Returns the pawn.
-entt::entity spawnBot(World_t &world, const glm::vec3 &position);
+// Bot: AiController_t + character pawn. turnRate: how fast it turns while patrolling (rad/s). Returns the pawn.
+entt::entity spawnBot(World_t &world, const glm::vec3 &position, float turnRate);
 // The pawn that the player with playerId is CURRENTLY driving (found from the Player_t replicated to the client).
 // May be entt::null.
 [[nodiscard]] entt::entity findPlayer(const World_t &world, uint32_t playerId);

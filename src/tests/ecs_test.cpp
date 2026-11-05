@@ -348,7 +348,7 @@ int main(int argc, char** argv) {
         srv.physics = physics;
         const auto home = game::world::spawnPlayer(srv, 5);
         const auto other = game::world::spawnPlayer(srv, 6);
-        const auto bot = game::world::spawnBot(srv, {0.0f, 0.0f, -4.0f});
+        const auto bot = game::world::spawnBot(srv, {0.0f, 0.0f, -4.0f}, 0.6f);
         const auto netIdOf = [&](entt::entity e) { return srv.registry.get<game::Replicated_t>(e).netId; };
         const auto controllerOfPlayer = game::world::findController(srv, 5);
 

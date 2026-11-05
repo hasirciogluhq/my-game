@@ -117,10 +117,10 @@ void killPawn(World_t& world, entt::entity pawn) {
     destroyCharacter(world, pawn);
 }
 
-entt::entity spawnBot(World_t& world, const glm::vec3& position) {
+entt::entity spawnBot(World_t& world, const glm::vec3& position, float turnRate) {
     const entt::entity pawn = createCharacter(world, position);
     const entt::entity controller = control::createController(world.registry, false);  // a player can take it over
-    world.registry.emplace<AiController_t>(controller);
+    world.registry.emplace<AiController_t>(controller, AiController_t{.turnRate = turnRate});
     world.registry.emplace<CommandQueue_t>(controller);
     std::ignore = control::possess(world.registry, controller, pawn);
     return pawn;

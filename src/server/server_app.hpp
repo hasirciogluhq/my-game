@@ -23,8 +23,7 @@ private:
     CNetServer m_network;
     MovementSettings_t m_movement;  // move.* cvars from server.cfg; copied into m_world in run()
     int m_botCount = 0;
-    int m_robotCount = 1;
-    int m_dancerCount = 1;
+    float m_botTurnRate = 0.6f;
 };
 
 }  // namespace game

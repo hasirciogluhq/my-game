@@ -8,20 +8,30 @@
 #include <filesystem>
 #include <print>
 
+// Same host for both servers. The test_server target defines GAME_TEST_SERVER=1 (test content, see game/server/test_scene).
+#ifdef GAME_TEST_SERVER
+constexpr bool kTestServer = true;
+constexpr const char* kHostName = "test_server";
+#else
+constexpr bool kTestServer = false;
+constexpr const char* kHostName = "dedicated_server";
+#endif
+
 int main(int argc, char** argv) {
     auto options = game::parseLaunchOptions(argc, argv);
     if (!options) {
-        std::println(stderr, "dedicated_server: {}", options.error());
+        std::println(stderr, "{}: {}", kHostName, options.error());
         return 2;
     }
+    options->testScene = kTestServer;
 
     // Engine modules are in out/.../engine; game modules are in the same folder as the exe (out/.../game).
     const std::filesystem::path gameDir = std::filesystem::absolute(argv[0]).parent_path();
     const std::filesystem::path engineDir = gameDir.parent_path() / "engine";
 
-    // Log first: every later module connects to the sink as it is loaded. Default file: out/.../logs/dedicated_server.log
+    // Log first: every later module connects to the sink as it is loaded. Default file: out/.../logs/<host>.log
     if (options->log.file.empty()) {
-        options->log.file = (gameDir.parent_path() / "logs" / "dedicated_server.log").string();
+        options->log.file = (gameDir.parent_path() / "logs" / (std::string(kHostName) + ".log")).string();
     }
     game::CModule logModule;
     game::ILog* log = game::startLogging(logModule, engineDir, options->log);

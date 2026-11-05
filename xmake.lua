@@ -247,6 +247,16 @@ target("dedicated_server")
     game_rpath()
     set_rundir("$(projectdir)")
 
+-- Test server: the same host, with test content (random animated props, game/server/test_scene). Not for real play.
+target("test_server")
+    set_kind("binary")
+    set_targetdir(gamedir)
+    add_deps("engine", "interface")
+    add_files("src/host/server/main.cpp")
+    add_defines("GAME_TEST_SERVER=1")
+    game_rpath()
+    set_rundir("$(projectdir)")
+
 -- Headless integration test (physics + ECS + replication + protobuf): xmake run ecs_test
 target("ecs_test")
     set_kind("binary")

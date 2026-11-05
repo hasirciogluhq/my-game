@@ -3,6 +3,7 @@
 #include "engine/engine/core/asset_path.hpp"
 #include "engine/engine/core/config.hpp"
 #include "engine/interface/i_log.hpp"
+#include "game/server/test_scene.hpp"
 #include "game/server/world_tick.hpp"
 #include "game/shared/level.hpp"
 
@@ -37,10 +38,8 @@ bool CServerApp::connect(CreateInterfaceFn factory) {
     m_movement = movementSettingsFrom(settings);
     m_botCount = std::max(0, config::getInt(settings, "bots.count", 0));
     GAME_LOG_INFO("server", "bots.count = {}", m_botCount);
-    m_robotCount = std::max(0, config::getInt(settings, "robots.count", 1));
-    GAME_LOG_INFO("server", "robots.count = {}", m_robotCount);
-    m_dancerCount = std::max(0, config::getInt(settings, "dancers.count", 1));
-    GAME_LOG_INFO("server", "dancers.count = {}", m_dancerCount);
+    m_botTurnRate = config::getFloat(settings, "bots.turn_rate", 0.6f);
+    GAME_LOG_INFO("server", "bots.turn_rate = {}", m_botTurnRate);
     return true;
 }
 
@@ -52,15 +51,10 @@ int CServerApp::run(const LaunchOptions_t& options) {
                   m_movement.slide, m_movement.bunnyhop);
     level::buildPhysics(*m_physics);
     for (int i = 0; i < m_botCount; ++i) {
-        std::ignore = world::spawnBot(m_world, {-3.0f - static_cast<float>(i) * 1.5f, 0.0f, -4.0f});
+        std::ignore = world::spawnBot(m_world, {-3.0f - static_cast<float>(i) * 1.5f, 0.0f, -4.0f}, m_botTurnRate);
     }
-
-    for (int i = 0; i < m_robotCount; ++i) {
-        // In the middle of the map, in front of the spawn; the next robots line up beside it.
-        std::ignore = world::spawnAnimated(m_world, EModel::kRobot, {static_cast<float>(i) * 2.0f, 0.0f, -4.0f});
-    }
-    for (int i = 0; i < m_dancerCount; ++i) {
-        std::ignore = world::spawnAnimated(m_world, EModel::kDancer, {4.0f + static_cast<float>(i) * 2.0f, 0.0f, -5.0f});
+    if (options.testScene) {
+        testscene::spawnRandomProps(m_world);
     }
 
     if (!m_network.listen(options.port)) {
